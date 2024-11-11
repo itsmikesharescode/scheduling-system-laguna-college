@@ -1,6 +1,9 @@
 <script lang="ts">
   import { EllipsisVertical } from 'lucide-svelte';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+
+  let showUpdate = $state(false);
+  let showDelete = $state(false);
 </script>
 
 <DropdownMenu.Root>
@@ -9,19 +12,7 @@
   </DropdownMenu.Trigger>
   <DropdownMenu.Content>
     <DropdownMenu.Group>
-      <DropdownMenu.Sub>
-        <DropdownMenu.SubTrigger>
-          <span>Update</span>
-        </DropdownMenu.SubTrigger>
-        <DropdownMenu.SubContent>
-          <DropdownMenu.Item>
-            <span>Assign Students</span>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item>
-            <span>Update Information</span>
-          </DropdownMenu.Item>
-        </DropdownMenu.SubContent>
-      </DropdownMenu.Sub>
+      <DropdownMenu.Item>Update</DropdownMenu.Item>
       <DropdownMenu.Item>Delete</DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
