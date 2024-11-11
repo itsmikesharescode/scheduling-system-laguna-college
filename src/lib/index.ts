@@ -237,3 +237,36 @@ export const allSubjects = Array.from(
   label: subjectString,
   value: subjectString
 }));
+
+export const days = [
+  { value: 'Monday', label: 'Monday' },
+  { value: 'Tuesday', label: 'Tuesday' },
+  { value: 'Wednesday', label: 'Wednesday' },
+  { value: 'Thursday', label: 'Thursday' },
+  { value: 'Friday', label: 'Friday' },
+  { value: 'Saturday', label: 'Saturday' },
+  { value: 'Sunday', label: 'Sunday' }
+];
+
+export const timeSlots = (() => {
+  const slots = [];
+  const startHour = 7; // 7 AM
+  const endHour = 22; // 10 PM
+
+  for (let hour = startHour; hour <= endHour; hour++) {
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour > 12 ? hour - 12 : hour;
+
+    // Add hour slot
+    const timeStr = `${displayHour}:00 ${period}`;
+    slots.push({ value: timeStr, label: timeStr });
+
+    // Add half-hour slot
+    if (hour !== endHour) {
+      const halfTimeStr = `${displayHour}:30 ${period}`;
+      slots.push({ value: halfTimeStr, label: halfTimeStr });
+    }
+  }
+
+  return slots;
+})();

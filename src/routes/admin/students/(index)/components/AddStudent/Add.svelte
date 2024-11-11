@@ -13,7 +13,7 @@
   import { fly } from 'svelte/transition';
   import SelectPicker from '$lib/components/general/SelectPicker.svelte';
   import Combobox from '$lib/components/general/Combobox.svelte';
-  import { allSubjects } from '$lib';
+  import { allSubjects, days, timeSlots } from '$lib';
 
   interface Props {
     addStudentForm: SuperValidated<Infer<AddStudentSchema>>;
@@ -285,12 +285,7 @@
                               <Label for={`${schedule.id}-${j}-day`}>Day</Label>
                               <div class="relative">
                                 <Combobox
-                                  selections={[
-                                    { label: 'Math', value: 'math' },
-                                    { label: 'Science', value: 'science' },
-                                    { label: 'English', value: 'english' },
-                                    { label: 'History', value: 'history' }
-                                  ]}
+                                  selections={days}
                                   bind:selected={schedule.day}
                                   placeholder="Select Day"
                                   name="Select Day"
@@ -303,12 +298,7 @@
                                 <Label for={`${schedule.id}-${j}-startTime`}>Start Time</Label>
                                 <div class="relative">
                                   <Combobox
-                                    selections={[
-                                      { label: 'Math', value: 'math' },
-                                      { label: 'Science', value: 'science' },
-                                      { label: 'English', value: 'english' },
-                                      { label: 'History', value: 'history' }
-                                    ]}
+                                    selections={timeSlots}
                                     bind:selected={schedule.startTime}
                                     placeholder="Select Start Time"
                                     name="Select Start Time"
@@ -320,12 +310,7 @@
                                 <Label for={`${schedule.id}-${j}-endTime`}>End Time</Label>
                                 <div class="relative">
                                   <Combobox
-                                    selections={[
-                                      { label: 'Math', value: 'math' },
-                                      { label: 'Science', value: 'science' },
-                                      { label: 'English', value: 'english' },
-                                      { label: 'History', value: 'history' }
-                                    ]}
+                                    selections={timeSlots}
                                     bind:selected={schedule.endTime}
                                     placeholder="Select End Time"
                                     name="Select End Time"
