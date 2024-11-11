@@ -7,12 +7,12 @@
   import { page } from '$app/stores';
 </script>
 
-<main class="container flex flex-col gap-5">
+<main class="container flex flex-col gap-5 py-10">
   <h1 class="mt-5 text-center text-5xl font-bold">TEACHERS</h1>
 
   <div class="flex items-center justify-between">
     <AddTeacher />
-    <Search class="w-[300px]" placeholder="Search full name ..." />
+    <Search class="w-[300px]" placeholder="Search teacher full name ..." />
   </div>
 
   {#if $page.url.searchParams.get('search')}
