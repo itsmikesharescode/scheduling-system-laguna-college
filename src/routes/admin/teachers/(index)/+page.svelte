@@ -3,6 +3,8 @@
   import * as Table from '$lib/components/ui/table/index.js';
   import Menu from './components/Menu.svelte';
   import AddTeacher from './components/AddTeacher/AddTeacher.svelte';
+  import { CornerUpLeft } from 'lucide-svelte';
+  import { page } from '$app/stores';
 </script>
 
 <main class="container flex flex-col gap-5">
@@ -12,6 +14,16 @@
     <AddTeacher />
     <Search class="w-[300px]" placeholder="Search full name ..." />
   </div>
+
+  {#if $page.url.searchParams.get('search')}
+    <div class="flex justify-end">
+      <a href="/admin/teachers" class="flex items-center gap-2 transition-all hover:underline">
+        <CornerUpLeft class="size-4" />
+        <span class="text-sm">Clear search</span>
+      </a>
+    </div>
+  {/if}
+
   <Table.Root>
     <Table.Caption>A list of your recent invoices.</Table.Caption>
     <Table.Header>

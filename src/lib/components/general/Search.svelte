@@ -19,7 +19,10 @@
 
   let searchValue = $state('');
 
-  const handleSearch = () => goto(`${$page.url.pathname}?search=${searchValue}`);
+  const handleSearch = async () => {
+    await goto(`${$page.url.pathname}?search=${searchValue}`);
+    searchValue = '';
+  };
 </script>
 
 <div class="relative">
