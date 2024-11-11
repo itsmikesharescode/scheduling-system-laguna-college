@@ -2,7 +2,7 @@
   import Search from '$lib/components/general/Search.svelte';
   import * as Table from '$lib/components/ui/table/index.js';
   import Menu from './components/Menu.svelte';
-  import AddStudent from './components/AddStudent/AddStudent.svelte';
+  import Add from './components/AddStudent/Add.svelte';
   import { CornerUpLeft } from 'lucide-svelte';
   import { page } from '$app/stores';
 </script>
@@ -11,7 +11,7 @@
   <h1 class="mt-5 text-center text-5xl font-bold">STUDENTS</h1>
 
   <div class="flex items-center justify-between">
-    <AddStudent />
+    <Add />
     <Search class="w-[300px]" placeholder="Search student full name ..." />
   </div>
 
