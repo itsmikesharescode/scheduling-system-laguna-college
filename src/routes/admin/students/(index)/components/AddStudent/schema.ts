@@ -8,15 +8,15 @@ const sectionSchema = z.object({
 
 // Define schema for subjects
 
-const schedulePattern =
-  /^(\d{2}:\d{2} (AM|PM) - \d{2}:\d{2} (AM|PM) \/ [A-Za-z]+)( \| \d{2}:\d{2} (AM|PM) - \d{2}:\d{2} (AM|PM) \/ [A-Za-z]+)*$/;
+const scheduleSchema = z.object({
+  startTime: z.string().min(1, { message: 'Start time is required' }),
+  endTime: z.string().min(1, { message: 'End time is required' }),
+  days: z.string().min(1, { message: 'Days are required' })
+});
 
 const subjectSchema = z.object({
-  id: z.string().uuid(),
   name: z.string().min(1, { message: 'Subject name cannot be empty' }),
-  schedule: z
-    .string()
-    .regex(schedulePattern, { message: 'Schedule format is invalid please read instructions' })
+  schedule: z.array(scheduleSchema).min(1, { message: 'At least one schedule is required' })
 });
 
 export const addStudentSchema = z.object({

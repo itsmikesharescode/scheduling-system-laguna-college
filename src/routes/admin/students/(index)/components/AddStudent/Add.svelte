@@ -35,12 +35,25 @@
       name: ''
     }
   ]);
+
+  let subjects = $state([
+    {
+      name: '',
+      schedule: [
+        {
+          startTime: '',
+          endTime: '',
+          days: ''
+        }
+      ]
+    }
+  ]);
 </script>
 
 <Button onclick={() => (open = true)}>Add Student</Button>
 
 <AlertDialog.Root bind:open>
-  <AlertDialog.Content class="max-h-[90dvh] max-w-[90dvw] p-0">
+  <AlertDialog.Content class="max-h-[90dvh] max-w-[1200px] p-0">
     <button
       onclick={() => (open = false)}
       class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
