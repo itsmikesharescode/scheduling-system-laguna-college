@@ -1,10 +1,17 @@
 <script lang="ts">
+  import Search from '$lib/components/general/Search.svelte';
   import * as Table from '$lib/components/ui/table/index.js';
   import Menu from './components/Menu.svelte';
+  import AddTeacher from './components/AddTeacher/AddTeacher.svelte';
 </script>
 
 <main class="container flex flex-col gap-5">
   <h1 class="mt-5 text-center text-5xl font-bold">TEACHERS</h1>
+
+  <div class="flex items-center justify-between">
+    <AddTeacher />
+    <Search class="w-[300px]" placeholder="Search full name ..." />
+  </div>
   <Table.Root>
     <Table.Caption>A list of your recent invoices.</Table.Caption>
     <Table.Header>
