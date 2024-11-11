@@ -5,13 +5,15 @@
   import Add from './components/AddStudent/Add.svelte';
   import { CornerUpLeft } from 'lucide-svelte';
   import { page } from '$app/stores';
+
+  const { data } = $props();
 </script>
 
 <main class="container flex flex-col gap-5 py-10">
   <h1 class="mt-5 text-center text-5xl font-bold">STUDENTS</h1>
 
   <div class="flex items-center justify-between">
-    <Add />
+    <Add addStudentForm={data.addStudentForm} />
     <Search class="w-[300px]" placeholder="Search student full name ..." />
   </div>
 
