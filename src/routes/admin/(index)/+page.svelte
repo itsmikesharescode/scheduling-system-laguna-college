@@ -2,6 +2,7 @@
   import { Button } from '$lib/components/ui/button/index.js';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
   import * as Card from '$lib/components/ui/card/index.js';
+  import { Plus } from 'lucide-svelte';
 </script>
 
 {#snippet counter(count: number, title: string)}
@@ -33,7 +34,10 @@
     <section class="flex flex-col gap-2.5 rounded-2xl bg-[#0F224C] p-5 text-white">
       <div class="flex w-full items-center justify-between">
         <span class="text-center text-3xl">Daily Reminder</span>
-        <Button size="sm">Add</Button>
+        <Button size="sm" variant="secondary">
+          <Plus class="size-4" />
+          Add
+        </Button>
       </div>
 
       <ScrollArea class="h-[40dvh] p-5">

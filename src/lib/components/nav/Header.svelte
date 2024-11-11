@@ -41,7 +41,14 @@
 
     <div class="flex items-center gap-5">
       {#each navigations as navigation}
-        <a href={navigation.url} class="p-2 text-white">{navigation.name}</a>
+        <a
+          href={navigation.url}
+          class="{$page.url.pathname === navigation.url
+            ? 'font-bold text-[#FFC700]'
+            : 'text-white'} p-2 transition-all hover:scale-95"
+        >
+          {navigation.name}
+        </a>
       {/each}
 
       <script lang="ts">
