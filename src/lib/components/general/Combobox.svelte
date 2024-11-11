@@ -47,17 +47,17 @@
     {#snippet child({ props })}
       <Button
         variant="outline"
-        class="w-full justify-between"
+        class="w-full justify-between "
         {...props}
         role="combobox"
         aria-expanded={open}
       >
-        {selected || name}
+        <span class="line-clamp-1">{selected || name}</span>
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
     {/snippet}
   </Popover.Trigger>
-  <Popover.Content class="w-[200px] p-0">
+  <Popover.Content class="w-fit p-0">
     <Command.Root>
       <Command.Input {placeholder} />
       <Command.List>

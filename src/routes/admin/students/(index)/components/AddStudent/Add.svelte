@@ -13,6 +13,7 @@
   import { fly } from 'svelte/transition';
   import SelectPicker from '$lib/components/general/SelectPicker.svelte';
   import Combobox from '$lib/components/general/Combobox.svelte';
+  import { allSubjects } from '$lib';
 
   interface Props {
     addStudentForm: SuperValidated<Infer<AddStudentSchema>>;
@@ -258,12 +259,7 @@
                   <Label for={`${subject.id}-subject`}>Subject</Label>
                   <div class="relative">
                     <Combobox
-                      selections={[
-                        { label: 'Math', value: 'math' },
-                        { label: 'Science', value: 'science' },
-                        { label: 'English', value: 'english' },
-                        { label: 'History', value: 'history' }
-                      ]}
+                      selections={allSubjects}
                       bind:selected={subject.name}
                       placeholder="Select subject"
                       name="Select Subject"
