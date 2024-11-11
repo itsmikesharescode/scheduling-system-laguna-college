@@ -30,7 +30,7 @@
 </header>
  -->
 
-<nav class="flex items-center bg-[#0F224C] p-2">
+<nav class="sticky top-0 z-30 flex items-center bg-[#0F224C] p-2">
   <section class="container flex items-center justify-between">
     <div class="flex items-center gap-2">
       <img src="/assets/nav-logo.png" alt="Nav logo" class="h-[40px]" />
