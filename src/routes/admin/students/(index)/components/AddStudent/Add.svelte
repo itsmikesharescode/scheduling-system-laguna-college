@@ -4,7 +4,7 @@
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { addStudentSchema, type AddStudentSchema } from './schema';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
-  import { X } from 'lucide-svelte';
+  import { LoaderCircle, X } from 'lucide-svelte';
   import * as Form from '$lib/components/ui/form/index.js';
   import { Input } from '$lib/components/ui/input/index.js';
   import { zodClient } from 'sveltekit-superforms/adapters';
@@ -14,6 +14,8 @@
   import SelectPicker from '$lib/components/general/SelectPicker.svelte';
   import Combobox from '$lib/components/general/Combobox.svelte';
   import { allSubjects, days, timeSlots } from '$lib';
+  import type { Result } from '$lib/types/types';
+  import { toast } from 'svelte-sonner';
 
   interface Props {
     addStudentForm: SuperValidated<Infer<AddStudentSchema>>;
@@ -24,10 +26,26 @@
   let open = $state(false);
 
   const form = superForm(addStudentForm, {
-    validators: zodClient(addStudentSchema)
+    validators: zodClient(addStudentSchema),
+    id: crypto.randomUUID(),
+    onUpdate: ({ result }) => {
+      const { status, data } = result as Result<{ msg: string }>;
+      switch (status) {
+        case 200:
+          toast.success(data.msg);
+          reset();
+          break;
+        case 400:
+          toast.error(data.msg);
+          break;
+        case 401:
+          toast.error(data.msg);
+          break;
+      }
+    }
   });
 
-  const { form: formData, enhance, submitting } = form;
+  const { form: formData, enhance, submitting, reset } = form;
 
   let divElement = $state<HTMLElement>();
 
@@ -72,7 +90,7 @@
       <AlertDialog.Title>Add Student Account</AlertDialog.Title>
     </AlertDialog.Header>
     <ScrollArea class="max-h-[80dvh]">
-      <form method="POST" use:enhance class="px-6">
+      <form method="POST" action="?/addStudentEvent" use:enhance class="px-6">
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <section class="">
             <div class="sticky top-0">
@@ -165,7 +183,14 @@
                 <Form.Control>
                   {#snippet children({ props })}
                     <Form.Label>Gender</Form.Label>
-                    <Input {...props} bind:value={$formData.gender} placeholder="Enter Gender" />
+                    <SelectPicker
+                      selections={[
+                        { value: 'Male', label: 'Male' },
+                        { value: 'Female', label: 'Female' }
+                      ]}
+                      bind:selected={$formData.gender}
+                      name="Select Gender"
+                    />
                   {/snippet}
                 </Form.Control>
                 <Form.FieldErrors />
@@ -175,10 +200,15 @@
                 <Form.Control>
                   {#snippet children({ props })}
                     <Form.Label>Year Level</Form.Label>
-                    <Input
-                      {...props}
-                      bind:value={$formData.yearLevel}
-                      placeholder="Enter Year Level"
+                    <SelectPicker
+                      selections={[
+                        { value: 'First Year', label: 'First Year' },
+                        { value: 'Second Year', label: 'Second Year' },
+                        { value: 'Third Year', label: 'Third Year' },
+                        { value: 'Fourth Year', label: 'Fourth Year' }
+                      ]}
+                      bind:selected={$formData.yearLevel}
+                      name="Select Year Level"
                     />
                   {/snippet}
                 </Form.Control>
@@ -386,7 +416,14 @@
           </section>
         </div>
         <div class="absolute bottom-6 right-6">
-          <Form.Button>Submit</Form.Button>
+          <Form.Button>
+            {#if $submitting}
+              <div class="absolute inset-0 flex items-center justify-center rounded-lg bg-primary">
+                <LoaderCircle class="animate-spin" />
+              </div>
+            {/if}
+            Create Account
+          </Form.Button>
         </div>
       </form>
     </ScrollArea>

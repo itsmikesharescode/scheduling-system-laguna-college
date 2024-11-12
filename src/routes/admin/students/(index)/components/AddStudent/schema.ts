@@ -25,9 +25,15 @@ export const addStudentSchema = z.object({
   firstName: z.string().min(1, { message: 'First name is required' }),
   middleName: z.string().min(1, { message: 'Middle name is required' }),
   lastName: z.string().min(1, { message: 'Last name is required' }),
-  gender: z.enum(['male', 'female'], { message: 'Gender is required' }),
+  gender: z.string().refine((v) => ['Male', 'Female'].includes(v), {
+    message: 'Invalid gender'
+  }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
-  yearLevel: z.number().min(1, { message: 'Year level is required' }),
+  yearLevel: z
+    .string()
+    .refine((v) => ['First Year', 'Second Year', 'Third Year', 'Fourth Year'].includes(v), {
+      message: 'Invalid year level'
+    }),
   course: z.string().min(1, { message: 'Course is required' }),
   sections: z.array(sectionSchema, { message: 'Sections are required' }),
   subjects: z.array(subjectSchema, { message: 'Subjects are required' })

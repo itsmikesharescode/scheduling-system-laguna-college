@@ -14,7 +14,8 @@ export const actions: Actions = {
   addStudentEvent: async ({ request }) => {
     const form = await superValidate(request, zod(addStudentSchema));
 
-    if (!form.valid) return fail(400, { form });
+    if (!form.valid) return fail(400, { form, msg: 'Invalid form data' });
     console.log(form.data);
+    return { form, msg: 'Success' };
   }
 };
