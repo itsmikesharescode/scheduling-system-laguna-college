@@ -5,10 +5,11 @@
   import AddTeacher from './components/AddTeacher/AddTeacher.svelte';
   import { CornerUpLeft } from 'lucide-svelte';
   import { page } from '$app/stores';
+  import { fly } from 'svelte/transition';
 </script>
 
 <main class="container flex flex-col gap-5 py-10">
-  <h1 class="mt-5 text-center text-5xl font-bold">TEACHERS</h1>
+  <h1 class="mt-5 text-center text-5xl font-bold" in:fly={{ x: -100 }}>TEACHERS</h1>
 
   <div class="flex items-center justify-between">
     <AddTeacher />
