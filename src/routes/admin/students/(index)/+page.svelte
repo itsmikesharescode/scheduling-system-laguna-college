@@ -41,7 +41,7 @@
     <Table.Body>
       {#each Array(5) as _}
         <Table.Row>
-          <Table.Cell class=""><Menu /></Table.Cell>
+          <Table.Cell class=""><Menu updateStudentForm={data.updateStudentForm} /></Table.Cell>
           <Table.Cell class="font-medium">John Doe</Table.Cell>
           <Table.Cell>john.doe@example.com</Table.Cell>
           <Table.Cell>1</Table.Cell>
