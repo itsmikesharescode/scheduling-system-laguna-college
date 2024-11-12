@@ -2,7 +2,11 @@
   import { Button } from '$lib/components/ui/button/index.js';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
   import * as Card from '$lib/components/ui/card/index.js';
-  import { Plus } from 'lucide-svelte';
+  import { Trash2 } from 'lucide-svelte';
+  import AddReminder from './components/AddReminder/AddReminder.svelte';
+  import Menu from './components/Menu.svelte';
+
+  const { data } = $props();
 </script>
 
 {#snippet counter(count: number, title: string)}
@@ -28,16 +32,13 @@
         </span>
       </div>
 
-      <Button variant="secondary" size="sm">View Schedule</Button>
+      <Button variant="secondary" size="sm">View Reports</Button>
     </section>
 
     <section class="flex flex-col gap-2.5 rounded-2xl bg-[#0F224C] p-5 text-white">
       <div class="flex w-full items-center justify-between">
         <span class="text-center text-3xl">Daily Reminder</span>
-        <Button size="sm" variant="secondary">
-          <Plus class="size-4" />
-          Add
-        </Button>
+        <AddReminder addReminderForm={data.addReminderForm} />
       </div>
 
       <ScrollArea class="h-[40dvh] p-5">
@@ -45,9 +46,13 @@
           {#each Array(5) as _}
             <section class="w-full">
               <span>Upcomming</span>
-              <div class="flex w-full flex-col rounded-lg border-2 p-2">
-                <span>DSS Meeting</span>
-                <span class="text-sm text-muted-foreground">09:30 AM</span>
+              <div class="flex w-full items-center justify-between rounded-lg border-2 p-2">
+                <div class="flex flex-col">
+                  <span>DSS Meeting</span>
+                  <span class="text-sm text-muted-foreground">09:30 AM</span>
+                </div>
+
+                <Menu />
               </div>
             </section>
           {/each}
