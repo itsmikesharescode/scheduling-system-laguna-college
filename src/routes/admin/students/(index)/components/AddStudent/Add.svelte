@@ -80,6 +80,19 @@
       onclick={() => {
         form.reset();
         open = false;
+        sections = [
+          {
+            id: crypto.randomUUID(),
+            name: ''
+          }
+        ];
+        subjects = [
+          {
+            id: crypto.randomUUID(),
+            name: '',
+            schedules: []
+          }
+        ];
       }}
       class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
     >
@@ -220,6 +233,7 @@
                   <div
                     class="flex w-full flex-col gap-[10px]"
                     transition:fly={{ x: 100, duration: 200 }}
+                    animate:flip={{ duration: 200 }}
                   >
                     <Label for={`${section.id}-section`}>Section {i + 1}</Label>
                     <div class="relative" bind:this={divElement}>
@@ -275,6 +289,7 @@
                 <div
                   class="relative flex w-full flex-col gap-[10px] border-b-2"
                   transition:fly={{ x: 100, duration: 200 }}
+                  animate:flip={{ duration: 200 }}
                   bind:this={divElement}
                 >
                   {#if subjects.length > 1}
@@ -300,6 +315,8 @@
                         {#each subject.schedules as schedule, j (schedule)}
                           <section
                             class="relative flex flex-col gap-[10px] rounded-lg border-2 p-2"
+                            transition:fly={{ x: 100, duration: 200 }}
+                            animate:flip={{ duration: 200 }}
                             bind:this={divElement}
                           >
                             {#if subject.schedules.length > 1}
@@ -331,7 +348,7 @@
                                     selections={timeSlots}
                                     bind:selected={schedule.startTime}
                                     placeholder="Select Start Time"
-                                    name="Select Start Time"
+                                    name="Select Time"
                                   />
                                 </div>
                               </div>
@@ -343,7 +360,7 @@
                                     selections={timeSlots}
                                     bind:selected={schedule.endTime}
                                     placeholder="Select End Time"
-                                    name="Select End Time"
+                                    name="Select Time"
                                   />
                                 </div>
                               </div>

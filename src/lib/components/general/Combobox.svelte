@@ -52,7 +52,9 @@
         role="combobox"
         aria-expanded={open}
       >
-        <span class="line-clamp-1">{selected || name}</span>
+        <span class="line-clamp-1 {selected ? 'text-primary' : 'text-muted-foreground'}">
+          {selected || name}
+        </span>
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
     {/snippet}
