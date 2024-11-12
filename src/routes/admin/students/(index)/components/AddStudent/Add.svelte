@@ -90,7 +90,14 @@
           {
             id: crypto.randomUUID(),
             name: '',
-            schedules: []
+            schedules: [
+              {
+                id: crypto.randomUUID(),
+                day: '',
+                startTime: '',
+                endTime: ''
+              }
+            ]
           }
         ];
       }}
@@ -223,6 +230,7 @@
                       bind:selected={$formData.yearLevel}
                       name="Select Year Level"
                     />
+                    <input type="hidden" bind:value={$formData.yearLevel} />
                   {/snippet}
                 </Form.Control>
                 <Form.FieldErrors />
@@ -243,6 +251,12 @@
                         class="pr-[45px]"
                         placeholder={`Enter section ${i + 1}`}
                         bind:value={section.name}
+                        oninput={() => {
+                          $formData.sections[i] = {
+                            id: section.id,
+                            value: section.name
+                          };
+                        }}
                       />
                       {#if sections.length > 1}
                         <Button
