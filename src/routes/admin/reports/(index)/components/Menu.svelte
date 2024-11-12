@@ -3,6 +3,7 @@
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
+  import Delete from './DeleteReport/Delete.svelte';
 
   /*  interface Props {
     updateStudentForm: SuperValidated<Infer<UpdateStudentSchema>>;
@@ -26,3 +27,5 @@
     </DropdownMenu.Group>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
+
+<Delete bind:showDelete />
