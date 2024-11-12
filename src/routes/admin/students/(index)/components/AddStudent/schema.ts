@@ -9,14 +9,16 @@ const sectionSchema = z.object({
 // Define schema for subjects
 
 const scheduleSchema = z.object({
+  id: z.string().uuid(),
   startTime: z.string().min(1, { message: 'Start time is required' }),
   endTime: z.string().min(1, { message: 'End time is required' }),
-  days: z.string().min(1, { message: 'Days are required' })
+  day: z.string().min(1, { message: 'Day is required' })
 });
 
 const subjectSchema = z.object({
+  id: z.string().uuid(),
   name: z.string().min(1, { message: 'Subject name cannot be empty' }),
-  schedule: z.array(scheduleSchema).min(1, { message: 'At least one schedule is required' })
+  schedules: z.array(scheduleSchema).min(1, { message: 'At least one schedule is required' })
 });
 
 export const addStudentSchema = z.object({
@@ -34,9 +36,11 @@ export const addStudentSchema = z.object({
     .refine((v) => ['First Year', 'Second Year', 'Third Year', 'Fourth Year'].includes(v), {
       message: 'Invalid year level'
     }),
-  course: z.string().min(1, { message: 'Course is required' }),
-  sections: z.array(sectionSchema, { message: 'Sections are required' }),
-  subjects: z.array(subjectSchema, { message: 'Subjects are required' })
+  course: z.string().refine((v) => ['BSIS', 'BSCS', 'BSIT'].includes(v), {
+    message: 'Invalid course'
+  }),
+  sections: z.array(sectionSchema).min(1, { message: 'At least one section is required' }),
+  subjects: z.array(subjectSchema).min(1, { message: 'At least one subject is required' })
 });
 
 export type AddStudentSchema = typeof addStudentSchema;

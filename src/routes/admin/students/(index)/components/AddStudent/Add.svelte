@@ -28,7 +28,12 @@
   const form = superForm(addStudentForm, {
     validators: zodClient(addStudentSchema),
     id: crypto.randomUUID(),
-    onUpdate: ({ result }) => {
+    dataType: 'json',
+    onUpdate: ({ result, form }) => {
+      if (form.errors) {
+        alert(JSON.stringify(form.errors));
+      }
+
       const { status, data } = result as Result<{ msg: string }>;
       switch (status) {
         case 200:
@@ -52,7 +57,7 @@
   let sections = $state([
     {
       id: crypto.randomUUID(),
-      name: ''
+      value: ''
     }
   ]);
 
@@ -70,6 +75,10 @@
       ]
     }
   ]);
+
+  $effect(() => {
+    $formData.subjects = subjects;
+  });
 </script>
 
 <Button onclick={() => (open = true)}>Add Student</Button>
@@ -83,7 +92,7 @@
         sections = [
           {
             id: crypto.randomUUID(),
-            name: ''
+            value: ''
           }
         ];
         subjects = [
@@ -211,6 +220,7 @@
                       bind:selected={$formData.gender}
                       name="Select Gender"
                     />
+                    <input type="hidden" name={props.name} bind:value={$formData.gender} />
                   {/snippet}
                 </Form.Control>
                 <Form.FieldErrors />
@@ -230,7 +240,26 @@
                       bind:selected={$formData.yearLevel}
                       name="Select Year Level"
                     />
-                    <input type="hidden" bind:value={$formData.yearLevel} />
+                    <input type="hidden" name={props.name} bind:value={$formData.yearLevel} />
+                  {/snippet}
+                </Form.Control>
+                <Form.FieldErrors />
+              </Form.Field>
+
+              <Form.Field {form} name="course">
+                <Form.Control>
+                  {#snippet children({ props })}
+                    <Form.Label>Course</Form.Label>
+                    <SelectPicker
+                      selections={[
+                        { value: 'BSIS', label: 'BSIS' },
+                        { value: 'BSCS', label: 'BSCS' },
+                        { value: 'BSIT', label: 'BSIT' }
+                      ]}
+                      bind:selected={$formData.course}
+                      name="Select Course"
+                    />
+                    <input type="hidden" name={props.name} bind:value={$formData.course} />
                   {/snippet}
                 </Form.Control>
                 <Form.FieldErrors />
@@ -250,11 +279,11 @@
                         id={`${section.id}-section`}
                         class="pr-[45px]"
                         placeholder={`Enter section ${i + 1}`}
-                        bind:value={section.name}
+                        bind:value={section.value}
                         oninput={() => {
                           $formData.sections[i] = {
                             id: section.id,
-                            value: section.name
+                            value: section.value
                           };
                         }}
                       />
@@ -273,7 +302,7 @@
                 <div class="">
                   <Button
                     onclick={() => {
-                      sections.push({ id: crypto.randomUUID(), name: '' });
+                      sections.push({ id: crypto.randomUUID(), value: '' });
                       setTimeout(() => {
                         divElement?.scrollIntoView({ behavior: 'smooth' });
                       }, 200);
@@ -445,6 +474,9 @@
               {/if}
             </div>
           </section>
+
+          <input type="hidden" name="subjects" bind:value={subjects} />
+          <input type="hidden" name="sections" bind:value={sections} />
         </div>
         <div class="absolute bottom-6 right-6">
           <Form.Button>
