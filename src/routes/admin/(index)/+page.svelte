@@ -32,7 +32,7 @@
         </span>
       </div>
 
-      <Button variant="secondary" size="sm">View Reports</Button>
+      <Button href="/admin/reports" variant="secondary" size="sm">View Reports</Button>
     </section>
 
     <section class="flex flex-col gap-2.5 rounded-2xl bg-[#0F224C] p-5 text-white">
