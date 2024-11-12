@@ -5,12 +5,13 @@
   import Add from './components/AddStudent/Add.svelte';
   import { CornerUpLeft } from 'lucide-svelte';
   import { page } from '$app/stores';
+  import { fade, fly } from 'svelte/transition';
 
   const { data } = $props();
 </script>
 
 <main class="container flex flex-col gap-5 py-10">
-  <h1 class="mt-5 text-center text-5xl font-bold">STUDENTS</h1>
+  <h1 class="mt-5 text-center text-5xl font-bold" in:fly={{ x: -100 }}>STUDENTS</h1>
 
   <div class="flex items-center justify-between">
     <Add addStudentForm={data.addStudentForm} />
