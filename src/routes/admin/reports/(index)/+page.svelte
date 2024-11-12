@@ -13,7 +13,17 @@
   <h1 class="mt-5 text-5xl font-bold" in:fly={{ x: -100 }}>Reports</h1>
 
   <div class="flex items-center justify-end">
-    <Search class="w-[300px]" placeholder="Search reporter full name ..." />
+    <Search
+      selections={[
+        { label: 'First Name', value: 'firstName' },
+        { label: 'Middle Name', value: 'middleName' },
+        { label: 'Last Name', value: 'lastName' },
+        { label: 'Email', value: 'email' },
+        { label: 'Created At', value: 'createdAt' }
+      ]}
+      class="w-[300px]"
+      placeholder="Search reporter full name ..."
+    />
   </div>
 
   {#if $page.url.searchParams.get('search')}

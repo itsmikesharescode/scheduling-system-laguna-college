@@ -13,6 +13,7 @@
     placeholder?: string;
     type?: HTMLInputTypeAttribute;
     class?: ClassNameValue;
+    selections?: { label: string; value: string }[];
   }
 
   const { placeholder = 'Search something ...', type = 'text', ...restProps }: Props = $props();
@@ -51,12 +52,7 @@
   </div>
 
   <SelectPicker
-    selections={[
-      { label: 'First Name', value: 'firstName' },
-      { label: 'Middle Name', value: 'middleName' },
-      { label: 'Last Name', value: 'lastName' },
-      { label: 'Email', value: 'email' }
-    ]}
+    selections={restProps?.selections ?? []}
     bind:selected={filter}
     name="Select Sort"
     onValueChange={(v) => {

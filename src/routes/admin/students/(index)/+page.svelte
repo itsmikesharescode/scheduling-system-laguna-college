@@ -15,7 +15,17 @@
 
   <div class="flex items-center justify-between">
     <Add addStudentForm={data.addStudentForm} />
-    <Search class="w-[300px]" placeholder="Search student full name ..." />
+    <Search
+      selections={[
+        { label: 'First Name', value: 'firstName' },
+        { label: 'Middle Name', value: 'middleName' },
+        { label: 'Last Name', value: 'lastName' },
+        { label: 'Email', value: 'email' },
+        { label: 'Created At', value: 'createdAt' }
+      ]}
+      class="w-[300px]"
+      placeholder="Search student full name ..."
+    />
   </div>
 
   {#if $page.url.searchParams.get('search')}
