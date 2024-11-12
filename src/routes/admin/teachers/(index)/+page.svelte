@@ -11,7 +11,7 @@
 </script>
 
 <main class="container flex flex-col gap-5 py-10">
-  <h1 class="mt-5 text-center text-5xl font-bold" in:fly={{ x: -100 }}>TEACHERS</h1>
+  <h1 class="mt-5 text-5xl font-bold" in:fly={{ x: -100 }}>TEACHERS</h1>
 
   <div class="flex items-center justify-between">
     <AddTeacher addTeacherForm={data.addTeacherForm} />
@@ -28,7 +28,7 @@
   {/if}
 
   <Table.Root>
-    <Table.Caption>A list of your recent invoices.</Table.Caption>
+    <Table.Caption>A list of teachers.</Table.Caption>
     <Table.Header>
       <Table.Row>
         <Table.Head class="w-[50px]"></Table.Head>
