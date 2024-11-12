@@ -4,6 +4,7 @@
   import Update from './UpdateStudent/Update.svelte';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import type { UpdateStudentSchema } from './UpdateStudent/schema';
+  import Delete from './DeleteStudent/Delete.svelte';
 
   interface Props {
     updateStudentForm: SuperValidated<Infer<UpdateStudentSchema>>;
@@ -22,9 +23,10 @@
   <DropdownMenu.Content>
     <DropdownMenu.Group>
       <DropdownMenu.Item onclick={() => (showUpdate = true)}>Update</DropdownMenu.Item>
-      <DropdownMenu.Item>Delete</DropdownMenu.Item>
+      <DropdownMenu.Item onclick={() => (showDelete = true)}>Delete</DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
 
 <Update bind:showUpdate {updateStudentForm} />
+<Delete bind:showDelete />
