@@ -2,17 +2,19 @@
   import Search from '$lib/components/general/Search.svelte';
   import * as Table from '$lib/components/ui/table/index.js';
   import Menu from './components/Menu.svelte';
-  import AddTeacher from './components/AddTeacher/AddTeacher.svelte';
+  import AddTeacher from './components/AddTeacher/Add.svelte';
   import { CornerUpLeft } from 'lucide-svelte';
   import { page } from '$app/stores';
   import { fly } from 'svelte/transition';
+
+  const { data } = $props();
 </script>
 
 <main class="container flex flex-col gap-5 py-10">
   <h1 class="mt-5 text-center text-5xl font-bold" in:fly={{ x: -100 }}>TEACHERS</h1>
 
   <div class="flex items-center justify-between">
-    <AddTeacher />
+    <AddTeacher addTeacherForm={data.addTeacherForm} />
     <Search class="w-[300px]" placeholder="Search teacher full name ..." />
   </div>
 
@@ -40,7 +42,7 @@
     <Table.Body>
       {#each Array(5) as _}
         <Table.Row>
-          <Table.Cell class=""><Menu /></Table.Cell>
+          <Table.Cell class=""><Menu updateTeacherForm={data.updateTeacherForm} /></Table.Cell>
           <Table.Cell class="font-medium">John Doe</Table.Cell>
           <Table.Cell>john.doe@example.com</Table.Cell>
           <Table.Cell>1</Table.Cell>
