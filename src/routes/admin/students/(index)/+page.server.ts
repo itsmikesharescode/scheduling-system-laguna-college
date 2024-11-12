@@ -13,9 +13,8 @@ export const load: PageServerLoad = async () => {
 export const actions: Actions = {
   addStudentEvent: async ({ request }) => {
     const form = await superValidate(request, zod(addStudentSchema));
-    console.log(form.data);
 
-    if (!form.valid) return fail(400, { form, msg: 'Invalid form data' });
+    if (!form.valid) return fail(400, { form });
     console.log(form.data);
     return { form, msg: 'Success' };
   }

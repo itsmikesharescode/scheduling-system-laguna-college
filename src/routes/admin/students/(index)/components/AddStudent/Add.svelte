@@ -30,10 +30,6 @@
     id: crypto.randomUUID(),
     dataType: 'json',
     onUpdate: ({ result, form }) => {
-      if (form.errors) {
-        alert(JSON.stringify(form.errors));
-      }
-
       const { status, data } = result as Result<{ msg: string }>;
       switch (status) {
         case 200:
@@ -41,7 +37,18 @@
           reset();
           break;
         case 400:
-          toast.error(data.msg);
+          if (
+            form.data.course &&
+            form.data.email &&
+            form.data.firstName &&
+            form.data.lastName &&
+            form.data.middleName &&
+            form.data.password &&
+            form.data.gender &&
+            form.data.yearLevel
+          ) {
+            toast.error('Please fill up all required fields such as sections and subjects');
+          }
           break;
         case 401:
           toast.error(data.msg);
