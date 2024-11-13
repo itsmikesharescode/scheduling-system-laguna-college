@@ -43,7 +43,8 @@
       {#each navigations as navigation}
         <a
           href={navigation.url}
-          class="{$page.url.pathname === navigation.url
+          class="{$page.url.pathname === navigation.url ||
+          ($page.url.pathname.startsWith(navigation.url + '/') && navigation.url !== '/admin')
             ? 'font-bold text-[#FFC700]'
             : 'text-white'} p-2 transition-all hover:scale-95"
         >
