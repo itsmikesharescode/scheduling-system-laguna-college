@@ -5,6 +5,7 @@
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import type { UpdateTeacherSchema } from './UpdateTeacher/schema';
   import Delete from './DeleteTeacher/Delete.svelte';
+  import { goto } from '$app/navigation';
 
   interface Props {
     updateTeacherForm: SuperValidated<Infer<UpdateTeacherSchema>>;
@@ -22,7 +23,9 @@
   </DropdownMenu.Trigger>
   <DropdownMenu.Content>
     <DropdownMenu.Group>
-      <DropdownMenu.Item onclick={() => (showUpdate = true)}>Assign Student</DropdownMenu.Item>
+      <DropdownMenu.Item onclick={() => goto('/admin/teachers/students')}>
+        Assign Student
+      </DropdownMenu.Item>
       <DropdownMenu.Item onclick={() => (showUpdate = true)}>Update</DropdownMenu.Item>
       <DropdownMenu.Item onclick={() => (showDelete = true)}>Delete</DropdownMenu.Item>
     </DropdownMenu.Group>
