@@ -27,7 +27,7 @@
   <h1 class="mt-5 text-5xl font-bold" in:fly={{ x: -100 }}>ASSIGN STUDENTS</h1>
 
   <div class="flex items-center justify-between">
-    Assign here
+    <AssignStudent />
     <Search
       selections={[
         { label: 'First Name', value: 'firstName' },
