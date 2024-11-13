@@ -37,7 +37,7 @@
         { label: 'Created At', value: 'createdAt' }
       ]}
       class="w-[300px]"
-      placeholder="Search teacher full name ..."
+      placeholder="Search student full name ..."
     />
   </div>
 
