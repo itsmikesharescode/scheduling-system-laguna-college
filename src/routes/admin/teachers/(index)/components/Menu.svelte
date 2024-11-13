@@ -22,6 +22,7 @@
   </DropdownMenu.Trigger>
   <DropdownMenu.Content>
     <DropdownMenu.Group>
+      <DropdownMenu.Item onclick={() => (showUpdate = true)}>Assign Student</DropdownMenu.Item>
       <DropdownMenu.Item onclick={() => (showUpdate = true)}>Update</DropdownMenu.Item>
       <DropdownMenu.Item onclick={() => (showDelete = true)}>Delete</DropdownMenu.Item>
     </DropdownMenu.Group>
