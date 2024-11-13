@@ -6,7 +6,7 @@
   import * as Avatar from '$lib/components/ui/avatar/index.js';
   import SearchStudent from '../SearchStudent/SearchStudent.svelte';
 
-  let open = $state(true);
+  let open = $state(false);
 </script>
 
 <Button onclick={() => (open = true)}>Assign Student</Button>
