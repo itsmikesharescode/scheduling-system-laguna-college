@@ -17,21 +17,21 @@ export const columns: ColumnDef<TableSchema>[] = [
     cell: ({ row }) => renderComponent(DataTableRowActions<TableSchema>, { row })
   },
   {
-    accessorKey: 'teacherId',
+    accessorKey: 'studentId',
     header: ({ column }) => {
       return renderComponent(DataTableColumnHeader<TableSchema, unknown>, {
         column,
-        title: 'Teacher ID'
+        title: 'Student ID'
       });
     },
     cell: ({ row }) => {
-      const idSnippet = createRawSnippet<[string]>((getTeacherId) => {
+      const idSnippet = createRawSnippet<[string]>((getStudentId) => {
         return {
-          render: () => `<div class="w-[80px]">${getTeacherId()}</div>`
+          render: () => `<div class="w-[80px]">${getStudentId()}</div>`
         };
       });
 
-      return renderSnippet(idSnippet, row.getValue('teacherId'));
+      return renderSnippet(idSnippet, row.getValue('studentId'));
     },
     enableSorting: false,
     enableHiding: false

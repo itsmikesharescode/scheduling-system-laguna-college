@@ -22,11 +22,19 @@ const subjectSchema = z.object({
 });
 
 export const tableSchema = z.object({
-  teacherId: z.string().min(1, { message: 'Teacher ID is required' }),
+  studentId: z.string().min(1, { message: 'Student ID is required' }),
   email: z.string().email({ message: 'Invalid email address' }),
   fullname: z.string().min(1, { message: 'Full name is required' }),
   gender: z.string().refine((v) => ['Male', 'Female'].includes(v), {
     message: 'Invalid gender'
+  }),
+  yearLevel: z
+    .string()
+    .refine((v) => ['First Year', 'Second Year', 'Third Year', 'Fourth Year'].includes(v), {
+      message: 'Invalid year level'
+    }),
+  course: z.string().refine((v) => ['BSIS', 'BSCS', 'BSIT'].includes(v), {
+    message: 'Invalid course'
   }),
   sections: z.array(sectionSchema).min(1, { message: 'At least one section is required' }),
   subjects: z.array(subjectSchema).min(1, { message: 'At least one subject is required' })

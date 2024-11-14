@@ -7,10 +7,11 @@
   import UserPen from 'lucide-svelte/icons/user-pen';
   import UserRoundMinus from 'lucide-svelte/icons/user-round-minus';
   import type { Row } from '@tanstack/table-core';
-  import { userSchema } from './schema';
+  import { tableSchema } from './schema';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import { Button } from '$lib/components/ui/button';
   import { tableState } from '../tableState.svelte';
+  import UserRoundPlus from 'lucide-svelte/icons/user-round-plus';
 
   interface Props {
     row: Row<TData>;
@@ -18,7 +19,7 @@
 
   let { row }: Props = $props();
 
-  const user = userSchema.parse(row.original);
+  const user = tableSchema.parse(row.original);
 </script>
 
 <DropdownMenu.Root>
@@ -31,6 +32,12 @@
     {/snippet}
   </DropdownMenu.Trigger>
   <DropdownMenu.Content class="" align="start">
+    <a href="/admin/teachers/students">
+      <DropdownMenu.Item>
+        <UserRoundPlus />
+        Assign Students
+      </DropdownMenu.Item>
+    </a>
     <DropdownMenu.Item
       onclick={() => {
         tableState.setUpdateState(true);
