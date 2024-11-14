@@ -16,13 +16,13 @@
   import { allSubjects, days, timeSlots } from '$lib';
   import type { Result } from '$lib/types/types';
   import { toast } from 'svelte-sonner';
+  import { tableState } from '../tableState.svelte';
 
   interface Props {
-    showUpdate: boolean;
     updateStudentForm: SuperValidated<Infer<UpdateStudentSchema>>;
   }
 
-  let { showUpdate = $bindable(), updateStudentForm }: Props = $props();
+  let { updateStudentForm }: Props = $props();
 
   const form = superForm(updateStudentForm, {
     validators: zodClient(updateStudentSchema),
@@ -35,7 +35,7 @@
           toast.success(data.msg);
           reset();
           cleanUpStates();
-          showUpdate = false;
+          tableState.setUpdateState(false);
           break;
         case 400:
           if (
@@ -89,7 +89,7 @@
   });
 
   $effect(() => {
-    if (showUpdate) {
+    if (tableState.getUpdateState()) {
       ///
     }
   });
@@ -118,12 +118,12 @@
   };
 </script>
 
-<AlertDialog.Root bind:open={showUpdate}>
+<AlertDialog.Root open={tableState.getUpdateState()}>
   <AlertDialog.Content class="max-h-[90dvh] max-w-[1200px] p-0">
     <button
       onclick={() => {
         form.reset();
-        showUpdate = false;
+        tableState.setUpdateState(false);
         cleanUpStates();
       }}
       class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"

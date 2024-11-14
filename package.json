@@ -52,6 +52,7 @@
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
     "@sveltejs/enhanced-img": "^0.4.1",
+    "@tanstack/table-core": "^8.20.5",
     "supabase": "^1.219.2"
   }
 }

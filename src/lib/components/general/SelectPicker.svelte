@@ -15,8 +15,6 @@
   }
 
   let { selected = $bindable(), ...props }: Props = $props();
-
-  let displayValue = $state('');
 </script>
 
 <Select.Root type="single" bind:value={selected} onValueChange={props.onValueChange}>
