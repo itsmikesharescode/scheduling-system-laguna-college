@@ -7,7 +7,7 @@
   import Button from '../ui/button/button.svelte';
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
-  import SelectPicker from './SelectPicker.svelte';
+  import * as Select from '$lib/components/ui/select/index.js';
 
   interface Props {
     placeholder?: string;
@@ -19,27 +19,18 @@
   const { placeholder = 'Search something ...', type = 'text', ...restProps }: Props = $props();
 
   let searchValue = $state('');
-  let filter = $state('');
 
   const handleSearch = async () => {
     const currentParams = new URLSearchParams($page.url.search);
     currentParams.set('search', searchValue);
-    if (filter) {
-      currentParams.set('filter', filter);
-    }
     await goto(`?${currentParams.toString()}`);
     searchValue = '';
   };
-
-  $effect(() => {
-    filter = $page.url.searchParams.get('filter') || '';
-  });
 </script>
 
 <div class="flex items-center gap-2.5">
   <div class="relative">
     <Input
-      {...restProps}
       {type}
       {placeholder}
       class={cn('w-full pl-8', restProps.class)}
@@ -50,15 +41,4 @@
       >Search</Button
     >
   </div>
-
-  <SelectPicker
-    selections={restProps?.selections ?? []}
-    bind:selected={filter}
-    name="Select Sort"
-    onValueChange={(v) => {
-      const currentParams = new URLSearchParams($page.url.search);
-      currentParams.set('filter', v);
-      goto(`?${currentParams.toString()}`);
-    }}
-  />
 </div>

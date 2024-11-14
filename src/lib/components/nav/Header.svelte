@@ -6,7 +6,7 @@
   import * as Popover from '$lib/components/ui/popover/index.js';
   import * as Avatar from '$lib/components/ui/avatar/index.js';
   import * as m from '$lib/paraglide/messages.js';
-  import Button from '../ui/button/button.svelte';
+  import { Button } from '$lib/components/ui/button/index.js';
 
   function switchToLanguage(newLanguage: AvailableLanguageTag) {
     const canonicalPath = i18n.route($page.url.pathname);
@@ -31,7 +31,7 @@
  -->
 
 <nav class="sticky top-0 z-30 flex items-center bg-[#0F224C] p-2">
-  <section class="container flex items-center justify-between">
+  <section class="flex w-full items-center justify-between px-[2rem]">
     <div class="flex items-center gap-2">
       <img src="/assets/nav-logo.png" alt="Nav logo" class="h-[40px]" />
       <span class="font-bold text-[#FFC700]">
@@ -51,13 +51,6 @@
           {navigation.name}
         </a>
       {/each}
-
-      <script lang="ts">
-        import { buttonVariants } from '$lib/components/ui/button/index.js';
-        import { Input } from '$lib/components/ui/input/index.js';
-        import { Label } from '$lib/components/ui/label/index.js';
-        import * as Popover from '$lib/components/ui/popover/index.js';
-      </script>
 
       <Popover.Root>
         <Popover.Trigger class="rounded-lg bg-white px-5 py-2">

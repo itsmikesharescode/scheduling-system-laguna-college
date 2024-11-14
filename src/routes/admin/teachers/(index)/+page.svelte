@@ -1,65 +1,25 @@
 <script lang="ts">
-  import Search from '$lib/components/general/Search.svelte';
-  import * as Table from '$lib/components/ui/table/index.js';
-  import Menu from './components/Menu.svelte';
   import AddTeacher from './components/AddTeacher/Add.svelte';
-  import { CornerUpLeft } from 'lucide-svelte';
-  import { page } from '$app/stores';
+  import Table from './components/Table/Table.svelte';
+  import { sampleData } from './components/Table/sampleData';
+  import { columns } from './components/Table/columns';
   import { fly } from 'svelte/transition';
+  import UpdateTeacher from './components/UpdateTeacher/UpdateTeacher.svelte';
+  import DeleteTeacher from './components/DeleteTeacher/DeleteTeacher.svelte';
 
   const { data } = $props();
 </script>
 
-<main class="container flex flex-col gap-5 py-10">
+<main class="flex flex-col gap-5 px-[2rem] py-10">
   <h1 class="mt-5 text-5xl font-bold" in:fly={{ x: -100 }}>TEACHERS</h1>
 
-  <div class="flex items-center justify-between">
-    <AddTeacher addTeacherForm={data.addTeacherForm} />
-    <Search
-      selections={[
-        { label: 'First Name', value: 'firstName' },
-        { label: 'Middle Name', value: 'middleName' },
-        { label: 'Last Name', value: 'lastName' },
-        { label: 'Email', value: 'email' },
-        { label: 'Created At', value: 'createdAt' }
-      ]}
-      class="w-[300px]"
-      placeholder="Search teacher full name ..."
-    />
-  </div>
-
-  {#if $page.url.searchParams.get('search')}
-    <div class="flex justify-end">
-      <a href="/admin/teachers" class="flex items-center gap-2 transition-all hover:underline">
-        <CornerUpLeft class="size-4" />
-        <span class="text-sm">Clear search</span>
-      </a>
+  <div class="flex flex-col gap-5">
+    <div class="sticky top-[5rem] z-20">
+      <AddTeacher addTeacherForm={data.addTeacherForm} />
     </div>
-  {/if}
-
-  <Table.Root>
-    <Table.Caption>A list of teachers.</Table.Caption>
-    <Table.Header>
-      <Table.Row>
-        <Table.Head class="w-[50px]"></Table.Head>
-        <Table.Head class="">Full Name</Table.Head>
-        <Table.Head>Email</Table.Head>
-        <Table.Head>Sections</Table.Head>
-        <Table.Head class="">Subjects</Table.Head>
-        <Table.Head class="">Created At</Table.Head>
-      </Table.Row>
-    </Table.Header>
-    <Table.Body>
-      {#each Array(5) as _}
-        <Table.Row>
-          <Table.Cell class=""><Menu updateTeacherForm={data.updateTeacherForm} /></Table.Cell>
-          <Table.Cell class="font-medium">John Doe</Table.Cell>
-          <Table.Cell>john.doe@example.com</Table.Cell>
-          <Table.Cell>1</Table.Cell>
-          <Table.Cell>1</Table.Cell>
-          <Table.Cell class="">2024-01-01</Table.Cell>
-        </Table.Row>
-      {/each}
-    </Table.Body>
-  </Table.Root>
+    <Table data={sampleData} {columns} />
+  </div>
 </main>
+
+<UpdateTeacher updateTeacherForm={data.updateTeacherForm} />
+<DeleteTeacher />
