@@ -13,6 +13,10 @@ import { renderComponent, renderSnippet } from '$lib/components/ui/data-table';
 
 export const columns: ColumnDef<UserSchema>[] = [
   {
+    id: 'actions',
+    cell: ({ row }) => renderComponent(DataTableRowActions<UserSchema>, { row })
+  },
+  {
     accessorKey: 'studentId',
     header: ({ column }) => {
       return renderComponent(DataTableColumnHeader<UserSchema, unknown>, {
@@ -178,9 +182,5 @@ export const columns: ColumnDef<UserSchema>[] = [
     },
     enableSorting: true,
     enableHiding: true
-  },
-  {
-    id: 'actions',
-    cell: ({ row }) => renderComponent(DataTableRowActions<UserSchema>, { row })
   }
 ];

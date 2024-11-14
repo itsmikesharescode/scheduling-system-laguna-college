@@ -4,6 +4,8 @@
 
 <script lang="ts" generics="TData">
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
+  import UserPen from 'lucide-svelte/icons/user-pen';
+  import UserRoundMinus from 'lucide-svelte/icons/user-round-minus';
   import type { Row } from '@tanstack/table-core';
   import { userSchema } from './schema';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
@@ -28,18 +30,24 @@
       </Button>
     {/snippet}
   </DropdownMenu.Trigger>
-  <DropdownMenu.Content class="w-[160px]" align="end">
+  <DropdownMenu.Content class="" align="start">
     <DropdownMenu.Item
       onclick={() => {
         tableState.setUpdateState(true);
         //set active row
-      }}>Update</DropdownMenu.Item
+      }}
     >
+      <UserPen />
+      Update
+    </DropdownMenu.Item>
     <DropdownMenu.Item
       onclick={() => {
         tableState.setDeleteState(true);
         //set active row
-      }}>Delete</DropdownMenu.Item
+      }}
     >
+      <UserRoundMinus />
+      Delete
+    </DropdownMenu.Item>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
