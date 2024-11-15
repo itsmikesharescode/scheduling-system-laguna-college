@@ -28,7 +28,8 @@ export const columns: ColumnDef<TableSchema>[] = [
     cell: ({ row }) => {
       const idSnippet = createRawSnippet<[string]>((getStatus) => {
         return {
-          render: () => `<div class="w-[80px]">${getStatus()}</div>`
+          render: () =>
+            `<span class=" rounded-sm bg-[#EBD22E] text-[#0F224C] px-2">${getStatus()}</span>`
         };
       });
 
