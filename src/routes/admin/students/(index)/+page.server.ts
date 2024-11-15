@@ -58,5 +58,16 @@ export const actions: Actions = {
     if (error) return fail(401, { form, msg: error.message });
 
     return { form, msg: 'Student account updated.' };
+  },
+
+  deleteStudentEvent: async ({ locals: { supabaseAdmin }, request }) => {
+    const formData = await request.formData();
+    const userId = formData.get('userId') as string;
+
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
+
+    if (error) return fail(401, { msg: error.message });
+
+    return { msg: 'Student account deleted.' };
   }
 };

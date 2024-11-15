@@ -44,6 +44,7 @@
     <DropdownMenu.Item
       onclick={() => {
         tableState.setDeleteState(true);
+        tableState.setActiveRow(row.original);
         //set active row
       }}
     >
