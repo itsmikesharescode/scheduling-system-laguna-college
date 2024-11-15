@@ -21,12 +21,12 @@
   <div class="flex flex-1 items-center space-x-2">
     <Input
       placeholder="Search by full name..."
-      value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+      value={(table.getColumn('fullName')?.getFilterValue() as string) ?? ''}
       oninput={(e) => {
-        table.getColumn('email')?.setFilterValue(e.currentTarget.value);
+        table.getColumn('fullName')?.setFilterValue(e.currentTarget.value);
       }}
       onchange={(e) => {
-        table.getColumn('email')?.setFilterValue(e.currentTarget.value);
+        table.getColumn('fullName')?.setFilterValue(e.currentTarget.value);
       }}
       class="h-8 w-[150px] lg:w-[250px]"
     />
