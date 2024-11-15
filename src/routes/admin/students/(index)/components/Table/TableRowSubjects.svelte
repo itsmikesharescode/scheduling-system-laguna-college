@@ -4,13 +4,11 @@
 
 <script lang="ts" generics="TData">
   import type { Row } from '@tanstack/table-core';
-  import { userSchema } from './schema';
+  import { userSchema, type UserSchema } from './schema';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import { Button } from '$lib/components/ui/button';
   import Expand from 'lucide-svelte/icons/expand';
-  let { row }: { row: Row<TData> } = $props();
-
-  const user = userSchema.parse(row.original);
+  let { row }: { row: Row<UserSchema> } = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -24,7 +22,7 @@
     {/snippet}
   </DropdownMenu.Trigger>
   <DropdownMenu.Content class="w-fit" align="end">
-    {#each user.subjects as subject}
+    {#each row.original.subjects as subject}
       <DropdownMenu.Sub>
         <DropdownMenu.SubTrigger>
           <span>{subject.name}</span>

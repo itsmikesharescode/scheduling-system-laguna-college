@@ -38,7 +38,7 @@ export const columns: ColumnDef<UserSchema>[] = [
   },
 
   {
-    accessorKey: 'fullname',
+    accessorKey: 'fullName',
     header: ({ column }) => {
       return renderComponent(DataTableColumnHeader<UserSchema, unknown>, {
         column,
@@ -52,7 +52,7 @@ export const columns: ColumnDef<UserSchema>[] = [
         };
       });
 
-      return renderSnippet(idSnippet, row.getValue('fullname'));
+      return renderSnippet(idSnippet, row.getValue('fullName'));
     },
     enableSorting: true,
     enableHiding: true
@@ -174,7 +174,7 @@ export const columns: ColumnDef<UserSchema>[] = [
     cell: ({ row }) => {
       const idSnippet = createRawSnippet<[string]>((getCreatedAt) => {
         return {
-          render: () => `<div class="w-full">${getCreatedAt()}</div>`
+          render: () => `<div class="w-full">${new Date(getCreatedAt()).toLocaleDateString()}</div>`
         };
       });
 

@@ -35,6 +35,8 @@
         case 200:
           toast.success(data.msg);
           reset();
+          cleanUp();
+          open = false;
           break;
         case 400:
           if (
@@ -86,6 +88,31 @@
   $effect(() => {
     $formData.subjects = subjects;
   });
+
+  const cleanUp = () => {
+    sections = [
+      {
+        id: crypto.randomUUID(),
+        value: ''
+      }
+    ];
+    subjects = [
+      {
+        id: crypto.randomUUID(),
+        name: '',
+        schedules: [
+          {
+            id: crypto.randomUUID(),
+            day: '',
+            startTime: '',
+            endTime: ''
+          }
+        ]
+      }
+    ];
+
+    return;
+  };
 </script>
 
 <Button onclick={() => (open = true)}>Add Student</Button>
@@ -96,26 +123,7 @@
       onclick={() => {
         form.reset();
         open = false;
-        sections = [
-          {
-            id: crypto.randomUUID(),
-            value: ''
-          }
-        ];
-        subjects = [
-          {
-            id: crypto.randomUUID(),
-            name: '',
-            schedules: [
-              {
-                id: crypto.randomUUID(),
-                day: '',
-                startTime: '',
-                endTime: ''
-              }
-            ]
-          }
-        ];
+        cleanUp();
       }}
       class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
     >

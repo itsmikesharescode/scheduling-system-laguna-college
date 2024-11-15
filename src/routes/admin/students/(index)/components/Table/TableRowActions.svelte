@@ -7,13 +7,13 @@
   import UserPen from 'lucide-svelte/icons/user-pen';
   import UserRoundMinus from 'lucide-svelte/icons/user-round-minus';
   import type { Row } from '@tanstack/table-core';
-  import { userSchema } from './schema';
+  import { userSchema, type UserSchema } from './schema';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import { Button } from '$lib/components/ui/button';
   import { tableState } from '../tableState.svelte';
 
   interface Props {
-    row: Row<TData>;
+    row: Row<UserSchema>;
   }
 
   let { row }: Props = $props();
@@ -34,6 +34,7 @@
     <DropdownMenu.Item
       onclick={() => {
         tableState.setUpdateState(true);
+        tableState.setActiveRow(row.original);
         //set active row
       }}
     >
@@ -43,6 +44,7 @@
     <DropdownMenu.Item
       onclick={() => {
         tableState.setDeleteState(true);
+        tableState.setActiveRow(row.original);
         //set active row
       }}
     >

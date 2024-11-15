@@ -6,6 +6,7 @@
   import { sampleData } from './components/Table/sampleData';
   import UpdateStudent from './components/UpdateStudent/UpdateStudent.svelte';
   import DeleteStudent from './components/DeleteStudent/DeleteStudent.svelte';
+  import { Skeleton } from '$lib/components/ui/skeleton/index.js';
   const { data } = $props();
 </script>
 
@@ -16,7 +17,23 @@
     <div class="sticky top-[5rem] z-20">
       <Add addStudentForm={data.addStudentForm} />
     </div>
-    <Table data={sampleData} {columns} />
+    {#await data.streamStudents}
+      <section class="flex flex-col gap-1.5">
+        <Skeleton class="h-[20px] w-full rounded-full bg-primary/50" />
+        <Skeleton class="h-[20px] w-[80%] rounded-full bg-primary/50" />
+        <Skeleton class="h-[20px] w-[90%] rounded-full bg-primary/50" />
+        <Skeleton class="h-[20px] w-[90%] rounded-full bg-primary/50" />
+      </section>
+    {:then students}
+      <Table
+        data={students?.map((item) => ({
+          userId: item.user_id,
+          createdAt: item.created_at,
+          ...item.user_meta_data
+        })) ?? []}
+        {columns}
+      />
+    {/await}
   </div>
 </main>
 
