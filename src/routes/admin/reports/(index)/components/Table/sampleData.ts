@@ -5,7 +5,7 @@ export const sampleData = [
     email: 'john.smith@example.com',
     fullname: 'John Robert Smith',
     gender: 'Male',
-    password: 'password123',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174000',
@@ -49,7 +49,7 @@ export const sampleData = [
     email: 'emma.johnson@example.com',
     fullname: 'Emma Marie Johnson',
     gender: 'Female',
-    password: 'secure456',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174006',
@@ -77,7 +77,7 @@ export const sampleData = [
     email: 'michael.williams@example.com',
     fullname: 'Michael James Williams',
     gender: 'Male',
-    password: 'williams789',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174011',
@@ -109,7 +109,7 @@ export const sampleData = [
     email: 'sarah.davis@example.com',
     fullname: 'Sarah Elizabeth Davis',
     gender: 'Female',
-    password: 'davis123',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174015',
@@ -137,7 +137,7 @@ export const sampleData = [
     email: 'david.brown@example.com',
     fullname: 'David Alexander Brown',
     gender: 'Male',
-    password: 'brown456',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174018',
@@ -165,7 +165,7 @@ export const sampleData = [
     email: 'lisa.wilson@example.com',
     fullname: 'Lisa Anne Wilson',
     gender: 'Female',
-    password: 'wilson789',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174021',
@@ -193,7 +193,7 @@ export const sampleData = [
     email: 'james.anderson@example.com',
     fullname: 'James Thomas Anderson',
     gender: 'Male',
-    password: 'anderson123',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174024',
@@ -221,7 +221,7 @@ export const sampleData = [
     email: 'jennifer.taylor@example.com',
     fullname: 'Jennifer Marie Taylor',
     gender: 'Female',
-    password: 'taylor456',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174027',
@@ -249,7 +249,7 @@ export const sampleData = [
     email: 'robert.martinez@example.com',
     fullname: 'Robert William Martinez',
     gender: 'Male',
-    password: 'martinez789',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174030',
@@ -277,7 +277,7 @@ export const sampleData = [
     email: 'patricia.garcia@example.com',
     fullname: 'Patricia Ann Garcia',
     gender: 'Female',
-    password: 'garcia123',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174033',
@@ -305,7 +305,7 @@ export const sampleData = [
     email: 'daniel.rodriguez@example.com',
     fullname: 'Daniel Joseph Rodriguez',
     gender: 'Male',
-    password: 'rodriguez456',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174036',
@@ -333,7 +333,7 @@ export const sampleData = [
     email: 'michelle.lee@example.com',
     fullname: 'Michelle Ann Lee',
     gender: 'Female',
-    password: 'lee789',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174039',
@@ -361,7 +361,7 @@ export const sampleData = [
     email: 'christopher.white@example.com',
     fullname: 'Christopher Edward White',
     gender: 'Male',
-    password: 'white123',
+    status: 'pending',
     sections: [
       {
         id: '123e4567-e89b-12d3-a456-426614174042',

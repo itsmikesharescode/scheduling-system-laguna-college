@@ -28,6 +28,7 @@ export const tableSchema = z.object({
   gender: z.string().refine((v) => ['Male', 'Female'].includes(v), {
     message: 'Invalid gender'
   }),
+  status: z.string(),
   sections: z.array(sectionSchema).min(1, { message: 'At least one section is required' }),
   subjects: z.array(subjectSchema).min(1, { message: 'At least one subject is required' })
 });

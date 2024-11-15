@@ -16,6 +16,28 @@ export const columns: ColumnDef<TableSchema>[] = [
     id: 'actions',
     cell: ({ row }) => renderComponent(DataTableRowActions<TableSchema>, { row })
   },
+
+  {
+    accessorKey: 'status',
+    header: ({ column }) => {
+      return renderComponent(DataTableColumnHeader<TableSchema, unknown>, {
+        column,
+        title: 'Status'
+      });
+    },
+    cell: ({ row }) => {
+      const idSnippet = createRawSnippet<[string]>((getStatus) => {
+        return {
+          render: () => `<div class="w-[80px]">${getStatus()}</div>`
+        };
+      });
+
+      return renderSnippet(idSnippet, row.getValue('status'));
+    },
+    enableSorting: false,
+    enableHiding: false
+  },
+
   {
     accessorKey: 'reporterId',
     header: ({ column }) => {
