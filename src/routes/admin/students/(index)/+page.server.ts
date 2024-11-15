@@ -4,11 +4,13 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { addStudentSchema } from './components/AddStudent/schema';
 import { fail } from '@sveltejs/kit';
 import { updateStudentSchema } from './components/UpdateStudent/schema';
+import { getStudents } from '../(database)/getStudents';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals: { supabase } }) => {
   return {
     addStudentForm: await superValidate(zod(addStudentSchema)),
-    updateStudentForm: await superValidate(zod(updateStudentSchema))
+    updateStudentForm: await superValidate(zod(updateStudentSchema)),
+    streamStudents: getStudents(supabase)
   };
 };
 
@@ -28,7 +30,6 @@ export const actions: Actions = {
         email: form.data.email,
         fullName: `${form.data.lastName}, ${form.data.firstName} ${form.data.middleName}`,
         gender: form.data.gender,
-        password: form.data.password,
         yearLevel: form.data.yearLevel,
         course: form.data.course,
         sections: form.data.sections,
