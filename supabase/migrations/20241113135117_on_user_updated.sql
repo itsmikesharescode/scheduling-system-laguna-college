@@ -16,6 +16,8 @@ begin
     set user_meta_data = new.raw_user_meta_data
     where user_id = new.id;
     return new;
+  elsif role = 'admin' then
+    return new;
   end if;
 end;
 $$ language plpgsql security definer;

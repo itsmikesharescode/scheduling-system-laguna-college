@@ -28,7 +28,7 @@ export const actions: Actions = {
         role: 'student',
         studentId: form.data.studentId,
         email: form.data.email,
-        fullName: `${form.data.lastName}, ${form.data.firstName} ${form.data.middleName}`,
+        fullName: `${form.data.lastName}, ${form.data.firstName}, ${form.data.middleName}`,
         gender: form.data.gender,
         yearLevel: form.data.yearLevel,
         course: form.data.course,
@@ -42,8 +42,21 @@ export const actions: Actions = {
     return { form, msg: 'Student account created.' };
   },
 
-  updateStudentEvent: async ({ request }) => {
+  updateStudentEvent: async ({ request, locals: { supabaseAdmin } }) => {
     const form = await superValidate(request, zod(updateStudentSchema));
     if (!form.valid) return fail(400, { form });
+
+    const { data, error } = await supabaseAdmin.auth.admin.updateUserById(form.data.userId, {
+      email: form.data.email,
+      password: form.data.password,
+      user_metadata: {
+        fullName: `${form.data.lastName}, ${form.data.firstName}, ${form.data.middleName}`,
+        ...form.data
+      }
+    });
+
+    if (error) return fail(401, { form, msg: error.message });
+
+    return { form, msg: 'Student account updated.' };
   }
 };

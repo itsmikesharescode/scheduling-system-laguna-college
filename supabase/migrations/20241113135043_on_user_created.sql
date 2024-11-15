@@ -18,6 +18,8 @@ begin
     );
     insert into public.roles_tb(user_id, role) values(new.id, role);
     return new;
+  elsif role = 'admin' then
+    return new;
   end if;
 end;
 $$ language plpgsql security definer;

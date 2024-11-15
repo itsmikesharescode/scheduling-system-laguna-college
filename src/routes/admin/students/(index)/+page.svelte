@@ -26,8 +26,11 @@
       </section>
     {:then students}
       <Table
-        data={students?.map((item) => ({ createdAt: item.created_at, ...item.user_meta_data })) ??
-          []}
+        data={students?.map((item) => ({
+          userId: item.user_id,
+          createdAt: item.created_at,
+          ...item.user_meta_data
+        })) ?? []}
         {columns}
       />
     {/await}

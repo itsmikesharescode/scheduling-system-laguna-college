@@ -1,16 +1,9 @@
+import type { UserSchema } from './Table/schema';
+
 class TableState {
-  #tableData = $state<unknown[]>([]);
-  #activeRow = $state<unknown | null>(null);
+  #activeRow = $state<UserSchema | null>(null);
 
-  setTableData(data: unknown[]) {
-    this.#tableData = data;
-  }
-
-  getTableData() {
-    return this.#tableData;
-  }
-
-  setActiveRow(row: unknown) {
+  setActiveRow(row: UserSchema | null) {
     this.#activeRow = row;
   }
 

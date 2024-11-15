@@ -22,6 +22,7 @@ const subjectSchema = z.object({
 });
 
 export const userSchema = z.object({
+  userId: z.string(),
   createdAt: z.string(),
   role: z.literal('student'),
   studentId: z.string().min(1, { message: 'Student ID is required' }),

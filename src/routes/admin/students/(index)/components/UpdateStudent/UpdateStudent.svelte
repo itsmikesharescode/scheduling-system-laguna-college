@@ -90,7 +90,19 @@
 
   $effect(() => {
     if (tableState.getUpdateState()) {
-      ///
+      $formData.userId = tableState.getActiveRow()?.userId ?? '';
+      $formData.course = tableState.getActiveRow()?.course ?? '';
+      $formData.yearLevel = tableState.getActiveRow()?.yearLevel ?? '';
+      $formData.gender = tableState.getActiveRow()?.gender ?? '';
+      $formData.firstName = tableState.getActiveRow()?.fullName.split(',')[1] ?? '';
+      $formData.middleName = tableState.getActiveRow()?.fullName.split(',')[2] ?? '';
+      $formData.lastName = tableState.getActiveRow()?.fullName.split(',')[0] ?? '';
+      $formData.studentId = tableState.getActiveRow()?.studentId ?? '';
+      $formData.email = tableState.getActiveRow()?.email ?? '';
+      $formData.sections = tableState.getActiveRow()?.sections ?? [];
+      $formData.subjects = tableState.getActiveRow()?.subjects ?? [];
+      sections = (tableState.getActiveRow()?.sections ?? []) as typeof sections;
+      subjects = (tableState.getActiveRow()?.subjects ?? []) as typeof subjects;
     }
   });
 
@@ -136,7 +148,7 @@
     </AlertDialog.Header>
     <ScrollArea class="max-h-[80dvh]">
       <form method="POST" action="?/updateStudentEvent" use:enhance class="px-6">
-        <input type="hidden" name="userId" value="id here" />
+        <input type="hidden" name="userId" bind:value={$formData.userId} />
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <section class="">
             <div class="sticky top-0">
