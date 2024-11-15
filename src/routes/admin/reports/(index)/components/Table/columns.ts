@@ -29,7 +29,7 @@ export const columns: ColumnDef<TableSchema>[] = [
       const idSnippet = createRawSnippet<[string]>((getStatus) => {
         return {
           render: () =>
-            `<span class=" rounded-sm bg-[#EBD22E] text-[#0F224C] px-2">${getStatus()}</span>`
+            `<span class=" rounded-sm bg-[#EBD22E]/90 text-[#0F224C] text-xs p-2">${getStatus()}</span>`
         };
       });
 
