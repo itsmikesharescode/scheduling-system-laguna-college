@@ -4,16 +4,21 @@ declare
   role text;
 begin
   role = new.raw_user_meta_data ->> 'role'; 
-
-  insert into public.teachers_tb (teacher_id, teacher_real_id, user_meta_data)
-  values (
-    new.id,
-    new.raw_user_meta_data ->> 'teacher_real_id',
-    new.raw_user_meta_data
-  );
-  insert into public.role_tb (user_id, role) values(new.id, role);
-  return new;
-
+  if role = 'teacher' then
+    insert into public.teachers_tb(user_id, user_meta_data) values(
+      new.id, 
+      new.raw_user_meta_data
+    );
+    insert into public.roles_tb(user_id, role) values(new.id, role);
+    return new;
+  elsif role = 'student' then
+    insert into public.students_tb(user_id, user_meta_data) values(
+      new.id, 
+      new.raw_user_meta_data
+    );
+    insert into public.roles_tb(user_id, role) values(new.id, role);
+    return new;
+  end if;
 end;
 $$ language plpgsql security definer;
 
