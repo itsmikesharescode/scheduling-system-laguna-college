@@ -1,5 +1,4 @@
-import type { Student, Teacher } from './aux.types';
-
+import type { Student, Teacher } from '$lib/types/database/aux.types';
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
@@ -30,6 +29,42 @@ export type Database = {
   };
   public: {
     Tables: {
+      assigned_students_tb: {
+        Row: {
+          created_at: string;
+          id: number;
+          student_id: string;
+          teacher_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          student_id: string;
+          teacher_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          student_id?: string;
+          teacher_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'assigned_students_tb_student_id_fkey';
+            columns: ['student_id'];
+            isOneToOne: false;
+            referencedRelation: 'students_tb';
+            referencedColumns: ['user_id'];
+          },
+          {
+            foreignKeyName: 'assigned_students_tb_teacher_id_fkey';
+            columns: ['teacher_id'];
+            isOneToOne: false;
+            referencedRelation: 'teachers_tb';
+            referencedColumns: ['user_id'];
+          }
+        ];
+      };
       roles_tb: {
         Row: {
           created_at: string;
@@ -89,6 +124,16 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      admin_get_assigned_students: {
+        Args: {
+          teacher_id: string;
+        };
+        Returns: {
+          user_id: string;
+          created_at: string;
+          user_meta_data: Json;
+        }[];
+      };
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;

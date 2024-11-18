@@ -5,8 +5,11 @@
   import { Skeleton } from '$lib/components/ui/skeleton/index.js';
   import Table from './components/Table/components/Table.svelte';
   import { columns } from './components/Table/components/columns';
-
+  import RemoveStudent from './components/RemoveStudent/RemoveStudent.svelte';
+  import { initTableState } from './components/Table/tableState.svelte';
   const { data } = $props();
+
+  initTableState();
 </script>
 
 <main class="flex flex-col gap-5 px-[2rem] py-10">
@@ -37,11 +40,22 @@
   {:then teacherStudents}
     <Table
       data={teacherStudents?.map((item) => ({
-        user_id: item.user_id,
         created_at: item.created_at,
-        ...item.user_meta_data
+        user_id: item.students_tb?.user_id ?? '',
+        email: item.students_tb?.user_meta_data?.email ?? '',
+        studentId: item.students_tb?.user_meta_data?.studentId ?? '',
+        firstName: item.students_tb?.user_meta_data?.firstName ?? '',
+        middleName: item.students_tb?.user_meta_data?.middleName ?? '',
+        lastName: item.students_tb?.user_meta_data?.lastName ?? '',
+        gender: item.students_tb?.user_meta_data?.gender ?? '',
+        yearLevel: item.students_tb?.user_meta_data?.yearLevel ?? '',
+        course: item.students_tb?.user_meta_data?.course ?? '',
+        sections: item.students_tb?.user_meta_data?.sections ?? [],
+        subjects: item.students_tb?.user_meta_data?.subjects ?? []
       })) ?? []}
       {columns}
     />
   {/await}
 </main>
+
+<RemoveStudent />

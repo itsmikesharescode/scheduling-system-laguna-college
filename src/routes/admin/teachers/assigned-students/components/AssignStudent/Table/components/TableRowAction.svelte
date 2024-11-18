@@ -5,15 +5,14 @@
 <script lang="ts" generics="TData">
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
   import FileMinus from 'lucide-svelte/icons/file-minus';
-  import UserRoundMinus from 'lucide-svelte/icons/user-round-minus';
   import Pen from 'lucide-svelte/icons/pen';
   import type { Row } from '@tanstack/table-core';
-  import { type StudentPageSchema } from '../data/schemas';
+  import { type AssignableStudentsPageSchema } from '../data/schemas';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index';
   import Button from '$lib/components/ui/button/button.svelte';
   import { useTableState } from '../tableState.svelte';
 
-  let { row }: { row: Row<StudentPageSchema> } = $props();
+  let { row }: { row: Row<AssignableStudentsPageSchema> } = $props();
 
   const tableState = useTableState();
 </script>
@@ -27,15 +26,24 @@
       </Button>
     {/snippet}
   </DropdownMenu.Trigger>
-  <DropdownMenu.Content class="" align="end">
+  <DropdownMenu.Content class="w-[160px]" align="end">
+    <DropdownMenu.Item
+      onclick={() => {
+        tableState.setActiveRow(row.original);
+        tableState.setShowUpdate(true);
+      }}
+    >
+      <Pen />
+      Update
+    </DropdownMenu.Item>
     <DropdownMenu.Item
       onclick={() => {
         tableState.setActiveRow(row.original);
         tableState.setShowDelete(true);
       }}
     >
-      <UserRoundMinus />
-      Remove Student
+      <FileMinus />
+      Delete
     </DropdownMenu.Item>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
