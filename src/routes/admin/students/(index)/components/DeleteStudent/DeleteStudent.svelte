@@ -3,10 +3,12 @@
   import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
   import Button from '$lib/components/ui/button/button.svelte';
   import type { SubmitFunction } from '@sveltejs/kit';
-  import { tableState } from '../tableState.svelte';
+  import { useTableState } from '../Table/tableState.svelte';
   import LoaderCircle from 'lucide-svelte/icons/loader-circle';
   import type { Result } from '$lib/types/types';
   import { toast } from 'svelte-sonner';
+
+  const tableState = useTableState();
 
   let deleteLoader = $state(false);
   const deleteStudentEvent: SubmitFunction = () => {
@@ -17,7 +19,7 @@
       switch (status) {
         case 200:
           toast.success(data.msg);
-          tableState.setDeleteState(false);
+          tableState.setShowDelete(false);
           tableState.setActiveRow(null);
           break;
 
@@ -31,7 +33,7 @@
   };
 </script>
 
-<AlertDialog.Root open={tableState.getDeleteState()}>
+<AlertDialog.Root open={tableState.getShowDelete()}>
   <AlertDialog.Content>
     <AlertDialog.Header>
       <AlertDialog.Title>Confirm Student Account Deletion</AlertDialog.Title>
@@ -41,9 +43,18 @@
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
-      <Button variant="outline" onclick={() => tableState.setDeleteState(false)}>Cancel</Button>
+      <Button
+        variant="outline"
+        type="button"
+        onclick={() => {
+          tableState.setShowDelete(false);
+          tableState.setActiveRow(null);
+        }}
+      >
+        Cancel
+      </Button>
       <form method="post" action="?/deleteStudentEvent" use:enhance={deleteStudentEvent}>
-        <input type="hidden" value={tableState.getActiveRow()?.userId} name="userId" />
+        <input type="hidden" value={tableState.getActiveRow()?.user_id} name="userId" />
         <Button type="submit" disabled={deleteLoader}>
           {#if deleteLoader}
             <div class="absolute inset-0 flex items-center justify-center rounded-lg bg-primary">

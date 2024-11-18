@@ -18,14 +18,17 @@
     getPaginationRowModel,
     getSortedRowModel
   } from '@tanstack/table-core';
-  import DataTableToolbar from './TableToolBar.svelte';
+  import DataTableToolbar from './TableToolbar.svelte';
   import DataTablePagination from './TablePagination.svelte';
-  import { createSvelteTable } from '$lib/components/ui/data-table';
+  import { createSvelteTable } from '$lib/components/ui/data-table/data-table.svelte';
   import FlexRender from '$lib/components/ui/data-table/flex-render.svelte';
-  import * as Table from '$lib/components/ui/table';
-  import { fade } from 'svelte/transition';
+  import * as Table from '$lib/components/ui/table/index';
+  import type { StudentPageSchema } from '../data/schemas';
 
-  let { columns, data }: { columns: ColumnDef<TData, TValue>[]; data: TData[] } = $props();
+  let {
+    columns,
+    data
+  }: { columns: ColumnDef<StudentPageSchema, unknown>[]; data: StudentPageSchema[] } = $props();
 
   let rowSelection = $state<RowSelectionState>({});
   let columnVisibility = $state<VisibilityState>({});
@@ -126,9 +129,7 @@
           <Table.Row data-state={row.getIsSelected() && 'selected'}>
             {#each row.getVisibleCells() as cell (cell.id)}
               <Table.Cell>
-                <div in:fade>
-                  <FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
-                </div>
+                <FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
               </Table.Cell>
             {/each}
           </Table.Row>
@@ -140,4 +141,7 @@
       </Table.Body>
     </Table.Root>
   </div>
+  {#if table.getRowModel().rows.length > 11}
+    <DataTablePagination {table} />
+  {/if}
 </div>

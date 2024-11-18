@@ -1,13 +1,16 @@
 <script lang="ts">
-  import { columns } from './components/Table/columns';
   import { fly } from 'svelte/transition';
   import Add from './components/AddStudent/Add.svelte';
-  import Table from './components/Table/Table.svelte';
-  import { sampleData } from './components/Table/sampleData';
+  import Table from './components/Table/components/Table.svelte';
+  import { columns } from './components/Table/components/columns';
+  import { Skeleton } from '$lib/components/ui/skeleton/index.js';
   import UpdateStudent from './components/UpdateStudent/UpdateStudent.svelte';
   import DeleteStudent from './components/DeleteStudent/DeleteStudent.svelte';
-  import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+  import { initTableState } from './components/Table/tableState.svelte';
+
   const { data } = $props();
+
+  initTableState();
 </script>
 
 <main class="flex flex-col gap-5 px-[2rem] py-10">
@@ -27,8 +30,8 @@
     {:then students}
       <Table
         data={students?.map((item) => ({
-          userId: item.user_id,
-          createdAt: item.created_at,
+          user_id: item.user_id,
+          created_at: item.created_at,
           ...item.user_meta_data
         })) ?? []}
         {columns}

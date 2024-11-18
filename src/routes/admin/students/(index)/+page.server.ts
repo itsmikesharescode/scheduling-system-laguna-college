@@ -7,6 +7,13 @@ import { updateStudentSchema } from './components/UpdateStudent/schema';
 import { getStudents } from '../(database)/getStudents';
 
 export const load: PageServerLoad = async ({ locals: { supabase } }) => {
+  /* const { data, error } = await supabase.auth.signInWithPassword({
+    email: 'localadmin@gmail.com',
+    password: '12345678'
+  });
+
+  console.log(data, error?.message); */
+
   return {
     addStudentForm: await superValidate(zod(addStudentSchema)),
     updateStudentForm: await superValidate(zod(updateStudentSchema)),
@@ -28,7 +35,9 @@ export const actions: Actions = {
         role: 'student',
         studentId: form.data.studentId,
         email: form.data.email,
-        fullName: `${form.data.lastName}, ${form.data.firstName}, ${form.data.middleName}`,
+        firstName: form.data.firstName,
+        middleName: form.data.middleName,
+        lastName: form.data.lastName,
         gender: form.data.gender,
         yearLevel: form.data.yearLevel,
         course: form.data.course,

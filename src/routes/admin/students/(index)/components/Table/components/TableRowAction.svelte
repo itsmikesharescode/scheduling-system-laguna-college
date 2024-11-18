@@ -4,21 +4,17 @@
 
 <script lang="ts" generics="TData">
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
-  import UserPen from 'lucide-svelte/icons/user-pen';
-  import UserRoundMinus from 'lucide-svelte/icons/user-round-minus';
+  import FileMinus from 'lucide-svelte/icons/file-minus';
+  import Pen from 'lucide-svelte/icons/pen';
   import type { Row } from '@tanstack/table-core';
-  import { userSchema, type UserSchema } from './schema';
-  import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  import { Button } from '$lib/components/ui/button';
-  import { tableState } from '../tableState.svelte';
+  import { type StudentPageSchema } from '../data/schemas';
+  import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index';
+  import Button from '$lib/components/ui/button/button.svelte';
+  import { useTableState } from '../tableState.svelte';
 
-  interface Props {
-    row: Row<UserSchema>;
-  }
+  let { row }: { row: Row<StudentPageSchema> } = $props();
 
-  let { row }: Props = $props();
-
-  const user = userSchema.parse(row.original);
+  const tableState = useTableState();
 </script>
 
 <DropdownMenu.Root>
@@ -30,25 +26,23 @@
       </Button>
     {/snippet}
   </DropdownMenu.Trigger>
-  <DropdownMenu.Content class="" align="start">
+  <DropdownMenu.Content class="w-[160px]" align="end">
     <DropdownMenu.Item
       onclick={() => {
-        tableState.setUpdateState(true);
         tableState.setActiveRow(row.original);
-        //set active row
+        tableState.setShowUpdate(true);
       }}
     >
-      <UserPen />
+      <Pen />
       Update
     </DropdownMenu.Item>
     <DropdownMenu.Item
       onclick={() => {
-        tableState.setDeleteState(true);
         tableState.setActiveRow(row.original);
-        //set active row
+        tableState.setShowDelete(true);
       }}
     >
-      <UserRoundMinus />
+      <FileMinus />
       Delete
     </DropdownMenu.Item>
   </DropdownMenu.Content>

@@ -16,19 +16,21 @@
   import { allSubjects, days, timeSlots } from '$lib';
   import type { Result } from '$lib/types/types';
   import { toast } from 'svelte-sonner';
-  import { tableState } from '../tableState.svelte';
+  import { useTableState } from '../Table/tableState.svelte';
 
   interface Props {
     updateStudentForm: SuperValidated<Infer<UpdateStudentSchema>>;
   }
 
-  let { updateStudentForm }: Props = $props();
+  const { updateStudentForm }: Props = $props();
+
+  const tableState = useTableState();
 
   const form = superForm(updateStudentForm, {
     validators: zodClient(updateStudentSchema),
     id: crypto.randomUUID(),
     dataType: 'json',
-    onUpdate: ({ result, form }) => {
+    onUpdate: async ({ result, form }) => {
       const { status, data } = result as Result<{ msg: string }>;
       switch (status) {
         case 200:
@@ -36,7 +38,7 @@
           reset();
           cleanUpStates();
           tableState.setActiveRow(null);
-          tableState.setUpdateState(false);
+          tableState.setShowUpdate(false);
           break;
         case 400:
           if (
@@ -86,18 +88,14 @@
   ]);
 
   $effect(() => {
-    $formData.subjects = subjects;
-  });
-
-  $effect(() => {
-    if (tableState.getUpdateState()) {
-      $formData.userId = tableState.getActiveRow()?.userId ?? '';
+    if (tableState.getShowUpdate()) {
+      $formData.userId = tableState.getActiveRow()?.user_id ?? '';
       $formData.course = tableState.getActiveRow()?.course ?? '';
       $formData.yearLevel = tableState.getActiveRow()?.yearLevel ?? '';
       $formData.gender = tableState.getActiveRow()?.gender ?? '';
-      $formData.firstName = tableState.getActiveRow()?.fullName.split(',')[1] ?? '';
-      $formData.middleName = tableState.getActiveRow()?.fullName.split(',')[2] ?? '';
-      $formData.lastName = tableState.getActiveRow()?.fullName.split(',')[0] ?? '';
+      $formData.firstName = tableState.getActiveRow()?.firstName ?? '';
+      $formData.middleName = tableState.getActiveRow()?.middleName ?? '';
+      $formData.lastName = tableState.getActiveRow()?.lastName ?? '';
       $formData.studentId = tableState.getActiveRow()?.studentId ?? '';
       $formData.email = tableState.getActiveRow()?.email ?? '';
       $formData.sections = tableState.getActiveRow()?.sections ?? [];
@@ -131,12 +129,12 @@
   };
 </script>
 
-<AlertDialog.Root open={tableState.getUpdateState()}>
+<AlertDialog.Root open={tableState.getShowUpdate()}>
   <AlertDialog.Content class="max-h-[90dvh] max-w-[1200px] p-0">
     <button
       onclick={() => {
         form.reset();
-        tableState.setUpdateState(false);
+        tableState.setShowUpdate(false);
         tableState.setActiveRow(null);
         cleanUpStates();
       }}

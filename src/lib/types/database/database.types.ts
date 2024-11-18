@@ -1,4 +1,4 @@
-import type { StudentType } from './aux.types';
+import type { Student } from './aux.types';
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
@@ -52,17 +52,17 @@ export type Database = {
         Row: {
           created_at: string;
           user_id: string;
-          user_meta_data: StudentType;
+          user_meta_data: Student;
         };
         Insert: {
           created_at?: string;
           user_id: string;
-          user_meta_data: StudentType;
+          user_meta_data: Student;
         };
         Update: {
           created_at?: string;
           user_id?: string;
-          user_meta_data?: StudentType;
+          user_meta_data?: Student;
         };
         Relationships: [];
       };

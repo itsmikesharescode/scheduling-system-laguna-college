@@ -16,12 +16,14 @@ type Subject = {
   schedules: Schedule[];
 };
 
-export type StudentType = {
+export type Student = {
   role: 'student';
   email: string;
   course: string;
   gender: string;
-  fullName: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
   sections: Section[];
   subjects: Subject[];
   studentId: string;
