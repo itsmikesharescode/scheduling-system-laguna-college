@@ -1,13 +1,14 @@
 <script lang="ts">
   import AddTeacher from './components/AddTeacher/Add.svelte';
-  import Table from './components/Table/Table.svelte';
-  import { sampleData } from './components/Table/sampleData';
-  import { columns } from './components/Table/columns';
   import { fly } from 'svelte/transition';
-  import UpdateTeacher from './components/UpdateTeacher/UpdateTeacher.svelte';
-  import DeleteTeacher from './components/DeleteTeacher/DeleteTeacher.svelte';
+  import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+  import Table from './components/Table/components/Table.svelte';
+  import { columns } from './components/Table/components/columns';
+  import { initTableState } from './components/Table/tableState.svelte';
 
   const { data } = $props();
+
+  initTableState();
 </script>
 
 <main class="flex flex-col gap-5 px-[2rem] py-10">
@@ -17,9 +18,22 @@
     <div class="sticky top-[5rem] z-20">
       <AddTeacher addTeacherForm={data.addTeacherForm} />
     </div>
-    <Table data={sampleData} {columns} />
+    {#await data.getTeachers}
+      <section class="flex flex-col gap-1.5">
+        <Skeleton class="h-[20px] w-full rounded-full bg-primary/50" />
+        <Skeleton class="h-[20px] w-[80%] rounded-full bg-primary/50" />
+        <Skeleton class="h-[20px] w-[90%] rounded-full bg-primary/50" />
+        <Skeleton class="h-[20px] w-[90%] rounded-full bg-primary/50" />
+      </section>
+    {:then teachers}
+      <Table
+        data={teachers?.map((item) => ({
+          user_id: item.user_id,
+          created_at: item.created_at,
+          ...item.user_meta_data
+        })) ?? []}
+        {columns}
+      />
+    {/await}
   </div>
 </main>
-
-<UpdateTeacher updateTeacherForm={data.updateTeacherForm} />
-<DeleteTeacher />

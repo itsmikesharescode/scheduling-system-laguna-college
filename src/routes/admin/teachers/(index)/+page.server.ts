@@ -3,11 +3,12 @@ import { addTeacherSchema } from './components/AddTeacher/schema';
 import type { Actions, PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
 import { updateTeacherSchema } from './components/UpdateTeacher/schema';
-
-export const load: PageServerLoad = async () => {
+import { getTeachers } from '../(database)/getTeachers';
+export const load: PageServerLoad = async ({ locals: { supabase } }) => {
   return {
     addTeacherForm: await superValidate(zod(addTeacherSchema)),
-    updateTeacherForm: await superValidate(zod(updateTeacherSchema))
+    updateTeacherForm: await superValidate(zod(updateTeacherSchema)),
+    getTeachers: getTeachers(supabase)
   };
 };
 

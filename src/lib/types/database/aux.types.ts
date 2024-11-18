@@ -29,3 +29,15 @@ export type Student = {
   studentId: string;
   yearLevel: string;
 };
+
+export type Teacher = {
+  role: 'student';
+  email: string;
+  gender: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  sections: Section[];
+  subjects: Subject[];
+  teacherId: string;
+};
