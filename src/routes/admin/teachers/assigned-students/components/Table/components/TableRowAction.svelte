@@ -5,15 +5,14 @@
 <script lang="ts" generics="TData">
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
   import FileMinus from 'lucide-svelte/icons/file-minus';
-  import FileInput from 'lucide-svelte/icons/file-input';
   import Pen from 'lucide-svelte/icons/pen';
   import type { Row } from '@tanstack/table-core';
-  import { type TeacherPageSchema } from '../data/schemas';
+  import { type StudentPageSchema } from '../data/schemas';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index';
   import Button from '$lib/components/ui/button/button.svelte';
   import { useTableState } from '../tableState.svelte';
 
-  let { row }: { row: Row<TeacherPageSchema> } = $props();
+  let { row }: { row: Row<StudentPageSchema> } = $props();
 
   const tableState = useTableState();
 </script>
@@ -27,13 +26,7 @@
       </Button>
     {/snippet}
   </DropdownMenu.Trigger>
-  <DropdownMenu.Content class="" align="end">
-    <a href="/admin/teachers/assigned-students?user_id={row.original.user_id}">
-      <DropdownMenu.Item>
-        <FileInput />
-        Assign Students
-      </DropdownMenu.Item>
-    </a>
+  <DropdownMenu.Content class="w-[160px]" align="end">
     <DropdownMenu.Item
       onclick={() => {
         tableState.setActiveRow(row.original);
