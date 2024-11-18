@@ -5,6 +5,8 @@
   import Table from './components/Table/components/Table.svelte';
   import { columns } from './components/Table/components/columns';
   import { initTableState } from './components/Table/tableState.svelte';
+  import UpdateTeacher from './components/UpdateTeacher/UpdateTeacher.svelte';
+  import DeleteTeacher from './components/DeleteTeacher/DeleteTeacher.svelte';
 
   const { data } = $props();
 
@@ -37,3 +39,6 @@
     {/await}
   </div>
 </main>
+
+<UpdateTeacher updateTeacherForm={data.updateTeacherForm} />
+<DeleteTeacher />

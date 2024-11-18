@@ -35,6 +35,7 @@
         case 200:
           toast.success(data.msg);
           reset();
+          open = false;
           break;
         case 400:
           if (
@@ -124,7 +125,7 @@
       <AlertDialog.Title>Add Teacher Account</AlertDialog.Title>
     </AlertDialog.Header>
     <ScrollArea class="max-h-[80dvh]">
-      <form method="POST" action="?/addStudentEvent" use:enhance class="px-6">
+      <form method="POST" action="?/addTeacherEvent" use:enhance class="px-6">
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <section class="">
             <div class="sticky top-0">

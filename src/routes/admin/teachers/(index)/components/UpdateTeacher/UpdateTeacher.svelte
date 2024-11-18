@@ -16,13 +16,15 @@
   import { allSubjects, days, timeSlots } from '$lib';
   import type { Result } from '$lib/types/types';
   import { toast } from 'svelte-sonner';
-  import { tableState } from '../tableState.svelte';
+  import { useTableState } from '../Table/tableState.svelte';
 
   interface Props {
     updateTeacherForm: SuperValidated<Infer<UpdateTeacherSchema>>;
   }
 
   const { updateTeacherForm }: Props = $props();
+
+  const tableState = useTableState();
 
   const form = superForm(updateTeacherForm, {
     validators: zodClient(updateTeacherSchema),
@@ -35,7 +37,8 @@
           toast.success(data.msg);
           reset();
           cleanUpStates();
-          tableState.setUpdateState(false);
+          tableState.setShowUpdate(false);
+          tableState.setActiveRow(null);
           break;
         case 400:
           if (
@@ -83,12 +86,18 @@
   ]);
 
   $effect(() => {
-    $formData.subjects = subjects;
-  });
-
-  $effect(() => {
-    if (tableState.getUpdateState()) {
-      ///
+    if (tableState.getShowUpdate()) {
+      $formData.userId = tableState.getActiveRow()?.user_id as string;
+      $formData.teacherId = tableState.getActiveRow()?.teacherId as string;
+      $formData.email = tableState.getActiveRow()?.email as string;
+      $formData.firstName = tableState.getActiveRow()?.firstName as string;
+      $formData.middleName = tableState.getActiveRow()?.middleName as string;
+      $formData.lastName = tableState.getActiveRow()?.lastName as string;
+      $formData.gender = tableState.getActiveRow()?.gender as string;
+      $formData.subjects = tableState.getActiveRow()?.subjects as typeof subjects;
+      $formData.sections = tableState.getActiveRow()?.sections as typeof sections;
+      sections = (tableState.getActiveRow()?.sections ?? []) as typeof sections;
+      subjects = (tableState.getActiveRow()?.subjects ?? []) as typeof subjects;
     }
   });
 
@@ -116,12 +125,13 @@
   };
 </script>
 
-<AlertDialog.Root open={tableState.getUpdateState()}>
+<AlertDialog.Root open={tableState.getShowUpdate()}>
   <AlertDialog.Content class="max-h-[90dvh] max-w-[1200px] p-0">
     <button
       onclick={() => {
         form.reset();
-        tableState.setUpdateState(false);
+        tableState.setShowUpdate(false);
+        tableState.setActiveRow(null);
         cleanUpStates();
       }}
       class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
@@ -133,8 +143,8 @@
       <AlertDialog.Title>Update Teacher Account</AlertDialog.Title>
     </AlertDialog.Header>
     <ScrollArea class="max-h-[80dvh]">
-      <form method="POST" action="?/updateStudentEvent" use:enhance class="px-6">
-        <input type="hidden" name="userId" value="id here" />
+      <form method="POST" action="?/updateTeacherEvent" use:enhance class="px-6">
+        <input type="hidden" name="userId" value={tableState.getActiveRow()?.user_id} />
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <section class="">
             <div class="sticky top-0">
