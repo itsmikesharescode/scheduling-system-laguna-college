@@ -4,19 +4,23 @@ declare
   role text;
 begin
   role = new.raw_user_meta_data ->> 'role'; 
+
+  insert into public.roles_tb(user_id, role) values(new.id, role);
+  insert into public.users_tb(user_id, user_meta_data) values(new.id, new.raw_user_meta_data);
+
   if role = 'teacher' then
     insert into public.teachers_tb(user_id, user_meta_data) values(
       new.id, 
       new.raw_user_meta_data
     );
-    insert into public.roles_tb(user_id, role) values(new.id, role);
+    
     return new;
   elsif role = 'student' then
     insert into public.students_tb(user_id, user_meta_data) values(
       new.id, 
       new.raw_user_meta_data
     );
-    insert into public.roles_tb(user_id, role) values(new.id, role);
+    
     return new;
   elsif role = 'admin' then
     return new;

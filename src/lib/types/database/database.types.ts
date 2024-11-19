@@ -1,4 +1,5 @@
-import type { Student, Teacher } from '$lib/types/database/aux.types';
+import type { Student, Teacher } from './aux.types';
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
@@ -65,6 +66,38 @@ export type Database = {
           }
         ];
       };
+      reports_tb: {
+        Row: {
+          created_at: string;
+          id: number;
+          reporter_id: string;
+          status: string;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          reporter_id: string;
+          status: string;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          reporter_id?: string;
+          status?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'reports_tb_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users_tb';
+            referencedColumns: ['user_id'];
+          }
+        ];
+      };
       roles_tb: {
         Row: {
           created_at: string;
@@ -99,7 +132,15 @@ export type Database = {
           user_id?: string;
           user_meta_data?: Student;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'students_tb_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: true;
+            referencedRelation: 'users_tb';
+            referencedColumns: ['user_id'];
+          }
+        ];
       };
       teachers_tb: {
         Row: {
@@ -117,6 +158,32 @@ export type Database = {
           user_id?: string;
           user_meta_data?: Teacher;
         };
+        Relationships: [
+          {
+            foreignKeyName: 'teachers_tb_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: true;
+            referencedRelation: 'users_tb';
+            referencedColumns: ['user_id'];
+          }
+        ];
+      };
+      users_tb: {
+        Row: {
+          created_at: string;
+          user_id: string;
+          user_meta_data: Teacher | Student;
+        };
+        Insert: {
+          created_at?: string;
+          user_id: string;
+          user_meta_data?: Teacher | Student;
+        };
+        Update: {
+          created_at?: string;
+          user_id?: string;
+          user_meta_data?: Teacher | Student;
+        };
         Relationships: [];
       };
     };
@@ -124,7 +191,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      admin_get_assigned_students: {
+      admin_get_assignable_students: {
         Args: {
           teacher_id: string;
         };

@@ -6,6 +6,10 @@ declare
 begin
   role = new.raw_user_meta_data ->> 'role';
 
+  update public.users_tb
+  set user_meta_data = new.raw_user_meta_data
+  where user_id = new.id;
+
   if role = 'teacher' then
     update public.teachers_tb
     set user_meta_data = new.raw_user_meta_data
