@@ -3,8 +3,13 @@
   import { Skeleton } from '$lib/components/ui/skeleton/index.js';
   import Table from './components/Table/components/Table.svelte';
   import { columns } from './components/Table/components/columns';
+  import DeleteReport from './components/DeleteReport/DeleteReport.svelte';
+  import ViewReport from './components/ViewReport/ViewReport.svelte';
+  import { initTableState } from './components/Table/tableState.svelte';
 
   const { data } = $props();
+
+  initTableState();
 </script>
 
 <main class="flex flex-col gap-5 px-[2rem] py-10">
@@ -26,6 +31,7 @@
           user_id: item.user_id,
           status: item.status,
           reporter_id: item.reporter_id,
+          message: item.message,
           email: item.users_tb?.user_meta_data?.email ?? '',
           firstName: item.users_tb?.user_meta_data?.firstName ?? '',
           middleName: item.users_tb?.user_meta_data?.middleName ?? '',
@@ -39,3 +45,6 @@
     {/await}
   </div>
 </main>
+
+<ViewReport />
+<DeleteReport />

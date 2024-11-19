@@ -70,23 +70,26 @@ export type Database = {
         Row: {
           created_at: string;
           id: number;
+          message: string;
           reporter_id: string;
           status: string;
-          user_id: string | null;
+          user_id: string;
         };
         Insert: {
           created_at?: string;
           id?: number;
+          message: string;
           reporter_id: string;
           status: string;
-          user_id?: string | null;
+          user_id?: string;
         };
         Update: {
           created_at?: string;
           id?: number;
+          message?: string;
           reporter_id?: string;
           status?: string;
-          user_id?: string | null;
+          user_id?: string;
         };
         Relationships: [
           {
@@ -172,17 +175,17 @@ export type Database = {
         Row: {
           created_at: string;
           user_id: string;
-          user_meta_data: Teacher | Student;
+          user_meta_data: Student | Teacher;
         };
         Insert: {
           created_at?: string;
           user_id: string;
-          user_meta_data?: Teacher | Student;
+          user_meta_data: Student | Teacher;
         };
         Update: {
           created_at?: string;
           user_id?: string;
-          user_meta_data?: Teacher | Student;
+          user_meta_data?: Student | Teacher;
         };
         Relationships: [];
       };

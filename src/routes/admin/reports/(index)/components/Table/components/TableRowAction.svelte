@@ -27,12 +27,15 @@
     {/snippet}
   </DropdownMenu.Trigger>
   <DropdownMenu.Content class="" align="end">
-    <a href="/admin/teachers/assigned-students?user_id={row.original.user_id}">
-      <DropdownMenu.Item>
-        <SearchCheck />
-        View Report
-      </DropdownMenu.Item>
-    </a>
+    <DropdownMenu.Item
+      onclick={() => {
+        tableState.setActiveRow(row.original);
+        tableState.setShowView(true);
+      }}
+    >
+      <SearchCheck />
+      View Report
+    </DropdownMenu.Item>
 
     <DropdownMenu.Item
       onclick={() => {

@@ -20,12 +20,12 @@
   <div class="flex flex-1 items-center space-x-2">
     <Input
       placeholder="Search reporter ID..."
-      value={(table.getColumn('reporterId')?.getFilterValue() as string) ?? ''}
+      value={(table.getColumn('reporter_id')?.getFilterValue() as string) ?? ''}
       oninput={(e) => {
-        table.getColumn('reporterId')?.setFilterValue(e.currentTarget.value);
+        table.getColumn('reporter_id')?.setFilterValue(e.currentTarget.value);
       }}
       onchange={(e) => {
-        table.getColumn('reporterId')?.setFilterValue(e.currentTarget.value);
+        table.getColumn('reporter_id')?.setFilterValue(e.currentTarget.value);
       }}
       class="h-8 w-[150px] lg:w-[250px]"
     />
