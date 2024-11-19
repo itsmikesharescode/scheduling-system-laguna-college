@@ -10,3 +10,4 @@ export { default as TableViewOptions } from './TableViewOptions.svelte';
 export { default as TableFacetedFilter } from './TableFacetedFilter.svelte';
 export { default as TableSectionsCell } from './TableSectionsCell.svelte';
 export { default as TableSubjectsCell } from './TableSubjectsCell.svelte';
+export { default as TablePendingRow } from './TablePendingRow.svelte';

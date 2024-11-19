@@ -3,6 +3,7 @@ import { createRawSnippet } from 'svelte';
 import type { ReportPageSchema } from '../data/schemas.js';
 import {
   TableColumnHeader,
+  TablePendingRow,
   TableRowActions,
   TableSectionsCell,
   TableSubjectsCell
@@ -39,15 +40,7 @@ export const columns: ColumnDef<ReportPageSchema>[] = [
         title: 'Status'
       });
     },
-    cell: ({ row }) => {
-      const statusSnippet = createRawSnippet<[string]>((getStatus) => {
-        return {
-          render: () => `<div class="w-[80px]">${getStatus()}</div>`
-        };
-      });
-
-      return renderSnippet(statusSnippet, row.getValue('status'));
-    },
+    cell: ({ row }) => renderComponent(TablePendingRow, { row }),
     enableSorting: true,
     enableHiding: true
   },
