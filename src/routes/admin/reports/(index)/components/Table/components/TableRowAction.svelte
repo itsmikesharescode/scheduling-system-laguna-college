@@ -5,8 +5,7 @@
 <script lang="ts" generics="TData">
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
   import FileMinus from 'lucide-svelte/icons/file-minus';
-  import FileInput from 'lucide-svelte/icons/file-input';
-  import Pen from 'lucide-svelte/icons/pen';
+  import SearchCheck from 'lucide-svelte/icons/search-check';
   import type { Row } from '@tanstack/table-core';
   import { type ReportPageSchema } from '../data/schemas';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index';
@@ -30,19 +29,11 @@
   <DropdownMenu.Content class="" align="end">
     <a href="/admin/teachers/assigned-students?user_id={row.original.user_id}">
       <DropdownMenu.Item>
-        <FileInput />
-        Assign Students
+        <SearchCheck />
+        View Report
       </DropdownMenu.Item>
     </a>
-    <DropdownMenu.Item
-      onclick={() => {
-        tableState.setActiveRow(row.original);
-        tableState.setShowUpdate(true);
-      }}
-    >
-      <Pen />
-      Update
-    </DropdownMenu.Item>
+
     <DropdownMenu.Item
       onclick={() => {
         tableState.setActiveRow(row.original);

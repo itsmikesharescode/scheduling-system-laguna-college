@@ -11,7 +11,7 @@ import { renderComponent, renderSnippet } from '$lib/components/ui/data-table/re
 
 export const columns: ColumnDef<ReportPageSchema>[] = [
   {
-    accessorKey: 'reporterId',
+    accessorKey: 'reporter_id',
     header: ({ column }) => {
       return renderComponent(TableColumnHeader<ReportPageSchema, unknown>, {
         column,
@@ -25,7 +25,7 @@ export const columns: ColumnDef<ReportPageSchema>[] = [
         };
       });
 
-      return renderSnippet(idSnippet, row.getValue('reporterId'));
+      return renderSnippet(idSnippet, row.getValue('reporter_id'));
     },
     enableSorting: true,
     enableHiding: true

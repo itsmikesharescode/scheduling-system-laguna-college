@@ -6,7 +6,7 @@ export const getReports = async (supabase: SupabaseClient<Database>) => {
 
   const { data, error } = await supabase
     .from('reports_tb')
-    .select('*')
+    .select('*, users_tb(*)')
     .order('created_at', { ascending: true });
 
   if (error) return null;

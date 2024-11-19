@@ -1,10 +1,10 @@
 import { getContext, setContext } from 'svelte';
-import type { TeacherPageSchema } from './data/schemas';
+import type { ReportPageSchema } from './data/schemas';
 
 class TableState {
-  #activeRow = $state<TeacherPageSchema | null>(null);
+  #activeRow = $state<ReportPageSchema | null>(null);
 
-  setActiveRow(row: TeacherPageSchema | null) {
+  setActiveRow(row: ReportPageSchema | null) {
     this.#activeRow = row;
   }
 
@@ -12,14 +12,14 @@ class TableState {
     return this.#activeRow;
   }
 
-  #showUpdate = $state(false);
+  #showView = $state(false);
 
-  setShowUpdate(show: boolean) {
-    this.#showUpdate = show;
+  setShowView(show: boolean) {
+    this.#showView = show;
   }
 
-  getShowUpdate() {
-    return this.#showUpdate;
+  getShowView() {
+    return this.#showView;
   }
 
   #showDelete = $state(false);
