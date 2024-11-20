@@ -2,7 +2,7 @@
   import { Button } from '$lib/components/ui/button/index.js';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
   import * as Card from '$lib/components/ui/card/index.js';
-  import { Trash2 } from 'lucide-svelte';
+  import { Skeleton } from '$lib/components/ui/skeleton/index.js';
   import AddReminder from './components/AddReminder/AddReminder.svelte';
   import Menu from './components/Menu.svelte';
 
@@ -43,19 +43,39 @@
 
       <ScrollArea class="h-[40dvh] p-5">
         <div class="flex flex-col gap-2.5">
-          {#each Array(5) as _}
-            <section class="w-full">
-              <span>Upcomming</span>
-              <div class="flex w-full items-center justify-between rounded-lg border-2 p-2">
-                <div class="flex flex-col">
-                  <span>DSS Meeting</span>
-                  <span class="text-sm text-muted-foreground">09:30 AM</span>
-                </div>
+          {#await data.getReminders}
+            {#each Array(4) as _}
+              <section class="flex w-full flex-col gap-1.5">
+                <span><Skeleton class="h-[20px] w-[30%] rounded-full" /></span>
+                <div class="flex w-full items-center justify-between rounded-lg border-2 p-2">
+                  <div class="flex flex-col gap-1.5">
+                    <span><Skeleton class="h-[20px] w-[120px] rounded-full" /></span>
+                    <span><Skeleton class="h-[20px] w-[80px] rounded-full" /></span>
+                  </div>
 
-                <Menu />
-              </div>
-            </section>
-          {/each}
+                  <Skeleton class="h-[40px] w-[40px] rounded-lg" />
+                </div>
+              </section>
+            {/each}
+          {:then reminders}
+            {#if !reminders?.length}
+              <span class="text-center text-muted-foreground">No reminders found</span>
+            {/if}
+
+            {#each reminders ?? [] as reminder}
+              <section class="flex w-full flex-col gap-1.5">
+                <span>Upcomming</span>
+                <div class="flex w-full items-center justify-between rounded-lg border-2 p-2">
+                  <div class="flex flex-col">
+                    <span>{reminder.title}</span>
+                    <span class="text-sm text-muted-foreground">{reminder.time}</span>
+                  </div>
+
+                  <Menu {reminder} />
+                </div>
+              </section>
+            {/each}
+          {/await}
         </div>
       </ScrollArea>
     </section>

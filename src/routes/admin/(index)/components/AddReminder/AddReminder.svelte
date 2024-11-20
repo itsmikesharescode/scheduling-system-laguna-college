@@ -28,6 +28,7 @@
       switch (status) {
         case 200:
           toast.success(data.msg);
+          open = false;
           break;
         case 401:
           toast.error(data.msg);
@@ -55,7 +56,7 @@
     <AlertDialog.Header>
       <AlertDialog.Title>Add Reminder</AlertDialog.Title>
     </AlertDialog.Header>
-    <form method="POST" use:enhance>
+    <form method="POST" action="?/addReminderEvent" use:enhance>
       <Form.Field {form} name="title">
         <Form.Control>
           {#snippet children({ props })}
@@ -77,6 +78,7 @@
               placeholder="Select Time"
               name="Select Time"
             />
+            <input type="hidden" name={props.name} bind:value={$formData.time} />
           {/snippet}
         </Form.Control>
 
@@ -84,7 +86,7 @@
       </Form.Field>
 
       <AlertDialog.Footer>
-        <Form.Button>
+        <Form.Button disabled={$submitting} class="relative">
           {#if $submitting}
             <div class="absolute inset-0 flex items-center justify-center rounded-lg bg-primary">
               <LoaderCircle class="animate-spin" />

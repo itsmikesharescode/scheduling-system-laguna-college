@@ -1,5 +1,4 @@
 import type { Student, Teacher } from './aux.types';
-
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
@@ -66,6 +65,30 @@ export type Database = {
           }
         ];
       };
+      reminders_tb: {
+        Row: {
+          created_at: string;
+          id: number;
+          time: string;
+          title: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          time: string;
+          title: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          time?: string;
+          title?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       reports_tb: {
         Row: {
           created_at: string;
@@ -81,7 +104,7 @@ export type Database = {
           message: string;
           reporter_id: string;
           status: string;
-          user_id?: string;
+          user_id: string;
         };
         Update: {
           created_at?: string;
