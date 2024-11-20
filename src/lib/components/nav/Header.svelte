@@ -8,6 +8,7 @@
   import * as m from '$lib/paraglide/messages.js';
   import { Button } from '$lib/components/ui/button/index.js';
   import LoaderCircle from 'lucide-svelte/icons/loader-circle';
+  import CircleUserRound from 'lucide-svelte/icons/circle-user-round';
 
   function switchToLanguage(newLanguage: AvailableLanguageTag) {
     const canonicalPath = i18n.route($page.url.pathname);
@@ -64,28 +65,19 @@
       {/each}
 
       <Popover.Root>
-        <Popover.Trigger class="rounded-lg bg-white px-5 py-2">
+        <Popover.Trigger class="rounded-lg bg-white p-2">
           <div class="flex items-center gap-2">
-            <Avatar.Root>
-              <Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" />
-              <Avatar.Fallback>CN</Avatar.Fallback>
-            </Avatar.Root>
-
-            <section class="flex flex-col">
-              <span class="text-sm font-bold">John Doe</span>
-              <span class="text-sm">Admin</span>
-            </section>
+            <CircleUserRound class="h-[30px] w-[30px]" />
           </div>
         </Popover.Trigger>
         <Popover.Content class="">
           <div class="flex items-center gap-2.5">
-            <Avatar.Root class="h-[100px] w-[100px]">
-              <Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" />
-              <Avatar.Fallback>CN</Avatar.Fallback>
-            </Avatar.Root>
+            <CircleUserRound class="h-[100px] w-[100px]" />
             <section class="flex flex-col">
-              <span class="line-clamp-1 text-sm font-bold">John Doe</span>
-              <span class="line-clamp-1 text-sm text-muted-foreground">Admin@gmail.com</span>
+              <span class="line-clamp-1 text-sm font-bold">Alexandra</span>
+              <span class="line-clamp-1 text-sm text-muted-foreground"
+                >{$page.data.user?.user_metadata.email}</span
+              >
               <Button size="sm" onclick={handleLogout} class="relative mt-5">
                 {#if logoutLoader}
                   <div
