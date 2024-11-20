@@ -62,13 +62,32 @@ const authGuard: Handle = async ({ event, resolve }) => {
   const { session, user } = await event.locals.safeGetSession();
   event.locals.session = session;
   event.locals.user = user;
+  const path = event.url.pathname;
 
-  if (!event.locals.session && event.url.pathname.startsWith('/private')) {
-    redirect(303, '/auth');
+  if (!user && path.startsWith('/admin')) redirect(303, '/');
+  if (!user && path.startsWith('/teacher')) redirect(303, '/');
+  if (!user && path.startsWith('/student')) redirect(303, '/');
+
+  if (user && path === '/') {
+    const { role } = user.user_metadata;
+    if (role === 'admin') redirect(303, '/admin');
+    if (role === 'teacher') redirect(303, '/teacher');
+    if (role === 'student') redirect(303, '/student');
   }
 
-  if (event.locals.session && event.url.pathname === '/auth') {
-    redirect(303, '/private');
+  if (user && path.startsWith('/admin')) {
+    const { role } = user.user_metadata;
+    if (role !== 'admin') redirect(303, '/');
+  }
+
+  if (user && path.startsWith('/teacher')) {
+    const { role } = user.user_metadata;
+    if (role !== 'teacher') redirect(303, '/');
+  }
+
+  if (user && path.startsWith('/student')) {
+    const { role } = user.user_metadata;
+    if (role !== 'student') redirect(303, '/');
   }
 
   return resolve(event);

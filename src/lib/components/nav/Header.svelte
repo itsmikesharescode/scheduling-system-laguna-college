@@ -2,11 +2,12 @@
   import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
   import { i18n } from '$lib/i18n';
   import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
+  import { goto, invalidateAll } from '$app/navigation';
   import * as Popover from '$lib/components/ui/popover/index.js';
   import * as Avatar from '$lib/components/ui/avatar/index.js';
   import * as m from '$lib/paraglide/messages.js';
   import { Button } from '$lib/components/ui/button/index.js';
+  import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
   function switchToLanguage(newLanguage: AvailableLanguageTag) {
     const canonicalPath = i18n.route($page.url.pathname);
@@ -22,6 +23,16 @@
   }
 
   const { navigations }: Props = $props();
+
+  const sb = $page.data.supabase;
+  let logoutLoader = $state(false);
+  const handleLogout = async () => {
+    if (!sb) return;
+    logoutLoader = true;
+    await sb.auth.signOut();
+    logoutLoader = false;
+    await invalidateAll();
+  };
 </script>
 
 <!-- <header class="container flex items-center justify-end gap-2 p-2">
@@ -75,7 +86,16 @@
             <section class="flex flex-col">
               <span class="line-clamp-1 text-sm font-bold">John Doe</span>
               <span class="line-clamp-1 text-sm text-muted-foreground">Admin@gmail.com</span>
-              <Button size="sm" class="mt-5">Logout</Button>
+              <Button size="sm" onclick={handleLogout} class="relative mt-5">
+                {#if logoutLoader}
+                  <div
+                    class="absolute inset-0 flex items-center justify-center rounded-lg bg-primary"
+                  >
+                    <LoaderCircle class="animate-spin" />
+                  </div>
+                {/if}
+                Logout
+              </Button>
             </section>
           </div>
         </Popover.Content>
