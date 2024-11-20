@@ -3,11 +3,12 @@
   import Button from '$lib/components/ui/button/button.svelte';
   import { useTableState } from '../Table/tableState.svelte';
   import X from 'lucide-svelte/icons/x';
+  import NotebookPen from 'lucide-svelte/icons/notebook-pen';
   import LoaderCircle from 'lucide-svelte/icons/loader-circle';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
   import { page } from '$app/stores';
   import { toast } from 'svelte-sonner';
-  import { invalidateAll } from '$app/navigation';
+  import { goto, invalidateAll } from '$app/navigation';
 
   const tableState = useTableState();
 
@@ -51,32 +52,44 @@
       </span>
     </ScrollArea>
     <AlertDialog.Footer>
+      {#if tableState.getActiveRow()?.status !== 'rejected'}
+        <Button
+          disabled={updateLoader}
+          variant="destructive"
+          onclick={() => handleUpdate('rejected')}
+          class="relative"
+        >
+          {#if updateLoader}
+            <div class="absolute inset-0 flex items-center justify-center rounded-lg bg-primary">
+              <LoaderCircle class="animate-spin" />
+            </div>
+          {/if}
+          Reject
+        </Button>
+      {/if}
+
+      {#if tableState.getActiveRow()?.status !== 'resolved'}
+        <Button
+          disabled={updateLoader}
+          class="relative bg-green-500 text-white hover:bg-green-500/80"
+          onclick={() => handleUpdate('resolved')}
+        >
+          {#if updateLoader}
+            <div class="absolute inset-0 flex items-center justify-center rounded-lg bg-primary">
+              <LoaderCircle class="animate-spin" />
+            </div>
+          {/if}
+          Resolved
+        </Button>
+      {/if}
+
       <Button
         disabled={updateLoader}
-        variant="destructive"
-        onclick={() => handleUpdate('rejected')}
-        class="relative"
+        href={`/admin/reports/update-report?user_id=${tableState.getActiveRow()?.user_id}`}
       >
-        {#if updateLoader}
-          <div class="absolute inset-0 flex items-center justify-center rounded-lg bg-primary">
-            <LoaderCircle class="animate-spin" />
-          </div>
-        {/if}
-        Reject
+        <NotebookPen class="size-4" />
+        Update
       </Button>
-      <Button
-        disabled={updateLoader}
-        class="relative bg-green-500 text-white hover:bg-green-500/80"
-        onclick={() => handleUpdate('resolved')}
-      >
-        {#if updateLoader}
-          <div class="absolute inset-0 flex items-center justify-center rounded-lg bg-primary">
-            <LoaderCircle class="animate-spin" />
-          </div>
-        {/if}
-        Resolved
-      </Button>
-      <Button disabled={updateLoader}>Update</Button>
     </AlertDialog.Footer>
   </AlertDialog.Content>
 </AlertDialog.Root>
