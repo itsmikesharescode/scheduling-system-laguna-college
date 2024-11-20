@@ -15,12 +15,16 @@
 
   <section class="relative flex items-center justify-center">
     <div class="absolute inset-0 bg-black/20"></div>
-    <div class="relative z-10 rounded-lg bg-white/60 p-5">
-      <div class="flex flex-col items-center justify-center gap-2.5">
+    <div class="relative z-10 flex flex-col items-center justify-center gap-10 rounded-lg">
+      <section class="flex flex-col items-center justify-center gap-2.5 text-white">
         <enhanced:img src="/static/assets/logo.png" alt="logo" class=" w-[200px]" />
         <span class="text-center text-2xl font-bold">ITE Department Scheduling System</span>
+      </section>
 
-        <div class="w-[300px]">
+      <div
+        class="flex max-w-[320px] flex-col items-center justify-center gap-2.5 rounded-lg bg-white/60 p-5"
+      >
+        <div class="">
           {#if $page.url.searchParams.get('switch') === 'forgot-password'}
             <ForgotPwd forgotPwdForm={data.forgotPwdForm} />
           {:else}
