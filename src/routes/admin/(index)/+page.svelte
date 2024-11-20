@@ -81,9 +81,40 @@
     </section>
   </div>
 
-  <section class="grid w-full grid-cols-3 gap-5">
-    {@render counter(40, 'Total Teachers')}
-    {@render counter(1200, 'Total Students')}
-    {@render counter(30, 'Total Reports')}
-  </section>
+  {#await data.getDashboardCounts}
+    <section class="grid w-full grid-cols-3 gap-5">
+      <Card.Root class="shadow-lg ">
+        <Card.Content class="flex flex-col items-center justify-center gap-2.5">
+          <span class="text-2xl font-bold">Total Teachers</span>
+          <span class="text-7xl font-bold text-[#0F224C]">
+            <Skeleton class="h-[50px] w-[60px] rounded-lg bg-[#0F224C]" />
+          </span>
+        </Card.Content>
+      </Card.Root>
+
+      <Card.Root class="shadow-lg ">
+        <Card.Content class="flex flex-col items-center justify-center gap-2.5">
+          <span class="text-2xl font-bold">Total Students</span>
+          <span class="text-7xl font-bold text-[#0F224C]">
+            <Skeleton class="h-[50px] w-[60px] rounded-lg bg-[#0F224C]" />
+          </span>
+        </Card.Content>
+      </Card.Root>
+
+      <Card.Root class="shadow-lg ">
+        <Card.Content class="flex flex-col items-center justify-center gap-2.5">
+          <span class="text-2xl font-bold">Total Reports</span>
+          <span class="text-7xl font-bold text-[#0F224C]">
+            <Skeleton class="h-[50px] w-[60px] rounded-lg bg-[#0F224C]" />
+          </span>
+        </Card.Content>
+      </Card.Root>
+    </section>
+  {:then counts}
+    <section class="grid w-full grid-cols-3 gap-5">
+      {@render counter(counts?.teacher_count ?? 0, 'Total Teachers')}
+      {@render counter(counts?.student_count ?? 0, 'Total Students')}
+      {@render counter(counts?.report_count ?? 0, 'Total Reports')}
+    </section>
+  {/await}
 </main>

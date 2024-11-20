@@ -3,11 +3,13 @@ import type { Actions, PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
 import { addReminderSchema } from './components/AddReminder/schema';
 import { getReminders } from './(database)/getReminders';
+import { getDashboardCounts } from './(database)/getDashboardCounts';
 
 export const load: PageServerLoad = async ({ locals: { supabase, user } }) => {
   return {
     addReminderForm: await superValidate(zod(addReminderSchema)),
-    getReminders: getReminders(supabase, user?.id ?? '')
+    getReminders: getReminders(supabase, user?.id ?? ''),
+    getDashboardCounts: getDashboardCounts(supabase)
   };
 };
 
