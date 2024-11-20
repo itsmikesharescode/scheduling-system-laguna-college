@@ -34,7 +34,7 @@
   const { form: formData, enhance, submitting } = form;
 </script>
 
-<form method="POST" action="?/loginEvent" use:enhance class="flex flex-col gap-2.5">
+<form method="POST" action="?/forgotPwdEvent" use:enhance class="flex flex-col gap-2.5">
   <Form.Field {form} name="email">
     <Form.Control>
       {#snippet children({ props })}
