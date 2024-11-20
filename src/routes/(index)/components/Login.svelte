@@ -8,6 +8,8 @@
   import { toast } from 'svelte-sonner';
   import { LoaderCircle } from 'lucide-svelte';
   import Button from '$lib/components/ui/button/button.svelte';
+  import Eye from 'lucide-svelte/icons/eye';
+  import EyeClosed from 'lucide-svelte/icons/eye-closed';
 
   interface Props {
     loginForm: SuperValidated<Infer<LoginSchema>>;
@@ -32,6 +34,8 @@
   });
 
   const { form: formData, enhance, submitting } = form;
+
+  let showPassword = $state(false);
 </script>
 
 <form method="POST" action="?/loginEvent" use:enhance class="flex flex-col gap-2.5">
@@ -49,12 +53,26 @@
     <Form.Control>
       {#snippet children({ props })}
         <Form.Label>Password</Form.Label>
-        <Input
-          type="password"
-          {...props}
-          bind:value={$formData.password}
-          placeholder="Enter your password"
-        />
+        <section class="relative">
+          <Input
+            type={showPassword ? 'text' : 'password'}
+            {...props}
+            bind:value={$formData.password}
+            placeholder="Enter your password"
+            class="pr-7"
+          />
+          <button
+            type="button"
+            class="absolute right-2 top-1/2 -translate-y-1/2"
+            onclick={() => (showPassword = !showPassword)}
+          >
+            {#if showPassword}
+              <Eye class="size-4" />
+            {:else}
+              <EyeClosed class="size-4" />
+            {/if}
+          </button>
+        </section>
       {/snippet}
     </Form.Control>
     <Form.FieldErrors />
