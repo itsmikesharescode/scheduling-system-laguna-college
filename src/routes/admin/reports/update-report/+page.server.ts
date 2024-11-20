@@ -1,4 +1,4 @@
-import { redirect } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { getUserInfo } from '../(database)/getUserInfo';
 import { updateReportSchema } from './schema';
@@ -13,4 +13,22 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
     updateUserInfoForm: await superValidate(zod(updateReportSchema)),
     getUserInfo: getUserInfo(supabase, user_id)
   };
+};
+
+export const actions: Actions = {
+  updateScheduleEvent: async ({ request, locals: { supabaseAdmin } }) => {
+    const form = await superValidate(request, zod(updateReportSchema));
+
+    if (!form.valid) return fail(400, { form });
+
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(form.data.user_id, {
+      user_metadata: {
+        sections: form.data.sections,
+        subjects: form.data.subjects
+      }
+    });
+
+    if (error) return fail(401, { form, msg: error.message });
+    return { form, msg: 'Report updated successfully' };
+  }
 };
