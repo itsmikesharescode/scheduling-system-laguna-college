@@ -20,6 +20,10 @@ export const adminRoutes = [
 export const studentRoutes = [
   {
     url: '/student',
+    name: 'Dashboard'
+  },
+  {
+    url: '/student/schedule',
     name: 'Schedule'
   },
   {
