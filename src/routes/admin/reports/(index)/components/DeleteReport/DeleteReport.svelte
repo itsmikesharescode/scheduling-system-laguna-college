@@ -11,7 +11,7 @@
   const tableState = useTableState();
 
   let deleteLoader = $state(false);
-  const deleteStudentEvent: SubmitFunction = () => {
+  const deleteReportEvent: SubmitFunction = () => {
     deleteLoader = true;
     return async ({ result, update }) => {
       const { status, data } = result as Result<{ msg: string }>;
@@ -49,9 +49,9 @@
       >
         Cancel
       </Button>
-      <form method="post" action="?/deleteStudentEvent" use:enhance={deleteStudentEvent}>
-        <input type="hidden" value={tableState.getActiveRow()?.user_id} name="userId" />
-        <Button type="submit" disabled={deleteLoader}>
+      <form method="post" action="?/deleteReportEvent" use:enhance={deleteReportEvent}>
+        <input type="hidden" value={tableState.getActiveRow()?.id} name="id" />
+        <Button type="submit" disabled={deleteLoader} class="relative">
           {#if deleteLoader}
             <div class="absolute inset-0 flex items-center justify-center rounded-lg bg-primary">
               <LoaderCircle class="animate-spin" />
