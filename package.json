@@ -49,11 +49,16 @@
   },
   "dependencies": {
     "@fontsource/poppins": "^5.1.0",
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/list": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
     "@inlang/paraglide-sveltekit": "^0.11.5",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
     "@sveltejs/enhanced-img": "^0.4.1",
     "@tanstack/table-core": "^8.20.5",
-    "supabase": "^1.223.10"
+    "supabase": "^1.223.10",
+    "xlsx": "^0.18.5"
   }
 }

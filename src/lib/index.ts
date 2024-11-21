@@ -289,3 +289,65 @@ export const timeSlots = (() => {
 
   return slots;
 })();
+
+interface Schedule {
+  day: string;
+  endTime: string;
+  id: string;
+  startTime: string;
+}
+
+export const isScheduleConflicting = (schedule1: Schedule, schedule2: Schedule): boolean => {
+  // First check if they're on the same day
+  if (schedule1.day !== schedule2.day) {
+    return false;
+  }
+
+  // Convert times to comparable format (minutes since midnight)
+  function timeToMinutes(time: string): number {
+    const [timeStr, period] = time.split(' ');
+    let [hours, minutes] = timeStr.split(':').map(Number);
+
+    // Convert to 24 hour format
+    if (period === 'PM' && hours !== 12) {
+      hours += 12;
+    } else if (period === 'AM' && hours === 12) {
+      hours = 0;
+    }
+
+    return hours * 60 + minutes;
+  }
+
+  const start1 = timeToMinutes(schedule1.startTime);
+  const end1 = timeToMinutes(schedule1.endTime);
+  const start2 = timeToMinutes(schedule2.startTime);
+  const end2 = timeToMinutes(schedule2.endTime);
+
+  // Check for overlap
+  const isOverlapping = start1 < end2 && end1 > start2;
+
+  // If there's an overlap, log the conflict
+  if (isOverlapping) {
+    console.log('⚠️ Schedule Conflict Detected:');
+    console.log(`Time Slot 1: ${schedule1.day} ${schedule1.startTime} - ${schedule1.endTime}`);
+    console.log(`Time Slot 2: ${schedule2.day} ${schedule2.startTime} - ${schedule2.endTime}`);
+    console.log('-------------------');
+  }
+
+  return isOverlapping;
+};
+
+// Example usage:
+const schedule1 = {
+  day: 'Thursday',
+  startTime: '8:00 AM',
+  endTime: '9:00 AM',
+  id: '1'
+};
+
+const schedule2 = {
+  day: 'Thursday',
+  startTime: '8:30 AM',
+  endTime: '10:00 AM',
+  id: '2'
+};
