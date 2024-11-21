@@ -142,9 +142,9 @@
 
         return {
           html: `
-            <div class="flex flex-col gap-0.5 p-1">
+            <div title="${arg.event.title.split(' - ')[0]} | ${formatTime(arg.event.start as Date)} - ${formatTime(arg.event.end as Date)}" class="flex flex-col gap-0.5 p-1 cursor-progress">
               <div class="font-medium text-xs">${arg.event.title.split(' - ')[0]}</div>
-              <div class="text-[15px] opacity-75">${formatTime(arg.event.start as Date)} - ${formatTime(arg.event.end as Date)}</div>
+              <div  class="text-[15px] opacity-75">${formatTime(arg.event.start as Date)} - ${formatTime(arg.event.end as Date)}</div>
             </div>
           `
         };

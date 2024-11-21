@@ -297,11 +297,23 @@ interface Schedule {
   startTime: string;
 }
 
-export const isScheduleConflicting = (schedule1: Schedule, schedule2: Schedule): boolean => {
-  // First check if they're on the same day
-  if (schedule1.day !== schedule2.day) {
-    return false;
-  }
+interface Subject {
+  id: string;
+  name: string;
+  schedules: Schedule[];
+}
+
+interface Conflict {
+  subject1: string;
+  subject2: string;
+  conflictingSchedules: {
+    schedule1: Schedule;
+    schedule2: Schedule;
+  };
+}
+
+export const findScheduleConflicts = (subjects: Subject[]): Conflict[] => {
+  const conflicts: Conflict[] = [];
 
   // Convert times to comparable format (minutes since midnight)
   function timeToMinutes(time: string): number {
@@ -318,36 +330,40 @@ export const isScheduleConflicting = (schedule1: Schedule, schedule2: Schedule):
     return hours * 60 + minutes;
   }
 
-  const start1 = timeToMinutes(schedule1.startTime);
-  const end1 = timeToMinutes(schedule1.endTime);
-  const start2 = timeToMinutes(schedule2.startTime);
-  const end2 = timeToMinutes(schedule2.endTime);
+  function isOverlapping(schedule1: Schedule, schedule2: Schedule): boolean {
+    if (schedule1.day !== schedule2.day) return false;
 
-  // Check for overlap
-  const isOverlapping = start1 < end2 && end1 > start2;
+    const start1 = timeToMinutes(schedule1.startTime);
+    const end1 = timeToMinutes(schedule1.endTime);
+    const start2 = timeToMinutes(schedule2.startTime);
+    const end2 = timeToMinutes(schedule2.endTime);
 
-  // If there's an overlap, log the conflict
-  if (isOverlapping) {
-    console.log('⚠️ Schedule Conflict Detected:');
-    console.log(`Time Slot 1: ${schedule1.day} ${schedule1.startTime} - ${schedule1.endTime}`);
-    console.log(`Time Slot 2: ${schedule2.day} ${schedule2.startTime} - ${schedule2.endTime}`);
-    console.log('-------------------');
+    return start1 < end2 && end1 > start2;
   }
 
-  return isOverlapping;
-};
+  // Compare each subject with every other subject
+  for (let i = 0; i < subjects.length; i++) {
+    for (let j = i + 1; j < subjects.length; j++) {
+      const subject1 = subjects[i];
+      const subject2 = subjects[j];
 
-// Example usage:
-const schedule1 = {
-  day: 'Thursday',
-  startTime: '8:00 AM',
-  endTime: '9:00 AM',
-  id: '1'
-};
+      // Compare each schedule of subject1 with each schedule of subject2
+      for (const schedule1 of subject1.schedules) {
+        for (const schedule2 of subject2.schedules) {
+          if (isOverlapping(schedule1, schedule2)) {
+            conflicts.push({
+              subject1: subject1.name,
+              subject2: subject2.name,
+              conflictingSchedules: {
+                schedule1,
+                schedule2
+              }
+            });
+          }
+        }
+      }
+    }
+  }
 
-const schedule2 = {
-  day: 'Thursday',
-  startTime: '8:30 AM',
-  endTime: '10:00 AM',
-  id: '2'
+  return conflicts;
 };

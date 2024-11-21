@@ -14,12 +14,13 @@
   import type { Result } from '$lib/types/types';
 
   interface Props {
-    open: boolean;
     reportIssueForm: SuperValidated<Infer<ReportIssueSchema>>;
     user: User;
   }
 
-  let { reportIssueForm, user, open = $bindable() }: Props = $props();
+  let { reportIssueForm, user }: Props = $props();
+
+  let open = $state(false);
 
   const form = superForm(reportIssueForm, {
     validators: zodClient(reportIssueSchema),

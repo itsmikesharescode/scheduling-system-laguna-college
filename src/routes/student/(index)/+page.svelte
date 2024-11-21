@@ -3,9 +3,40 @@
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
   import * as Card from '$lib/components/ui/card/index.js';
   import { page } from '$app/stores';
-  import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+
+  interface Schedule {
+    day: string;
+    endTime: string;
+    id: string;
+    startTime: string;
+  }
+
+  interface Subject {
+    id: string;
+    name: string;
+    schedules: Schedule[];
+  }
 
   const { data } = $props();
+  let todaySubjects = $state<Subject[]>([]);
+
+  function getTodaySchedule(): void {
+    const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+    const subjects: Subject[] = $page.data.user?.user_metadata.subjects || [];
+
+    todaySubjects = subjects
+      .filter((subject: Subject) =>
+        subject.schedules.some((schedule: Schedule) => schedule.day === today)
+      )
+      .map((subject: Subject) => ({
+        ...subject,
+        schedules: subject.schedules.filter((schedule: Schedule) => schedule.day === today)
+      }));
+  }
+
+  $effect(() => {
+    getTodaySchedule();
+  });
 </script>
 
 {#snippet counter(count: number, title: string)}
@@ -28,7 +59,7 @@
         <div class="flex flex-col items-center justify-center gap-2.5">
           <span class="text-center text-3xl">Hi, {$page.data.user?.user_metadata.lastName}.</span>
           <span class="text-center text-2xl">
-            You have 5 classes today. Please check. Thank you!
+            You have {$page.data.user?.user_metadata.subjects.length} subjects. Please check.
           </span>
         </div>
 
@@ -45,6 +76,9 @@
     <section class="flex flex-col gap-2.5 rounded-2xl bg-[#0F224C] p-5 text-white">
       <div class="flex w-full items-center justify-between">
         <span class="text-center text-3xl">Today's Schedule</span>
+        {#each todaySubjects as subject}
+          <span>{subject.name}</span>
+        {/each}
       </div>
 
       <ScrollArea class="h-[40dvh] p-5"></ScrollArea>
