@@ -39,10 +39,9 @@
 <AlertDialog.Root bind:open={showDelete}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+      <AlertDialog.Title>Delete Reminder?</AlertDialog.Title>
       <AlertDialog.Description>
-        This action cannot be undone. This will permanently delete your account and remove your data
-        from our servers.
+        This action cannot be undone. This will permanently delete this reminder from our database.
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
