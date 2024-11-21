@@ -17,6 +17,21 @@ export const adminRoutes = [
   }
 ];
 
+export const studentRoutes = [
+  {
+    url: '/student',
+    name: 'Schedule'
+  },
+  {
+    url: '/student/reports',
+    name: 'Reports'
+  },
+  {
+    url: '/student/account',
+    name: 'Account'
+  }
+];
+
 //metadatas
 export const curriculum = [
   {

@@ -74,7 +74,11 @@
           <div class="flex items-center gap-2.5">
             <CircleUserRound class="h-[100px] w-[100px]" />
             <section class="flex flex-col">
-              <span class="line-clamp-1 text-sm font-bold">Alexandra</span>
+              <span class="line-clamp-1 text-sm font-bold">
+                {$page.data.user?.user_metadata.firstName}
+                {$page.data.user?.user_metadata.middleName}
+                {$page.data.user?.user_metadata.lastName}
+              </span>
               <span class="line-clamp-1 text-sm text-muted-foreground"
                 >{$page.data.user?.user_metadata.email}</span
               >
