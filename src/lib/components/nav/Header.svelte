@@ -34,6 +34,22 @@
     logoutLoader = false;
     await invalidateAll();
   };
+
+  const navIndicator = (url: string) => {
+    // Basic exact match
+    if ($page.url.pathname === url) return true;
+
+    // Check if current path starts with url and handle special cases
+    if ($page.url.pathname.startsWith(url + '/')) {
+      // Return false only for exact matches with excluded paths
+      if (url === '/admin' || url === '/student' || url === '/teacher') {
+        return url === $page.url.pathname.split('/')[1];
+      }
+      return true;
+    }
+
+    return false;
+  };
 </script>
 
 <!-- <header class="container flex items-center justify-end gap-2 p-2">
@@ -55,8 +71,7 @@
       {#each navigations as navigation}
         <a
           href={navigation.url}
-          class="{$page.url.pathname === navigation.url ||
-          ($page.url.pathname.startsWith(navigation.url + '/') && navigation.url !== '/admin')
+          class="{navIndicator(navigation.url)
             ? 'font-bold text-[#FFC700]'
             : 'text-white'} p-2 transition-all hover:scale-95"
         >
