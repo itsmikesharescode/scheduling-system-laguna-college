@@ -301,7 +301,8 @@ CREATE TABLE IF NOT EXISTS "public"."reports_tb" (
     "status" character varying NOT NULL,
     "user_id" "uuid" NOT NULL,
     "reporter_id" "text" NOT NULL,
-    "message" "text" NOT NULL
+    "message" "text" NOT NULL,
+    "reference_id" "text" NOT NULL
 );
 
 
@@ -467,6 +468,10 @@ CREATE POLICY "Allow all if admin" ON "public"."reports_tb" TO "authenticated" U
 
 
 CREATE POLICY "Allow delete if teacher or student" ON "public"."reports_tb" FOR DELETE TO "authenticated" USING ((("public"."is_teacher"() AND ("auth"."uid"() = "user_id")) OR ("public"."is_student"() AND ("auth"."uid"() = "user_id"))));
+
+
+
+CREATE POLICY "Allow insert if student" ON "public"."reports_tb" FOR INSERT TO "authenticated" WITH CHECK (("public"."is_student"() OR "public"."is_teacher"()));
 
 
 
