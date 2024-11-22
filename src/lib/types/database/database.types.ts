@@ -1,4 +1,5 @@
 import type { Student, Teacher } from './aux.types';
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
@@ -94,6 +95,7 @@ export type Database = {
           created_at: string;
           id: number;
           message: string;
+          reference_id: string;
           reporter_id: string;
           status: string;
           user_id: string;
@@ -102,6 +104,7 @@ export type Database = {
           created_at?: string;
           id?: number;
           message: string;
+          reference_id: string;
           reporter_id: string;
           status: string;
           user_id: string;
@@ -110,6 +113,7 @@ export type Database = {
           created_at?: string;
           id?: number;
           message?: string;
+          reference_id?: string;
           reporter_id?: string;
           status?: string;
           user_id?: string;
@@ -198,17 +202,17 @@ export type Database = {
         Row: {
           created_at: string;
           user_id: string;
-          user_meta_data: Student | Teacher;
+          user_meta_data: Teacher | Student;
         };
         Insert: {
           created_at?: string;
           user_id: string;
-          user_meta_data: Student | Teacher;
+          user_meta_data: Teacher | Student;
         };
         Update: {
           created_at?: string;
           user_id?: string;
-          user_meta_data?: Student | Teacher;
+          user_meta_data?: Teacher | Student;
         };
         Relationships: [];
       };
@@ -226,6 +230,10 @@ export type Database = {
           created_at: string;
           user_meta_data: Json;
         }[];
+      };
+      get_dashboard_counts: {
+        Args: Record<PropertyKey, never>;
+        Returns: Json;
       };
       is_admin: {
         Args: Record<PropertyKey, never>;
