@@ -9,7 +9,7 @@
 <div class="flex flex-col gap-4 p-4">
   {#if $page.data.user}
     <section>
-      <IssueReport reportIssueForm={data.reportIssueForm} user={$page.data.user} />
+      <IssueReport reportIssueForm={data.reportIssueForm} />
     </section>
     <Schedules />
   {/if}

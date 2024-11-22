@@ -16,17 +16,19 @@ export const actions: Actions = {
     const form = await superValidate(request, zod(reportIssueSchema));
 
     if (!form.valid) return fail(400, { form });
+    console.log(form.data);
 
-    const userData = JSON.parse(form.data.userObj) as User;
-
-    const { error } = await supabase.from('reports_list_tb').insert([
+    const { error } = await supabase.from('reports_tb').insert([
       {
-        user_id: userData.id,
-        msg: form.data.msg
+        user_id: form.data.user_id,
+        reporter_id: form.data.reporter_id,
+        status: 'pending',
+        message: form.data.msg
       }
     ]);
 
     if (error) return fail(401, { form, msg: error.message });
+
     return { form, msg: 'Report submitted.' };
   }
 };

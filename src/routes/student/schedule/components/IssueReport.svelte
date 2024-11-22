@@ -10,17 +10,15 @@
   import { Loader } from 'lucide-svelte';
   import { reportIssueSchema, type ReportIssueSchema } from './schema';
   import { Textarea } from '$lib/components/ui/textarea';
-  import type { User } from '@supabase/supabase-js';
   import type { Result } from '$lib/types/types';
   import { page } from '$app/stores';
   import { findConflicts } from '$lib';
 
   interface Props {
     reportIssueForm: SuperValidated<Infer<ReportIssueSchema>>;
-    user: User;
   }
 
-  let { reportIssueForm, user }: Props = $props();
+  let { reportIssueForm }: Props = $props();
 
   let open = $state(false);
 
@@ -31,13 +29,13 @@
       const { status, data } = result as Result<{ msg: string }>;
       switch (status) {
         case 200:
-          toast.success('', { description: data.msg });
+          toast.success(data.msg);
           form.reset();
           open = false;
           break;
 
         case 401:
-          toast.error('', { description: data.msg });
+          toast.error(data.msg);
           break;
       }
     }
@@ -88,10 +86,11 @@
     </AlertDialog.Header>
 
     <form method="POST" action="?/reportIssueEvent" use:enhance>
-      <Form.Field {form} name="userObj" class="hidden">
+      <input type="hidden" name="reporter_id" value={$page.data.user?.user_metadata.studentId} />
+      <Form.Field {form} name="user_id" class="hidden">
         <Form.Control>
           {#snippet children({ props })}
-            <Input {...props} value={JSON.stringify(user)} />
+            <Input {...props} value={$page.data.user?.id} />
           {/snippet}
         </Form.Control>
       </Form.Field>
