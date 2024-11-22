@@ -1,27 +1,67 @@
 <script lang="ts">
-  import { Calendar } from '@fullcalendar/core';
-  import timeGridPlugin from '@fullcalendar/timegrid';
   import { page } from '$app/stores';
-
-  interface Schedule {
-    day: string;
-    endTime: string;
-    id: string;
-    startTime: string;
-  }
-
-  interface Subject {
-    id: string;
-    name: string;
-    schedules: Schedule[];
-  }
+  import { Calendar } from '@fullcalendar/core';
+  import dayGridPlugin from '@fullcalendar/daygrid';
+  import timeGridPlugin from '@fullcalendar/timegrid';
+  import { onMount } from 'svelte';
 
   let calendarEl: HTMLElement;
-  let calendar: Calendar;
+  let conflictingSchedules: { subject1: string; subject2: string; day: string; time: string }[] =
+    [];
 
-  // Function to convert day string to number (0 = Sunday, 1 = Monday, etc.)
-  const getDayNumber = (day: string): number => {
-    const days = {
+  function checkTimeOverlap(start1: string, end1: string, start2: string, end2: string): boolean {
+    const [start1Hours, start1Mins] = convertTo24Hour(start1).split(':').map(Number);
+    const [end1Hours, end1Mins] = convertTo24Hour(end1).split(':').map(Number);
+    const [start2Hours, start2Mins] = convertTo24Hour(start2).split(':').map(Number);
+    const [end2Hours, end2Mins] = convertTo24Hour(end2).split(':').map(Number);
+
+    const start1Time = start1Hours * 60 + start1Mins;
+    const end1Time = end1Hours * 60 + end1Mins;
+    const start2Time = start2Hours * 60 + start2Mins;
+    const end2Time = end2Hours * 60 + end2Mins;
+
+    return start1Time < end2Time && end1Time > start2Time;
+  }
+
+  function findConflicts(subjects: any[]) {
+    const conflicts = [];
+
+    for (let i = 0; i < subjects.length; i++) {
+      for (let j = i + 1; j < subjects.length; j++) {
+        const subject1 = subjects[i];
+        const subject2 = subjects[j];
+
+        // Check each schedule combination
+        for (const schedule1 of subject1.schedules) {
+          for (const schedule2 of subject2.schedules) {
+            if (schedule1.day === schedule2.day) {
+              if (
+                checkTimeOverlap(
+                  schedule1.startTime,
+                  schedule1.endTime,
+                  schedule2.startTime,
+                  schedule2.endTime
+                )
+              ) {
+                conflicts.push({
+                  subject1: subject1.name,
+                  subject2: subject2.name,
+                  day: schedule1.day,
+                  time: `${schedule1.startTime} - ${schedule1.endTime}`
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return conflicts;
+  }
+
+  function transformSchedulesToEvents(subjects: any[]) {
+    const events = [];
+    const daysMap: Record<string, number> = {
       Sunday: 0,
       Monday: 1,
       Tuesday: 2,
@@ -30,194 +70,119 @@
       Friday: 5,
       Saturday: 6
     };
-    return days[day as keyof typeof days];
-  };
 
-  // Function to check if two time ranges overlap
-  const isOverlapping = (start1: string, end1: string, start2: string, end2: string): boolean => {
-    const start1Time = new Date(start1).getTime();
-    const end1Time = new Date(end1).getTime();
-    const start2Time = new Date(start2).getTime();
-    const end2Time = new Date(end2).getTime();
+    conflictingSchedules = findConflicts(subjects);
+    const conflictingSubjects = new Set(
+      conflictingSchedules.flatMap((conflict) => [conflict.subject1, conflict.subject2])
+    );
 
-    return start1Time < end2Time && end1Time > start2Time;
-  };
-
-  // Function to create calendar events from subjects
-  const createEvents = (subjects: Subject[]) => {
-    const events = [];
-    const currentDate = new Date();
-    const currentDay = currentDate.getDay();
-
-    // First, create all events
     for (const subject of subjects) {
       for (const schedule of subject.schedules) {
-        const scheduleDay = getDayNumber(schedule.day);
-        const daysToAdd = scheduleDay - currentDay;
-        const eventDate = new Date(currentDate);
-        eventDate.setDate(eventDate.getDate() + daysToAdd);
+        const date = new Date();
+        const targetDay = daysMap[schedule.day];
+        const currentDay = date.getDay();
+        date.setDate(date.getDate() + ((targetDay + 7 - currentDay) % 7));
 
-        const startDateTime = `${eventDate.toISOString().split('T')[0]}T${convertTo24Hour(schedule.startTime)}`;
-        const endDateTime = `${eventDate.toISOString().split('T')[0]}T${convertTo24Hour(schedule.endTime)}`;
+        const isConflicting = conflictingSubjects.has(subject.name);
 
         events.push({
-          id: schedule.id,
           title: subject.name,
-          start: startDateTime,
-          end: endDateTime,
-          scheduleDay, // Store the day for overlap checking
-          backgroundColor: `hsl(var(--primary))`,
-          borderColor: `hsl(var(--primary))`
+          startTime: convertTo24Hour(schedule.startTime),
+          endTime: convertTo24Hour(schedule.endTime),
+          daysOfWeek: [targetDay],
+          backgroundColor: isConflicting ? '#FFE5E5' : generatePastelColor(subject.id),
+          borderColor: isConflicting ? '#FF0000' : generatePastelColor(subject.id),
+          textColor: isConflicting ? '#FF0000' : '#000000',
+          extendedProps: {
+            department: subject.name.split('-')[0].trim(),
+            isConflicting
+          }
         });
       }
     }
-
-    // Check for overlaps and update colors
-    for (let i = 0; i < events.length; i++) {
-      for (let j = i + 1; j < events.length; j++) {
-        if (
-          events[i].scheduleDay === events[j].scheduleDay && // Same day
-          isOverlapping(events[i].start, events[i].end, events[j].start, events[j].end)
-        ) {
-          // Mark both events as overlapping
-          events[i].backgroundColor = 'hsl(var(--destructive))';
-          events[i].borderColor = 'hsl(var(--destructive))';
-          events[j].backgroundColor = 'hsl(var(--destructive))';
-          events[j].borderColor = 'hsl(var(--destructive))';
-        }
-      }
-    }
-
     return events;
-  };
+  }
 
-  // Helper function to convert 12-hour format to 24-hour format
-  const convertTo24Hour = (time12h: string): string => {
-    const [time, modifier] = time12h.split(' ');
+  function convertTo24Hour(timeStr: string) {
+    const [time, period] = timeStr.split(' ');
     let [hours, minutes] = time.split(':');
+    let hour = parseInt(hours);
 
-    if (hours === '12') {
-      hours = '00';
+    if (period === 'PM' && hour !== 12) {
+      hour += 12;
+    } else if (period === 'AM' && hour === 12) {
+      hour = 0;
     }
 
-    if (modifier === 'PM') {
-      hours = String(parseInt(hours, 10) + 12);
+    return `${hour.toString().padStart(2, '0')}:${minutes}`;
+  }
+
+  function generatePastelColor(seed: string) {
+    // Simple hash function to generate consistent colors for the same subject
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
     }
 
-    return `${hours.padStart(2, '0')}:${minutes}:00`;
-  };
+    const hue = hash % 360;
+    return `hsl(${hue}, 70%, 80%)`;
+  }
 
-  const mountCalendar = () => {
-    const subjects = $page.data.user?.user_metadata.subjects || [];
-
-    calendar = new Calendar(calendarEl, {
-      plugins: [timeGridPlugin],
+  onMount(() => {
+    const calendar = new Calendar(calendarEl, {
+      plugins: [dayGridPlugin, timeGridPlugin],
       initialView: 'timeGridWeek',
       headerToolbar: {
-        left: '',
+        left: 'prev,next today',
         center: 'title',
-        right: ''
+        right: 'timeGridWeek,timeGridDay'
       },
+      initialDate: new Date(),
+      nowIndicator: true,
+      slotMinTime: '06:00:00',
+      slotMaxTime: '22:00:00',
+      events: transformSchedulesToEvents($page.data.user?.user_metadata.subjects || []),
+      height: 'auto',
       allDayText: '',
-      slotMinTime: '07:00:00',
-      slotMaxTime: '21:00:00',
-      slotDuration: '00:30:00',
-      slotLabelInterval: '00:30',
+      slotDuration: '00:15:00',
+      slotLabelInterval: '00:15:00',
       slotLabelFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        meridiem: 'short',
+        hour12: true
+      },
+      eventTimeFormat: {
         hour: 'numeric',
         minute: '2-digit',
         meridiem: 'short'
       },
-      events: createEvents(subjects),
-      height: 'auto',
-      nowIndicator: true,
-      eventContent: (arg) => {
-        const formatTime = (date: Date) => {
-          return date.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-          });
-        };
-
-        return {
-          html: `
-            <div title="${arg.event.title.split(' - ')[0]} | ${formatTime(arg.event.start as Date)} - ${formatTime(arg.event.end as Date)}" class="flex flex-col gap-0.5 p-1 cursor-progress">
-              <div class="font-medium text-xs">${arg.event.title.split(' - ')[0]}</div>
-              <div  class="text-[15px] opacity-75">${formatTime(arg.event.start as Date)} - ${formatTime(arg.event.end as Date)}</div>
-            </div>
-          `
-        };
+      eventDidMount: (info) => {
+        if (info.event.extendedProps.isConflicting) {
+          const element = info.el;
+          element.style.border = '2px solid red';
+        }
       }
     });
 
     calendar.render();
-  };
 
-  $effect(() => {
-    mountCalendar();
     return () => {
       calendar.destroy();
     };
   });
 </script>
 
-<div class="rounded-lg border bg-background">
-  <style>
-    :global(.fc) {
-      --fc-border-color: hsl(var(--border));
-      --fc-page-bg-color: transparent;
-      --fc-neutral-bg-color: transparent;
-      --fc-today-bg-color: hsl(var(--muted) / 0.3);
-      --fc-now-indicator-color: hsl(var(--primary));
-    }
-
-    :global(.fc .fc-button) {
-      @apply rounded-md border px-3 py-1.5 text-xs font-medium shadow-none;
-      @apply bg-background transition-colors hover:bg-muted;
-      @apply disabled:opacity-50;
-    }
-
-    :global(.fc .fc-toolbar-title) {
-      @apply text-lg font-semibold;
-    }
-
-    :global(.fc .fc-toolbar.fc-header-toolbar) {
-      @apply mb-4 px-4 pt-4;
-    }
-
-    :global(.fc th) {
-      @apply border-border bg-muted/30 px-3 py-2 text-xs font-medium;
-    }
-
-    :global(.fc td) {
-      @apply border-border;
-    }
-
-    :global(.fc-timegrid-slot) {
-      @apply h-8;
-    }
-
-    :global(.fc-timegrid-slot-label) {
-      @apply text-xs text-muted-foreground;
-    }
-
-    :global(.fc-timegrid-slot.fc-timegrid-slot-minor) {
-      @apply border-border/30;
-    }
-
-    :global(.fc-event) {
-      @apply rounded-sm border-none bg-primary text-primary-foreground !important;
-    }
-
-    :global(.fc-timegrid-now-indicator-line) {
-      @apply border-primary;
-    }
-
-    :global(.fc-timegrid-now-indicator-arrow) {
-      @apply border-primary;
-    }
-  </style>
-
-  <div bind:this={calendarEl} class="min-h-[600px] w-full"></div>
-</div>
+{#if conflictingSchedules.length > 0}
+  <div class="mt-4 rounded-md border border-red-200 bg-red-50 p-4">
+    <h3 class="mb-2 font-semibold text-red-800">Schedule Conflicts Detected:</h3>
+    <ul class="list-disc pl-5">
+      {#each conflictingSchedules as conflict}
+        <li class="text-red-700">
+          Conflict between "{conflict.subject1}" and "{conflict.subject2}" on {conflict.day} at {conflict.time}
+        </li>
+      {/each}
+    </ul>
+  </div>
+{/if}
+<div bind:this={calendarEl} class="mt-4"></div>
