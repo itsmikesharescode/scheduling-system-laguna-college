@@ -1,16 +1,20 @@
 <script lang="ts">
-  import { browser } from '$app/environment';
-  import { page } from '$app/stores';
-  import { convertTo24Hour, findConflicts } from '$lib';
-  import { Calendar } from '@fullcalendar/core';
-  import dayGridPlugin from '@fullcalendar/daygrid';
-  import timeGridPlugin from '@fullcalendar/timegrid';
+  // Import necessary dependencies
+  import { browser } from '$app/environment'; // For checking if code is running in browser
+  import { page } from '$app/stores'; // SvelteKit's page store
+  import { convertTo24Hour, findConflicts } from '$lib'; // Utility functions
+  import { Calendar } from '@fullcalendar/core'; // FullCalendar main component
+  import dayGridPlugin from '@fullcalendar/daygrid'; // For month/week grid view
+  import timeGridPlugin from '@fullcalendar/timegrid'; // For detailed time grid view
 
+  // Calendar instance and DOM element references
   let calendar: Calendar;
   let calendarEl: HTMLElement;
 
+  // Function to transform subject schedules into FullCalendar event format
   const transformSchedulesToEvents = (subjects: any[]) => {
     const events = [];
+    // Map days to their corresponding numeric values (0-6)
     const daysMap: Record<string, number> = {
       Sunday: 0,
       Monday: 1,
@@ -21,24 +25,30 @@
       Saturday: 6
     };
 
+    // Create a Set of subjects that have scheduling conflicts
     const conflictingSubjects = new Set(
       conflicts.flatMap((conflict) => [conflict.subject1, conflict.subject2])
     );
 
+    // Iterate through each subject and its schedules
     for (const subject of subjects) {
       for (const schedule of subject.schedules) {
+        // Calculate the next occurrence of the scheduled day
         const date = new Date();
         const targetDay = daysMap[schedule.day];
         const currentDay = date.getDay();
         date.setDate(date.getDate() + ((targetDay + 7 - currentDay) % 7));
 
+        // Check if this subject has any conflicts
         const isConflicting = conflictingSubjects.has(subject.name);
 
+        // Create event object with styling based on conflict status
         events.push({
           title: subject.name,
           startTime: convertTo24Hour(schedule.startTime),
           endTime: convertTo24Hour(schedule.endTime),
           daysOfWeek: [targetDay],
+          // Apply different styling for conflicting events
           backgroundColor: isConflicting ? '#FFE5E5' : generatePastelColor(subject.id),
           borderColor: isConflicting ? '#FF0000' : generatePastelColor(subject.id),
           textColor: isConflicting ? '#FF0000' : '#000000',
@@ -52,17 +62,19 @@
     return events;
   };
 
+  // Generate consistent pastel colors based on subject ID
   const generatePastelColor = (seed: string) => {
-    // Simple hash function to generate consistent colors for the same subject
+    // Hash the input string to generate a consistent number
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
       hash = seed.charCodeAt(i) + ((hash << 5) - hash);
     }
-
+    // Convert hash to HSL color (pastel)
     const hue = hash % 360;
     return `hsl(${hue}, 70%, 80%)`;
   };
 
+  // Initialize and configure the FullCalendar instance
   const renderCalendar = () => {
     calendar = new Calendar(calendarEl, {
       plugins: [dayGridPlugin, timeGridPlugin],
@@ -92,6 +104,7 @@
         minute: '2-digit',
         meridiem: 'short'
       },
+      // Custom event rendering for conflicting events
       eventDidMount: (info) => {
         if (info.event.extendedProps.isConflicting) {
           const element = info.el;
@@ -101,20 +114,24 @@
     });
   };
 
+  // Lifecycle effect to handle calendar initialization and cleanup
   $effect(() => {
     if (browser) {
       renderCalendar();
       calendar.render();
     }
 
+    // Cleanup function to destroy calendar when component unmounts
     return () => {
       calendar.destroy();
     };
   });
 
+  // Reactive declaration to compute schedule conflicts
   const conflicts = $derived(findConflicts($page.data.user?.user_metadata.subjects || []));
 </script>
 
+<!-- Display conflict warnings if any conflicts exist -->
 {#if conflicts.length > 0}
   <div class="mt-4 rounded-md border border-red-200 bg-red-50 p-4">
     <h3 class="mb-2 text-sm font-semibold text-red-800">Schedule Conflicts Detected:</h3>
@@ -127,4 +144,6 @@
     </ul>
   </div>
 {/if}
+
+<!-- Calendar container element -->
 <div bind:this={calendarEl} class="mt-4"></div>
