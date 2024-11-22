@@ -3,7 +3,6 @@
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
   import * as Card from '$lib/components/ui/card/index.js';
   import { page } from '$app/stores';
-
   interface Schedule {
     day: string;
     endTime: string;
@@ -36,6 +35,10 @@
 
   $effect(() => {
     getTodaySchedule();
+
+    return () => {
+      todaySubjects = [];
+    };
   });
 </script>
 
@@ -68,20 +71,21 @@
       <section
         class="flex flex-col gap-2.5 rounded-2xl border-2 border-[#0F224C] p-5 text-[#0F224C]"
       >
-        <span class=" text-3xl">Monday</span>
-        <span class="text-center text-4xl font-semibold"> Nov 6, 1996 </span>
+        <span class=" text-3xl">{new Date().toLocaleDateString('en-US', { weekday: 'long' })}</span>
+        <span class="text-center text-4xl font-semibold">{new Date().toLocaleDateString()}</span>
       </section>
     </section>
 
     <section class="flex flex-col gap-2.5 rounded-2xl bg-[#0F224C] p-5 text-white">
-      <div class="flex w-full items-center justify-between">
-        <span class="text-center text-3xl">Today's Schedule</span>
-        {#each todaySubjects as subject}
-          <span>{subject.name}</span>
-        {/each}
-      </div>
+      <span class="text-center text-3xl">Today's Schedule</span>
 
-      <ScrollArea class="h-[40dvh] p-5"></ScrollArea>
+      <ScrollArea class="b max-h-[30dvh]">
+        <div class="flex flex-col gap-2.5">
+          {#each todaySubjects as subject}
+            <a href="/student/schedule" class="transition-all hover:underline">{subject.name}</a>
+          {/each}
+        </div>
+      </ScrollArea>
     </section>
   </div>
 </main>
