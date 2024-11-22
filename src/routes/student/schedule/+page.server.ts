@@ -4,6 +4,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { reportIssueSchema } from './components/schema';
 import { fail } from '@sveltejs/kit';
 import type { User } from '@supabase/supabase-js';
+import { generateReferenceId } from '$lib';
 
 export const load: PageServerLoad = async () => {
   return {
@@ -16,10 +17,10 @@ export const actions: Actions = {
     const form = await superValidate(request, zod(reportIssueSchema));
 
     if (!form.valid) return fail(400, { form });
-    console.log(form.data);
 
     const { error } = await supabase.from('reports_tb').insert([
       {
+        reference_id: generateReferenceId(),
         user_id: form.data.user_id,
         reporter_id: form.data.reporter_id,
         status: 'pending',
