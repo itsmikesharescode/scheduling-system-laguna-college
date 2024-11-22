@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Schedules from './components/Schedules.svelte';
   import IssueReport from './components/IssueReport.svelte';
   import { page } from '$app/stores';
+  import Schedules from '$lib/components/general/Schedules.svelte';
 
   const { data } = $props();
 </script>
@@ -11,6 +11,6 @@
     <section>
       <IssueReport reportIssueForm={data.reportIssueForm} />
     </section>
-    <Schedules />
+    <Schedules subjects={$page.data.user?.user_metadata.subjects || []} />
   {/if}
 </div>

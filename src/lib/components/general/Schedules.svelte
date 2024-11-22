@@ -1,11 +1,16 @@
 <script lang="ts">
   // Import necessary dependencies
   import { browser } from '$app/environment'; // For checking if code is running in browser
-  import { page } from '$app/stores'; // SvelteKit's page store
   import { convertTo24Hour, findConflicts } from '$lib'; // Utility functions
   import { Calendar } from '@fullcalendar/core'; // FullCalendar main component
   import dayGridPlugin from '@fullcalendar/daygrid'; // For month/week grid view
   import timeGridPlugin from '@fullcalendar/timegrid'; // For detailed time grid view
+
+  interface Props {
+    subjects: any[];
+  }
+
+  let { subjects }: Props = $props();
 
   // Calendar instance and DOM element references
   let calendar: Calendar;
@@ -88,7 +93,7 @@
       nowIndicator: true,
       slotMinTime: '06:00:00',
       slotMaxTime: '22:00:00',
-      events: transformSchedulesToEvents($page.data.user?.user_metadata.subjects || []),
+      events: transformSchedulesToEvents(subjects || []),
       height: 'auto',
       allDayText: '',
       slotDuration: '00:15:00',
@@ -128,7 +133,7 @@
   });
 
   // Reactive declaration to compute schedule conflicts
-  const conflicts = $derived(findConflicts($page.data.user?.user_metadata.subjects || []));
+  const conflicts = $derived(findConflicts(subjects || []));
 </script>
 
 <!-- Display conflict warnings if any conflicts exist -->
