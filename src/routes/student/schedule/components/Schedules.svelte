@@ -185,10 +185,10 @@
 
 {#if conflicts.length > 0}
   <div class="mt-4 rounded-md border border-red-200 bg-red-50 p-4">
-    <h3 class="mb-2 font-semibold text-red-800">Schedule Conflicts Detected:</h3>
+    <h3 class="mb-2 text-sm font-semibold text-red-800">Schedule Conflicts Detected:</h3>
     <ul class="list-disc pl-5">
       {#each conflicts as conflict}
-        <li class="text-red-700">
+        <li class="text-sm text-red-700">
           Conflict between "{conflict.subject1}" and "{conflict.subject2}" on {conflict.day} at {conflict.time}
         </li>
       {/each}
