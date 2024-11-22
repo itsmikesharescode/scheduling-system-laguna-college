@@ -2,7 +2,6 @@
   import Schedules from './components/Schedules.svelte';
   import IssueReport from './components/IssueReport.svelte';
   import { page } from '$app/stores';
-  import { findScheduleConflicts } from '$lib';
 
   const { data } = $props();
 </script>

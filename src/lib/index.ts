@@ -312,53 +312,66 @@ interface Conflict {
   };
 }
 
-export const findScheduleConflicts = (subjects: Subject[]): Conflict[] => {
-  const conflicts: Conflict[] = [];
+export const convertTo24Hour = (timeStr: string) => {
+  const [time, period] = timeStr.split(' ');
+  let [hours, minutes] = time.split(':');
+  let hour = parseInt(hours);
 
-  // Convert times to comparable format (minutes since midnight)
-  function timeToMinutes(time: string): number {
-    const [timeStr, period] = time.split(' ');
-    let [hours, minutes] = timeStr.split(':').map(Number);
-
-    // Convert to 24 hour format
-    if (period === 'PM' && hours !== 12) {
-      hours += 12;
-    } else if (period === 'AM' && hours === 12) {
-      hours = 0;
-    }
-
-    return hours * 60 + minutes;
+  if (period === 'PM' && hour !== 12) {
+    hour += 12;
+  } else if (period === 'AM' && hour === 12) {
+    hour = 0;
   }
 
-  function isOverlapping(schedule1: Schedule, schedule2: Schedule): boolean {
-    if (schedule1.day !== schedule2.day) return false;
+  return `${hour.toString().padStart(2, '0')}:${minutes}`;
+};
 
-    const start1 = timeToMinutes(schedule1.startTime);
-    const end1 = timeToMinutes(schedule1.endTime);
-    const start2 = timeToMinutes(schedule2.startTime);
-    const end2 = timeToMinutes(schedule2.endTime);
+export const checkTimeOverlap = (
+  start1: string,
+  end1: string,
+  start2: string,
+  end2: string
+): boolean => {
+  const [start1Hours, start1Mins] = convertTo24Hour(start1).split(':').map(Number);
+  const [end1Hours, end1Mins] = convertTo24Hour(end1).split(':').map(Number);
+  const [start2Hours, start2Mins] = convertTo24Hour(start2).split(':').map(Number);
+  const [end2Hours, end2Mins] = convertTo24Hour(end2).split(':').map(Number);
 
-    return start1 < end2 && end1 > start2;
-  }
+  const start1Time = start1Hours * 60 + start1Mins;
+  const end1Time = end1Hours * 60 + end1Mins;
+  const start2Time = start2Hours * 60 + start2Mins;
+  const end2Time = end2Hours * 60 + end2Mins;
 
-  // Compare each subject with every other subject
+  return start1Time < end2Time && end1Time > start2Time;
+};
+
+export const findConflicts = (subjects: any[]) => {
+  const conflicts = [];
+
   for (let i = 0; i < subjects.length; i++) {
     for (let j = i + 1; j < subjects.length; j++) {
       const subject1 = subjects[i];
       const subject2 = subjects[j];
 
-      // Compare each schedule of subject1 with each schedule of subject2
+      // Check each schedule combination
       for (const schedule1 of subject1.schedules) {
         for (const schedule2 of subject2.schedules) {
-          if (isOverlapping(schedule1, schedule2)) {
-            conflicts.push({
-              subject1: subject1.name,
-              subject2: subject2.name,
-              conflictingSchedules: {
-                schedule1,
-                schedule2
-              }
-            });
+          if (schedule1.day === schedule2.day) {
+            if (
+              checkTimeOverlap(
+                schedule1.startTime,
+                schedule1.endTime,
+                schedule2.startTime,
+                schedule2.endTime
+              )
+            ) {
+              conflicts.push({
+                subject1: subject1.name,
+                subject2: subject2.name,
+                day: schedule1.day,
+                time: `${schedule1.startTime} - ${schedule1.endTime}`
+              });
+            }
           }
         }
       }
