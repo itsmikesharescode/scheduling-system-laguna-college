@@ -1,15 +1,19 @@
 <script lang="ts">
+  import { browser } from '$app/environment';
   import { page } from '$app/stores';
   import { Calendar } from '@fullcalendar/core';
   import dayGridPlugin from '@fullcalendar/daygrid';
   import timeGridPlugin from '@fullcalendar/timegrid';
-  import { onMount } from 'svelte';
 
+  let calendar: Calendar;
   let calendarEl: HTMLElement;
-  let conflictingSchedules: { subject1: string; subject2: string; day: string; time: string }[] =
-    [];
 
-  function checkTimeOverlap(start1: string, end1: string, start2: string, end2: string): boolean {
+  const checkTimeOverlap = (
+    start1: string,
+    end1: string,
+    start2: string,
+    end2: string
+  ): boolean => {
     const [start1Hours, start1Mins] = convertTo24Hour(start1).split(':').map(Number);
     const [end1Hours, end1Mins] = convertTo24Hour(end1).split(':').map(Number);
     const [start2Hours, start2Mins] = convertTo24Hour(start2).split(':').map(Number);
@@ -21,9 +25,9 @@
     const end2Time = end2Hours * 60 + end2Mins;
 
     return start1Time < end2Time && end1Time > start2Time;
-  }
+  };
 
-  function findConflicts(subjects: any[]) {
+  const findConflicts = (subjects: any[]) => {
     const conflicts = [];
 
     for (let i = 0; i < subjects.length; i++) {
@@ -57,9 +61,9 @@
     }
 
     return conflicts;
-  }
+  };
 
-  function transformSchedulesToEvents(subjects: any[]) {
+  const transformSchedulesToEvents = (subjects: any[]) => {
     const events = [];
     const daysMap: Record<string, number> = {
       Sunday: 0,
@@ -71,9 +75,8 @@
       Saturday: 6
     };
 
-    conflictingSchedules = findConflicts(subjects);
     const conflictingSubjects = new Set(
-      conflictingSchedules.flatMap((conflict) => [conflict.subject1, conflict.subject2])
+      conflicts.flatMap((conflict) => [conflict.subject1, conflict.subject2])
     );
 
     for (const subject of subjects) {
@@ -101,9 +104,9 @@
       }
     }
     return events;
-  }
+  };
 
-  function convertTo24Hour(timeStr: string) {
+  const convertTo24Hour = (timeStr: string) => {
     const [time, period] = timeStr.split(' ');
     let [hours, minutes] = time.split(':');
     let hour = parseInt(hours);
@@ -115,9 +118,9 @@
     }
 
     return `${hour.toString().padStart(2, '0')}:${minutes}`;
-  }
+  };
 
-  function generatePastelColor(seed: string) {
+  const generatePastelColor = (seed: string) => {
     // Simple hash function to generate consistent colors for the same subject
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
@@ -126,10 +129,10 @@
 
     const hue = hash % 360;
     return `hsl(${hue}, 70%, 80%)`;
-  }
+  };
 
-  onMount(() => {
-    const calendar = new Calendar(calendarEl, {
+  const renderCalendar = () => {
+    calendar = new Calendar(calendarEl, {
       plugins: [dayGridPlugin, timeGridPlugin],
       initialView: 'timeGridWeek',
       headerToolbar: {
@@ -164,20 +167,27 @@
         }
       }
     });
+  };
 
-    calendar.render();
+  $effect(() => {
+    if (browser) {
+      renderCalendar();
+      calendar.render();
+    }
 
     return () => {
       calendar.destroy();
     };
   });
+
+  const conflicts = $derived(findConflicts($page.data.user?.user_metadata.subjects || []));
 </script>
 
-{#if conflictingSchedules.length > 0}
+{#if conflicts.length > 0}
   <div class="mt-4 rounded-md border border-red-200 bg-red-50 p-4">
     <h3 class="mb-2 font-semibold text-red-800">Schedule Conflicts Detected:</h3>
     <ul class="list-disc pl-5">
-      {#each conflictingSchedules as conflict}
+      {#each conflicts as conflict}
         <li class="text-red-700">
           Conflict between "{conflict.subject1}" and "{conflict.subject2}" on {conflict.day} at {conflict.time}
         </li>
