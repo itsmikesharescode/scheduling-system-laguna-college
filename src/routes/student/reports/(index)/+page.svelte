@@ -24,24 +24,7 @@
         <Skeleton class="h-[20px] w-[90%] rounded-full bg-primary/50" />
       </section>
     {:then reports}
-      <Table
-        data={reports?.map((item) => ({
-          id: item.id,
-          created_at: item.created_at,
-          user_id: item.user_id,
-          status: item.status,
-          reporter_id: item.reporter_id,
-          message: item.message,
-          email: item.users_tb?.user_meta_data?.email ?? '',
-          firstName: item.users_tb?.user_meta_data?.firstName ?? '',
-          middleName: item.users_tb?.user_meta_data?.middleName ?? '',
-          lastName: item.users_tb?.user_meta_data?.lastName ?? '',
-          gender: item.users_tb?.user_meta_data?.gender ?? '',
-          sections: item.users_tb?.user_meta_data?.sections ?? [],
-          subjects: item.users_tb?.user_meta_data?.subjects ?? []
-        })) ?? []}
-        {columns}
-      />
+      <Table data={reports ?? []} {columns} />
     {/await}
   </div>
 </main>
