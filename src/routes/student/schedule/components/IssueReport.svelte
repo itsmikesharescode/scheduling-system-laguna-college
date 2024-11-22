@@ -12,6 +12,8 @@
   import { Textarea } from '$lib/components/ui/textarea';
   import type { User } from '@supabase/supabase-js';
   import type { Result } from '$lib/types/types';
+  import { page } from '$app/stores';
+  import { findConflicts } from '$lib';
 
   interface Props {
     reportIssueForm: SuperValidated<Infer<ReportIssueSchema>>;
@@ -42,6 +44,22 @@
   });
 
   const { form: formData, enhance, submitting } = form;
+
+  const generateReport = () => {
+    const conflicts = findConflicts($page.data.user?.user_metadata.subjects || []);
+    const formattedConflicts = conflicts
+      .map(
+        (conflict) =>
+          `Schedule Conflict:\n` +
+          `• ${conflict.subject1}\n` +
+          `• ${conflict.subject2}\n` +
+          `Day: ${conflict.day}\n` +
+          `Time: ${conflict.time}\n`
+      )
+      .join('\n');
+
+    $formData.msg = formattedConflicts;
+  };
 </script>
 
 <Button variant="destructive" onclick={() => (open = true)} class="gap-1.5">
@@ -82,13 +100,20 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>Describe The Issue</Form.Label>
-            <Textarea {...props} bind:value={$formData.msg} placeholder="Describe the issue" />
+            <Textarea
+              {...props}
+              bind:value={$formData.msg}
+              placeholder="Describe the issue"
+              rows={Math.min(($formData.msg?.match(/\n/g)?.length || 0) + 1 || 3, 25)}
+              class="w-full"
+            />
           {/snippet}
         </Form.Control>
         <Form.FieldErrors />
       </Form.Field>
 
-      <div class="flex justify-end">
+      <div class="flex justify-end gap-2.5">
+        <Button variant="outline" onclick={generateReport}>Generate Report</Button>
         <Form.Button disabled={$submitting} class="relative">
           {#if $submitting}
             <div
