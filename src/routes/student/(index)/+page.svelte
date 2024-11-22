@@ -3,6 +3,7 @@
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
   import * as Card from '$lib/components/ui/card/index.js';
   import { page } from '$app/stores';
+  import { fly } from 'svelte/transition';
   interface Schedule {
     day: string;
     endTime: string;
@@ -51,10 +52,10 @@
   </Card.Root>
 {/snippet}
 
-<main class="container flex flex-col gap-10 py-10">
-  <h1 class="mt-5 text-center text-5xl font-bold">STUDENT DASHBOARD</h1>
+<main class="flex flex-col gap-10 px-[2rem] py-10">
+  <h1 class="mt-5 text-center text-5xl font-bold" in:fly={{ x: -100 }}>STUDENT DASHBOARD</h1>
 
-  <div class="grid grid-cols-2 gap-5">
+  <div class="container grid grid-cols-2 gap-5">
     <section class="grid grid-rows-[3fr_2fr] gap-2.5">
       <section
         class="flex flex-col items-center justify-center gap-2.5 rounded-2xl bg-[#0F224C] p-5 text-white"

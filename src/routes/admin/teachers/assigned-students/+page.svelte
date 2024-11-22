@@ -12,7 +12,7 @@
   initTableState();
 </script>
 
-<main class="flex flex-col gap-5 px-[2rem] py-10">
+<main class="container flex flex-col gap-5 px-[2rem] py-10">
   <Breadcrumb.Root>
     <Breadcrumb.List>
       <Breadcrumb.Item>

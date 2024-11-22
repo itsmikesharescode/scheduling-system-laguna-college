@@ -199,3 +199,27 @@
     U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
     U+FFFD;
 }
+
+@layer components {
+  .container {
+    @apply mx-auto w-full px-4;
+    max-width: 100%;
+
+    /* Breakpoint-specific styles */
+    @screen sm {
+      max-width: 640px;
+    }
+    @screen md {
+      max-width: 768px;
+    }
+    @screen lg {
+      max-width: 1024px;
+    }
+    @screen xl {
+      max-width: 1280px;
+    }
+    @screen 2xl {
+      max-width: 1536px;
+    }
+  }
+}

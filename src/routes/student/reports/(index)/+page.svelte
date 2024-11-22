@@ -12,7 +12,7 @@
   initTableState();
 </script>
 
-<main class="flex flex-col gap-5 px-[2rem] py-10">
+<main class="container flex flex-col gap-5 px-[2rem] py-10">
   <h1 class="mt-5 text-5xl font-bold" in:fly={{ x: -100 }}>Reports</h1>
 
   <div class="flex flex-col gap-5">
