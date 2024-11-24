@@ -14,53 +14,14 @@
   import type { AssignableStudentsPageSchema } from '../data/schemas';
   import { fly } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
-  import { page } from '$app/stores';
-  import { invalidateAll } from '$app/navigation';
-  import { toast } from 'svelte-sonner';
 
   let { table }: { table: Table<AssignableStudentsPageSchema> } = $props();
-
-  const sb = $page.data.supabase;
-  let deleteLoader = $state(false);
-  const handleDeleteSelected = async () => {
-    if (!sb) return;
-
-    deleteLoader = true;
-
-    await invalidateAll();
-    toast.success('School years deleted successfully');
-    deleteLoader = false;
-  };
 </script>
 
 <div class="flex items-center justify-between px-2">
   <div class="flex items-center gap-2.5 text-sm text-muted-foreground">
     {table.getFilteredSelectedRowModel().rows.length} of
     {table.getFilteredRowModel().rows.length} row(s) selected.
-
-    <div class="overflow-hidden">
-      {#if table.getFilteredSelectedRowModel().rows.length > 2}
-        <div transition:fly={{ x: -100, duration: 400, easing: cubicInOut }}>
-          <Button
-            disabled={deleteLoader}
-            variant="destructive"
-            size="sm"
-            onclick={handleDeleteSelected}
-            class="relative"
-          >
-            {#if deleteLoader}
-              <div
-                class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-destructive"
-              >
-                <LoaderCircle class="size-4 animate-spin" />
-              </div>
-            {/if}
-
-            Delete Selected
-          </Button>
-        </div>
-      {/if}0
-    </div>
   </div>
 
   <div class="flex items-center space-x-6 lg:space-x-8">

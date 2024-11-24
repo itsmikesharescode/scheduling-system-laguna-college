@@ -8,9 +8,9 @@
   import { TableViewOptions } from './index';
   import Button from '$lib/components/ui/button/button.svelte';
   import { Input } from '$lib/components/ui/input/index';
-  import type { StudentPageSchema } from '../data/schemas';
+  import type { StudentsPageSchema } from '../data/schemas';
 
-  let { table }: { table: Table<StudentPageSchema> } = $props();
+  let { table }: { table: Table<StudentsPageSchema> } = $props();
 
   const isFiltered = $derived(table.getState().columnFilters.length > 0);
 </script>

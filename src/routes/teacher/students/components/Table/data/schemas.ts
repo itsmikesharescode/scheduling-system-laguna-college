@@ -21,9 +21,8 @@ const subjectSchema = z.object({
   schedules: z.array(scheduleSchema)
 });
 
-export const studentsSchema = z.object({
+export const studentSchema = z.object({
   id: z.number(),
-  user_id: z.string(),
   created_at: z.string(),
   studentId: z.string(),
   firstName: z.string(),
@@ -37,4 +36,4 @@ export const studentsSchema = z.object({
   subjects: z.array(subjectSchema)
 });
 
-export type StudentPageSchema = z.output<typeof studentsSchema>;
+export type StudentsPageSchema = z.output<typeof studentSchema>;

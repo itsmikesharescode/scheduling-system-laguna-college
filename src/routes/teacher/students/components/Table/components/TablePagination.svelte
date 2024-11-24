@@ -11,37 +11,24 @@
   import type { Table } from '@tanstack/table-core';
   import * as Select from '$lib/components/ui/select/index';
   import { Button } from '$lib/components/ui/button/index';
-  import type { StudentPageSchema } from '../data/schemas';
+  import type { TeacherPageSchema } from '../data/schemas';
   import { fly } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
   import { page } from '$app/stores';
   import { invalidateAll } from '$app/navigation';
   import { toast } from 'svelte-sonner';
 
-  let { table }: { table: Table<StudentPageSchema> } = $props();
+  let { table }: { table: Table<TeacherPageSchema> } = $props();
 
+  const sb = $page.data.supabase;
   let deleteLoader = $state(false);
   const handleDeleteSelected = async () => {
-    if (!$page.data.supabase) return;
+    if (!sb) return;
 
     deleteLoader = true;
 
-    const { error } = await $page.data.supabase
-      .from('assigned_students_tb')
-      .delete()
-      .in(
-        'id',
-        table.getFilteredSelectedRowModel().rows.map((row) => row.original.id)
-      );
-
-    if (error) {
-      toast.error(error.message);
-      deleteLoader = false;
-      return;
-    }
-
     await invalidateAll();
-    toast.success('Assigned students deleted successfully');
+    toast.success('School years deleted successfully');
     deleteLoader = false;
   };
 </script>
@@ -72,7 +59,7 @@
             Delete Selected
           </Button>
         </div>
-      {/if}
+      {/if}0
     </div>
   </div>
 

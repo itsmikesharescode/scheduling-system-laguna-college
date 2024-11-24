@@ -1,39 +1,14 @@
 import type { ColumnDef } from '@tanstack/table-core';
 import { createRawSnippet } from 'svelte';
-import type { StudentPageSchema } from '../data/schemas.js';
-import {
-  TableColumnHeader,
-  TableRowActions,
-  TableSectionsCell,
-  TableSubjectsCell,
-  TableCheckbox
-} from './index.js';
+import type { StudentsPageSchema } from '../data/schemas.js';
+import { TableColumnHeader, TableSectionsCell, TableSubjectsCell } from './index.js';
 import { renderComponent, renderSnippet } from '$lib/components/ui/data-table/render-helpers.js';
 
-export const columns: ColumnDef<StudentPageSchema>[] = [
-  {
-    id: 'select',
-    header: ({ table }) =>
-      renderComponent(TableCheckbox, {
-        checked: table.getIsAllPageRowsSelected(),
-        onCheckedChange: (value) => table.toggleAllPageRowsSelected(!!value),
-        'aria-label': 'Select all',
-        class: 'translate-y-[2px]'
-      }),
-    cell: ({ row }) =>
-      renderComponent(TableCheckbox, {
-        checked: row.getIsSelected(),
-        onCheckedChange: (value) => row.toggleSelected(!!value),
-        'aria-label': 'Select row',
-        class: 'translate-y-[2px]'
-      }),
-    enableSorting: false,
-    enableHiding: false
-  },
+export const columns: ColumnDef<StudentsPageSchema>[] = [
   {
     accessorKey: 'studentId',
     header: ({ column }) => {
-      return renderComponent(TableColumnHeader<StudentPageSchema, unknown>, {
+      return renderComponent(TableColumnHeader<StudentsPageSchema, unknown>, {
         column,
         title: 'Student ID'
       });
@@ -54,7 +29,7 @@ export const columns: ColumnDef<StudentPageSchema>[] = [
   {
     accessorKey: 'email',
     header: ({ column }) => {
-      return renderComponent(TableColumnHeader<StudentPageSchema, unknown>, {
+      return renderComponent(TableColumnHeader<StudentsPageSchema, unknown>, {
         column,
         title: 'Email'
       });
@@ -76,7 +51,7 @@ export const columns: ColumnDef<StudentPageSchema>[] = [
     accessorKey: 'lastName',
     accessorFn: (row) => `${row.lastName}, ${row.firstName} ${row.middleName}`,
     header: ({ column }) => {
-      return renderComponent(TableColumnHeader<StudentPageSchema, unknown>, {
+      return renderComponent(TableColumnHeader<StudentsPageSchema, unknown>, {
         column,
         title: 'Full Name'
       });
@@ -97,7 +72,7 @@ export const columns: ColumnDef<StudentPageSchema>[] = [
   {
     accessorKey: 'gender',
     header: ({ column }) => {
-      return renderComponent(TableColumnHeader<StudentPageSchema, unknown>, {
+      return renderComponent(TableColumnHeader<StudentsPageSchema, unknown>, {
         column,
         title: 'Gender'
       });
@@ -114,53 +89,12 @@ export const columns: ColumnDef<StudentPageSchema>[] = [
     enableSorting: true,
     enableHiding: true
   },
-  {
-    accessorKey: 'yearLevel',
-    header: ({ column }) => {
-      return renderComponent(TableColumnHeader<StudentPageSchema, unknown>, {
-        column,
-        title: 'Year Level'
-      });
-    },
-    cell: ({ row }) => {
-      const yearLevelSnippet = createRawSnippet<[string]>((getYearLevel) => {
-        return {
-          render: () => `<div class="w-full">${getYearLevel()}</div>`
-        };
-      });
-
-      return renderSnippet(yearLevelSnippet, row.getValue('yearLevel'));
-    },
-    enableSorting: true,
-    enableHiding: true
-  },
-
-  {
-    accessorKey: 'course',
-    header: ({ column }) => {
-      return renderComponent(TableColumnHeader<StudentPageSchema, unknown>, {
-        column,
-        title: 'Course'
-      });
-    },
-    cell: ({ row }) => {
-      const courseSnippet = createRawSnippet<[string]>((getCourse) => {
-        return {
-          render: () => `<div class="w-full">${getCourse()}</div>`
-        };
-      });
-
-      return renderSnippet(courseSnippet, row.getValue('course'));
-    },
-    enableSorting: true,
-    enableHiding: true
-  },
 
   {
     accessorKey: 'sections',
     id: 'sections',
     header: ({ column }) => {
-      return renderComponent(TableColumnHeader<StudentPageSchema, unknown>, {
+      return renderComponent(TableColumnHeader<StudentsPageSchema, unknown>, {
         column,
         title: 'Sections'
       });
@@ -174,7 +108,7 @@ export const columns: ColumnDef<StudentPageSchema>[] = [
     accessorKey: 'subjects',
     id: 'subjects',
     header: ({ column }) => {
-      return renderComponent(TableColumnHeader<StudentPageSchema, unknown>, {
+      return renderComponent(TableColumnHeader<StudentsPageSchema, unknown>, {
         column,
         title: 'Subjects'
       });
@@ -188,7 +122,7 @@ export const columns: ColumnDef<StudentPageSchema>[] = [
     accessorKey: 'created_at',
     id: 'created_at',
     header: ({ column }) => {
-      return renderComponent(TableColumnHeader<StudentPageSchema, unknown>, {
+      return renderComponent(TableColumnHeader<StudentsPageSchema, unknown>, {
         column,
         title: 'Created At'
       });
@@ -205,10 +139,5 @@ export const columns: ColumnDef<StudentPageSchema>[] = [
     },
     enableSorting: true,
     enableHiding: true
-  },
-
-  {
-    id: 'actions',
-    cell: ({ row }) => renderComponent(TableRowActions<StudentPageSchema>, { row })
   }
 ];

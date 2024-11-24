@@ -21,20 +21,13 @@ const subjectSchema = z.object({
   schedules: z.array(scheduleSchema)
 });
 
-export const studentsSchema = z.object({
-  id: z.number(),
-  user_id: z.string(),
+export const reportSchema = z.object({
   created_at: z.string(),
-  studentId: z.string(),
-  firstName: z.string(),
-  middleName: z.string(),
-  lastName: z.string(),
-  gender: z.string(),
-  yearLevel: z.string(),
-  course: z.string(),
-  email: z.string(),
-  sections: z.array(sectionSchema),
-  subjects: z.array(subjectSchema)
+  id: z.number(),
+  message: z.string(),
+  reporter_id: z.string(),
+  status: z.string(),
+  user_id: z.string()
 });
 
-export type StudentPageSchema = z.output<typeof studentsSchema>;
+export type ReportPageSchema = z.output<typeof reportSchema>;

@@ -11,23 +11,21 @@
   import type { Table } from '@tanstack/table-core';
   import * as Select from '$lib/components/ui/select/index';
   import { Button } from '$lib/components/ui/button/index';
-  import type { StudentPageSchema } from '../data/schemas';
+  import type { ReportPageSchema } from '../data/schemas';
   import { fly } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
   import { page } from '$app/stores';
   import { invalidateAll } from '$app/navigation';
   import { toast } from 'svelte-sonner';
 
-  let { table }: { table: Table<StudentPageSchema> } = $props();
+  let { table }: { table: Table<ReportPageSchema> } = $props();
 
   let deleteLoader = $state(false);
   const handleDeleteSelected = async () => {
     if (!$page.data.supabase) return;
 
-    deleteLoader = true;
-
     const { error } = await $page.data.supabase
-      .from('assigned_students_tb')
+      ?.from('reports_tb')
       .delete()
       .in(
         'id',
@@ -35,13 +33,13 @@
       );
 
     if (error) {
-      toast.error(error.message);
-      deleteLoader = false;
+      toast.error('Failed to delete reports');
       return;
     }
+    deleteLoader = true;
 
     await invalidateAll();
-    toast.success('Assigned students deleted successfully');
+    toast.success('Reports deleted successfully');
     deleteLoader = false;
   };
 </script>

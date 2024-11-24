@@ -1,5 +1,4 @@
 export { default as TableCheckbox } from './TableCheckbox.svelte';
-export { default as TableRowActions } from './TableRowAction.svelte';
 export { default as TableColumnHeader } from './ColumnHeader.svelte';
 export { default as TableToolbar } from './TableToolbar.svelte';
 export { default as TablePagination } from './TablePagination.svelte';
