@@ -10,7 +10,7 @@ type Section = {
   value: string;
 };
 
-type Subject = {
+export type Subject = {
   id: string;
   name: string;
   schedules: Schedule[];

@@ -3,6 +3,7 @@
   import { page } from '$app/stores';
   import Schedules from '$lib/components/general/Schedules.svelte';
   import { fly } from 'svelte/transition';
+  import DownloadSubjectsExcel from '$lib/components/general/DownloadSubjectsExcel.svelte';
 
   const { data } = $props();
 </script>
@@ -12,6 +13,8 @@
   {#if $page.data.user}
     <section>
       <IssueReport reportIssueForm={data.reportIssueForm} />
+
+      <DownloadSubjectsExcel subjects={$page.data.user?.user_metadata.subjects || []} />
     </section>
     <Schedules subjects={$page.data.user?.user_metadata.subjects || []} />
   {/if}
