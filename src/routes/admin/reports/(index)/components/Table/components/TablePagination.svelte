@@ -11,14 +11,14 @@
   import type { Table } from '@tanstack/table-core';
   import * as Select from '$lib/components/ui/select/index';
   import { Button } from '$lib/components/ui/button/index';
-  import type { TeacherPageSchema } from '../data/schemas';
+  import type { ReportPageSchema } from '../data/schemas';
   import { fly } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
   import { page } from '$app/stores';
   import { invalidateAll } from '$app/navigation';
   import { toast } from 'svelte-sonner';
 
-  let { table }: { table: Table<TeacherPageSchema> } = $props();
+  let { table }: { table: Table<ReportPageSchema> } = $props();
 
   const sb = $page.data.supabase;
   let deleteLoader = $state(false);
@@ -59,7 +59,7 @@
             Delete Selected
           </Button>
         </div>
-      {/if}0
+      {/if}
     </div>
   </div>
 

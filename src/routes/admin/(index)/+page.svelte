@@ -5,6 +5,7 @@
   import { Skeleton } from '$lib/components/ui/skeleton/index.js';
   import AddReminder from './components/AddReminder/AddReminder.svelte';
   import Menu from './components/Menu.svelte';
+  import { page } from '$app/stores';
 
   const { data } = $props();
 </script>
@@ -26,10 +27,10 @@
       class="flex flex-col items-center justify-center gap-2.5 rounded-2xl bg-[#0F224C] p-5 text-white"
     >
       <div class="flex flex-col items-center justify-center gap-2.5">
-        <span class="text-center text-3xl">Hi, Admin.</span>
-        <span class="text-center text-2xl">
-          We have notified you of the two schedule conflicts from BSIT-4. Please check. Thank you!
+        <span class="text-center text-3xl">
+          Hi, Admin. {$page.data?.user?.user_metadata.firstName}
         </span>
+        <span class="text-center text-2xl"> You can view reports here </span>
       </div>
 
       <Button href="/admin/reports" variant="secondary" size="sm">View Reports</Button>
