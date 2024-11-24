@@ -2,6 +2,7 @@
   import Button from '$lib/components/ui/button/button.svelte';
   import type { Subject } from '$lib/types/database/aux.types';
   import * as XLSX from 'xlsx';
+  import FileDown from 'lucide-svelte/icons/file-down';
 
   interface Props {
     subjects: Subject[];
@@ -35,4 +36,4 @@
   };
 </script>
 
-<Button onclick={downloadExcel}>Download Excel</Button>
+<Button onclick={downloadExcel}>Download Excel <FileDown /></Button>
