@@ -20,8 +20,8 @@
     View
   </DropdownMenu.Trigger>
   <DropdownMenu.Content class="max-w-[300px] p-2">
-    <ScrollArea class="h-[300px] p-2">
-      <section class="flex flex-wrap gap-1.5">
+    <section class="flex flex-wrap gap-1.5">
+      <ScrollArea class="max-h-[300px] p-2">
         {#each row.original.subjects as subject}
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>
@@ -36,7 +36,7 @@
             </DropdownMenu.SubContent>
           </DropdownMenu.Sub>
         {/each}
-      </section>
-    </ScrollArea>
+      </ScrollArea>
+    </section>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
