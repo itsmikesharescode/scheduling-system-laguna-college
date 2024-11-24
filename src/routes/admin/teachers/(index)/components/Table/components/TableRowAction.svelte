@@ -28,7 +28,9 @@
     {/snippet}
   </DropdownMenu.Trigger>
   <DropdownMenu.Content class="" align="end">
-    <a href="/admin/teachers/assigned-students?user_id={row.original.user_id}">
+    <a
+      href={`/admin/teachers/assigned-students?user_id=${row.original.user_id}&lastname=${row.original.lastName}&firstname=${row.original.firstName}&middlename=${row.original.middleName}`}
+    >
       <DropdownMenu.Item>
         <FileInput />
         Assign Students

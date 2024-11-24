@@ -7,6 +7,7 @@
   import { columns } from './components/Table/components/columns';
   import RemoveStudent from './components/RemoveStudent/RemoveStudent.svelte';
   import { initTableState } from './components/Table/tableState.svelte';
+  import { page } from '$app/stores';
   const { data } = $props();
 
   initTableState();
@@ -20,7 +21,11 @@
       </Breadcrumb.Item>
       <Breadcrumb.Separator />
       <Breadcrumb.Item>
-        <Breadcrumb.Page>Assign Students</Breadcrumb.Page>
+        <Breadcrumb.Page>
+          Assign Students for Teacher 👉 {$page.url.searchParams.get('lastname')}
+          {$page.url.searchParams.get('firstname')}
+          {$page.url.searchParams.get('middlename')}
+        </Breadcrumb.Page>
       </Breadcrumb.Item>
     </Breadcrumb.List>
   </Breadcrumb.Root>
