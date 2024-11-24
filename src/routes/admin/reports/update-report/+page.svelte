@@ -22,6 +22,7 @@
   import { onMount } from 'svelte';
   import * as Dialog from '$lib/components/ui/dialog/index.js';
   import { goto } from '$app/navigation';
+  import ViewSchedule from './components/ViewSchedule.svelte';
 
   const { data } = $props();
 
@@ -106,7 +107,7 @@
 
   <div class="grid grid-cols-[1fr_2fr] gap-2.5">
     <section>
-      <div class="sticky top-[5rem]">
+      <div class="sticky top-[5rem] flex flex-col gap-2.5">
         <Alert.Root class="flex flex-col gap-2.5">
           <Terminal class="size-4" />
           <Alert.Title>Report Update Mode</Alert.Title>
@@ -119,6 +120,10 @@
             <span> Located at the upper right of the page. </span>
           </Alert.Description>
         </Alert.Root>
+
+        <div class="">
+          <ViewSchedule subjects={$formData.subjects ?? []} />
+        </div>
       </div>
     </section>
     <section class="">
