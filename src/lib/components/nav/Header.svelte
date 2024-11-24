@@ -82,8 +82,9 @@
 
         <Popover.Root>
           <Popover.Trigger class="rounded-lg bg-white p-2">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5">
               <CircleUserRound class="h-[30px] w-[30px]" />
+              <span class="font-bold">{$page.data.user?.user_metadata.role.toUpperCase()}</span>
             </div>
           </Popover.Trigger>
           <Popover.Content class="bg-primary">
