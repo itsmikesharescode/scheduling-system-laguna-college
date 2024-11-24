@@ -1,5 +1,4 @@
 import type { Student, Teacher } from './aux.types';
-
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
@@ -202,17 +201,17 @@ export type Database = {
         Row: {
           created_at: string;
           user_id: string;
-          user_meta_data: Teacher | Student;
+          user_meta_data: Student | Teacher;
         };
         Insert: {
           created_at?: string;
           user_id: string;
-          user_meta_data: Teacher | Student;
+          user_meta_data: Student | Teacher;
         };
         Update: {
           created_at?: string;
           user_id?: string;
-          user_meta_data?: Teacher | Student;
+          user_meta_data?: Student | Teacher;
         };
         Relationships: [];
       };

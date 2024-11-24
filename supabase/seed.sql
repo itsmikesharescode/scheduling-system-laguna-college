@@ -475,11 +475,15 @@ CREATE POLICY "Allow insert if student" ON "public"."reports_tb" FOR INSERT TO "
 
 
 
-CREATE POLICY "Allow select if admin" ON "public"."students_tb" FOR SELECT TO "authenticated" USING ("public"."is_admin"());
-
-
-
 CREATE POLICY "Allow select if admin" ON "public"."teachers_tb" FOR SELECT TO "authenticated" USING ("public"."is_admin"());
+
+
+
+CREATE POLICY "Allow select if admin or teacher" ON "public"."students_tb" FOR SELECT TO "authenticated" USING (("public"."is_admin"() OR "public"."is_teacher"()));
+
+
+
+CREATE POLICY "Allow select if teacher" ON "public"."assigned_students_tb" FOR SELECT TO "authenticated" USING ("public"."is_teacher"());
 
 
 
