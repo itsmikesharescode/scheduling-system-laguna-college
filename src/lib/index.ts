@@ -36,6 +36,25 @@ export const studentRoutes = [
   }
 ];
 
+export const teacherRoutes = [
+  {
+    url: '/teacher',
+    name: 'Dashboard'
+  },
+  {
+    url: '/teacher/schedule',
+    name: 'Schedule'
+  },
+  {
+    url: '/teacher/reports',
+    name: 'Reports'
+  },
+  {
+    url: '/teacher/account',
+    name: 'Account'
+  }
+];
+
 //metadatas
 export const curriculum = [
   {
