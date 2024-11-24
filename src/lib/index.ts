@@ -50,6 +50,10 @@ export const teacherRoutes = [
     name: 'Reports'
   },
   {
+    url: '/teacher/students',
+    name: 'Students'
+  },
+  {
     url: '/teacher/account',
     name: 'Account'
   }
