@@ -86,7 +86,7 @@
     </AlertDialog.Header>
 
     <form method="POST" action="?/reportIssueEvent" use:enhance>
-      <input type="hidden" name="reporter_id" value={$page.data.user?.user_metadata.studentId} />
+      <input type="hidden" name="reporter_id" value={$page.data.user?.user_metadata.teacherId} />
       <Form.Field {form} name="user_id" class="hidden">
         <Form.Control>
           {#snippet children({ props })}

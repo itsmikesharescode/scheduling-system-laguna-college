@@ -3,7 +3,6 @@ import type { Actions, PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
 import { reportIssueSchema } from './components/schema';
 import { fail } from '@sveltejs/kit';
-import type { User } from '@supabase/supabase-js';
 import { generateReferenceId } from '$lib';
 
 export const load: PageServerLoad = async () => {
