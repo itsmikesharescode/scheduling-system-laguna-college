@@ -22,6 +22,7 @@ const subjectSchema = z.object({
 });
 
 export const studentsSchema = z.object({
+  id: z.number(),
   user_id: z.string(),
   created_at: z.string(),
   studentId: z.string(),

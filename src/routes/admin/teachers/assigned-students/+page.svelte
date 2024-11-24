@@ -40,6 +40,7 @@
   {:then teacherStudents}
     <Table
       data={teacherStudents?.map((item) => ({
+        id: item.id,
         created_at: item.created_at,
         user_id: item.students_tb?.user_id ?? '',
         email: item.students_tb?.user_meta_data?.email ?? '',

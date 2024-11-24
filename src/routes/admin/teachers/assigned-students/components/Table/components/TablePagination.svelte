@@ -20,15 +20,28 @@
 
   let { table }: { table: Table<StudentPageSchema> } = $props();
 
-  const sb = $page.data.supabase;
   let deleteLoader = $state(false);
   const handleDeleteSelected = async () => {
-    if (!sb) return;
+    if (!$page.data.supabase) return;
 
     deleteLoader = true;
 
+    const { error } = await $page.data.supabase
+      .from('assigned_students_tb')
+      .delete()
+      .in(
+        'id',
+        table.getFilteredSelectedRowModel().rows.map((row) => row.original.id)
+      );
+
+    if (error) {
+      toast.error(error.message);
+      deleteLoader = false;
+      return;
+    }
+
     await invalidateAll();
-    toast.success('School years deleted successfully');
+    toast.success('Assigned students deleted successfully');
     deleteLoader = false;
   };
 </script>
@@ -59,7 +72,7 @@
             Delete Selected
           </Button>
         </div>
-      {/if}0
+      {/if}
     </div>
   </div>
 

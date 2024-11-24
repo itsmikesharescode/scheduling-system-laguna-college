@@ -5,8 +5,7 @@
 <script lang="ts" generics="TData">
   import X from 'lucide-svelte/icons/x';
   import type { Table } from '@tanstack/table-core';
-  import { priorities, statuses } from '../data/data';
-  import { TableFacetedFilter, TableViewOptions } from './index';
+  import { TableViewOptions } from './index';
   import Button from '$lib/components/ui/button/button.svelte';
   import { Input } from '$lib/components/ui/input/index';
   import type { StudentPageSchema } from '../data/schemas';
