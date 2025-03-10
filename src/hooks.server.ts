@@ -1,6 +1,6 @@
 import { i18n } from '$lib/i18n';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
-import { PRIVATE_SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
+import { PRIVATE_SUPABASE_ADMIN_KEY } from '$env/static/private';
 import { createServerClient } from '@supabase/ssr';
 import { type Handle, redirect } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
@@ -17,20 +17,16 @@ const supabase: Handle = async ({ event, resolve }) => {
     }
   });
 
-  event.locals.supabaseAdmin = createServerClient(
-    PUBLIC_SUPABASE_URL,
-    PRIVATE_SUPABASE_SERVICE_ROLE_KEY,
-    {
-      cookies: {
-        getAll: () => event.cookies.getAll(),
-        setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            event.cookies.set(name, value, { ...options, path: '/' });
-          });
-        }
+  event.locals.supabaseAdmin = createServerClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_ADMIN_KEY, {
+    cookies: {
+      getAll: () => event.cookies.getAll(),
+      setAll: (cookiesToSet) => {
+        cookiesToSet.forEach(({ name, value, options }) => {
+          event.cookies.set(name, value, { ...options, path: '/' });
+        });
       }
     }
-  );
+  });
 
   event.locals.safeGetSession = async () => {
     const {
