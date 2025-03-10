@@ -4,6 +4,7 @@
   import { ParaglideJS } from '@inlang/paraglide-sveltekit';
   import { Toaster } from '$lib/components/ui/sonner/index.js';
   import { onNavigate } from '$app/navigation';
+  import { ModeWatcher } from 'mode-watcher';
   import '@fontsource/poppins';
 
   let { children } = $props();
@@ -19,6 +20,8 @@
     });
   });
 </script>
+
+<ModeWatcher defaultMode="light" />
 
 <ParaglideJS {i18n}>
   <Toaster />

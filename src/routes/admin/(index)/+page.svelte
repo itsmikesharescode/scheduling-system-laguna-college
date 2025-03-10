@@ -5,7 +5,8 @@
   import { Skeleton } from '$lib/components/ui/skeleton/index.js';
   import AddReminder from './components/AddReminder/AddReminder.svelte';
   import Menu from './components/Menu.svelte';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
+  import LineChart from '$lib/components/graphs/line-chart/line-chart.svelte';
 
   const { data } = $props();
 </script>
@@ -28,7 +29,7 @@
     >
       <div class="flex flex-col items-center justify-center gap-2.5">
         <span class="text-center text-3xl">
-          Hi, Admin. {$page.data?.user?.user_metadata.firstName}
+          Hi, Admin. {page.data?.user?.user_metadata.firstName}
         </span>
         <span class="text-center text-2xl"> You can view reports here </span>
       </div>
@@ -81,6 +82,8 @@
       </ScrollArea>
     </section>
   </div>
+
+  <LineChart />
 
   {#await data.getDashboardCounts}
     <section class="grid w-full grid-cols-3 gap-5">
